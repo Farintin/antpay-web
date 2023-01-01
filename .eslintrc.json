@@ -1,0 +1,64 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "jest": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb",
+        "eslint:recommended",
+        "prettier"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+        "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": ["react"],
+    "rules": {
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "semi": "off",
+        "no-unused-vars": "warn",
+        "no-shadow": 0,
+        "no-console": 0,
+        "react/jsx-key": 1,
+        "import/no-cycle": 0,
+        "arrow-body-style": 1,
+        "react/prop-types": 0,
+        "consistent-return": 0,
+        "no-param-reassign": 0,
+        "no-use-before-define": 0,
+        "no-underscore-dangle": 0,
+        "react/button-has-type": 1,
+        "react/no-children-prop": 0,
+        "react/forbid-prop-types": 0,
+        "jsx-a11y/anchor-is-valid": 0,
+        "react/no-array-index-key": 0,
+        "react/no-unused-prop-types": 1,
+        "no-promise-executor-return": 0,
+        "no-unsafe-optional-chaining": 0,
+        "react/require-default-props": 0,
+        "react/no-unescaped-entities": 0,
+        "import/prefer-default-export": 0,
+        "react/jsx-props-no-spreading": 0,
+        "react/jsx-no-useless-fragment": 0,
+        "react/jsx-curly-brace-presence": 0,
+        "react/destructuring-assignment": 0,
+        "import/no-extraneous-dependencies": 0,
+        "react/no-unstable-nested-components": 0,
+        "react/function-component-definition": 0,
+        "react/jsx-no-constructed-context-values": 0,
+        "space-before-blocks": 0,
+        "jsx-a11y/alt-text": [2, {}],
+        "no-plusplus": 0,
+        "no-unused-expressions": 0,
+        "no-restricted-syntax": 0,
+        "prefer-const": 0,
+        "func-names": 0,
+        "react/no-unknown-property": 0
+    }
+}

@@ -1,0 +1,17 @@
+body {
+    overflow: overlay;
+}
+
+::-webkit-scrollbar {
+    background: transparent;
+    width: 32px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #750dc3;/*#912bde;/*#7a0ddd;/*#5d00af;*/
+    border: 13px solid rgba(255, 255, 255, 0);
+    background-clip: padding-box;
+    border-radius: 32px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #c78bf4;/*#a434f9;/*#d8acff/*#a36af1;/*#2dc5b7;*/
+}
