@@ -14,7 +14,7 @@ const Root = styled(Box)(() => ({
   marginRight: '5.4%',
   zIndex: 1,
   '& > .wrapper': {
-    filter: 'url(#goo)',
+    filter: 'url(#navGoo)',
     position: 'relative',
     padding: 16,
     display: 'flex',
@@ -200,7 +200,7 @@ export default function () {
             
       <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{display: 'none'}}>
         <defs>
-          <filter id="goo">
+          <filter id="navGoo">
             <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
             <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -9" result="goo" />
             <feBlend in="SourceGraphic" in2="goo" result="main" />

@@ -2,7 +2,7 @@ import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Grid from "@mui/material/Grid"
 import { Root, Bg, Gradient, Main, About } from "./component"
-import HIWs from '../HIWs'
+import HIWs from '../HIWs2'
 
 
 
