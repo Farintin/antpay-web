@@ -6,7 +6,7 @@ import MuiButton from '../../components/MuiButton'
 
 const Root = styled(Box)(() => ({
   background: `linear-gradient(90deg, rgb(0 0 0 / 100%) -9%, rgb(255 255 255 / 0%) 60%),
-                url(image/lady-staring-at-phone.png)`,
+                url(/image/lady-staring-at-phone2.png)`,
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
   backgroundPosition: 'right center',
@@ -49,11 +49,11 @@ const Root = styled(Box)(() => ({
 }))
 
 const Button = styled(MuiButton)(() => ({
-  padding: '20px 34px',
-  '& .label': {
+  // padding: '24px 24px',
+  /* '& .label': {
     fontSize: 16,
     fontWeight: 600
-  }
+  } */
 }))
 
 

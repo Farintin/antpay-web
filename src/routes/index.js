@@ -1,8 +1,11 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 // @layouts
-import LayoutV1 from '../layoutV1'
-import LayoutV2 from '../layoutV2'
+import Layout from '../layout'
+// import Version1 from '../Version1'
+// import Version2 from '../Version2'
+import Version3 from '../Version3'
+import ComingSoon from '../pages/ComingSoon'
 
 // @Pages Auth
 
@@ -15,8 +18,10 @@ export default function () {
   return (
     <AnimatePresence>
       <Routes location={location} key={location.pathname}>
-        <Route path="v1" element={<LayoutV1 title="" />} />
-        <Route path="v2" element={<LayoutV2 title="" />} />
+        <Route path="" element={<Layout title="" />}>
+          <Route path="/" element={<Version3 title="" />} />
+          <Route path="/download" element={<ComingSoon title="" />} />
+        </Route>
       </Routes>
     </AnimatePresence>
   )

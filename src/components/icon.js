@@ -2,6 +2,65 @@ let defaultWidth = 40
 
 
 
+const AppStoreIcon = (props) => {
+  const width = props.width ? props.width : 18
+  const style = props.style ? props.style : {}
+  const color = props.color ? props.color : '#fff'
+  const className = props.className ? props.className : ''
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 29"
+      width={width}
+      fill={color}
+      stroke="none"
+      strokeWidth="0px"
+      style={style}
+      className={`icon ${className}`}
+    >
+      <path d="M1.72665 10.5605C-0.702026 14.7754 0.843969 21.1683 
+        3.52857 25.0699C4.87087 27.0076 6.22883 28.7259 8.08298 
+        28.7259H8.18744C8.91378 28.6749 9.6233 28.4833 10.2766 
+        28.1618C11.057 27.7777 11.9139 27.5741 12.7836 
+        27.5664C13.6126 27.5738 14.429 27.7703 15.1705 
+        28.141C15.8799 28.4914 16.6617 28.6703 17.453 
+        28.6632C19.5421 28.6267 20.8322 26.7464 21.9656 
+        25.0907C22.8154 23.8411 23.482 22.4762 23.9451 
+        21.0377C23.9632 20.9828 23.9604 20.9232 23.9373 
+        20.8702C23.9142 20.8172 23.8723 20.7746 23.8197 
+        20.7505C22.74 20.2921 21.8183 19.5274 21.1686 
+        18.5509C20.5188 17.5744 20.1694 16.4289 20.1637 
+        15.2559C20.1778 14.2191 20.4526 13.2025 20.9629 
+        12.2998C21.4731 11.3971 22.2023 10.6373 23.0833 
+        10.0904C23.1096 10.0735 23.1323 10.0515 23.15 
+        10.0257C23.1677 9.99991 23.1801 9.97083 23.1864 
+        9.94019C23.1928 9.90954 23.1929 9.87793 23.1869 
+        9.84723C23.1808 9.81653 23.1687 9.78734 23.1512 
+        9.76138C22.5476 8.8953 21.7505 8.18188 20.8229 
+        7.67778C19.8954 7.17368 18.8632 6.89279 17.8081 
+        6.85742C17.6567 6.85742 17.5 6.85742 17.3433 
+        6.85742C16.1832 6.92446 15.046 7.2079 13.9901 
+        7.69309C13.4823 7.93631 12.9395 8.09844 12.3815 
+        8.17361C11.8048 8.1046 11.2436 7.94046 10.7206 
+        7.68787C9.81395 7.24614 8.83243 6.97861 7.82706 
+        6.89921H7.75393C6.51921 6.93954 5.31577 7.2977 
+        4.25993 7.93907C3.20409 8.58045 2.33155 9.48334 
+        1.72665 10.5605Z" />
+      <path d="M17.8652 4.78148e-05C16.1907 0.15757 14.6407 0.952202 
+          13.5354 2.2198C12.6318 3.26439 11.7491 5.01408 11.9685 
+          6.77422C11.9755 6.82755 12.0005 6.87686 12.0395 
+          6.91394C12.0785 6.95101 12.129 6.97359 12.1826 
+          6.97791H12.4855C13.2769 6.94189 14.0513 6.73679 14.7567 
+          6.37643C15.4621 6.01606 16.0822 5.50879 16.5751 
+          4.88873C17.6848 3.58502 18.2331 1.89495 18.1002 
+          0.188074C18.0892 0.134187 18.0597 0.0858589 18.0167 
+          0.0515031C17.9738 0.0171472 17.9202 -0.00106105 17.8652 
+          4.78148e-05Z" />
+    </svg>
+  )
+}
+
 const FacebookIcon = (props) => {
   const width = props.width ? props.width : defaultWidth*.6
   const style = props.style ? props.style : {}
@@ -43,13 +102,6 @@ const InstagramIcon = (props) => {
       style={style}
       className={`icon ${props.className}`}
     >
-      <path
-        d="M32 10H32"
-        stroke="white"
-        strokeWidth="4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
       <path d="M31.1854 2.03125H11.5566C6.13625 2.03125 1.74219 
           6.42531 1.74219 11.8457V31.4745C1.74219 36.8948 
           6.13625 41.2889 11.5566 41.2889H31.1854C36.6058 
@@ -77,6 +129,47 @@ const InstagramIcon = (props) => {
           strokeLinecap="round" 
           strokeLinejoin="round"
       />
+      <path
+        className="dot"
+        d="M32 10H32"
+        stroke="white"
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+const PlayStoreIcon = (props) => {
+  const width = props.width ? props.width : 18
+  const style = props.style ? props.style : {}
+  const color = props.color ? props.color : '#fff'
+  const className = props.className ? props.className : ''
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 25 26"
+      width={width}
+      fill={color}
+      stroke="none"
+      strokeWidth="0px"
+      style={style}
+      className={`icon ${className}`}
+    >
+      <path d="M17.8895 7.7767L3.96641 0.322655C3.24287 -0.0646793 
+        2.45833 -0.0844743 1.7793 0.163094L13.6412 
+        12.025L17.8895 7.7767Z" />
+      <path d="M23.0822 10.5563L19.0716 8.40918L14.5488 
+          12.9319L19.0716 17.4548L23.0821 15.3076C24.9793 14.2919 
+          24.9793 11.5719 23.0822 10.5563Z" />
+      <path d="M0.693556 0.891113C0.268146 1.35867 0 1.98287 0 
+          2.69805V23.1656C0 23.8808 0.268146 24.5051 0.693503 
+          24.9726L12.7343 12.9318L0.693556 0.891113Z" />
+          <path d="M1.7793 25.7013C2.45828 25.9488 3.24287 25.9291 
+          3.96641 25.5417L17.8895 18.0877L13.6412 13.8394L1.7793 
+          25.7013Z" />
     </svg>
   )
 }
@@ -140,7 +233,7 @@ const AppsIcon = (props) => {
       width={width}
       fill={color}
       stroke="none"
-      stroke-width="0px"
+      strokeWidth="0px"
       style={style}
       className={`icon ${className}`}
     >
@@ -217,7 +310,7 @@ const PuzzleIcon = (props) => {
       width={width}
       fill={color}
       stroke="none"
-      stroke-width="0px"
+      strokeWidth="0px"
       style={style}
       className={`icon ${className}`}
     >
@@ -245,52 +338,29 @@ const SendIcon = (props) => {
       width={width}
       fill={color}
       stroke="none"
-      stroke-width="0px"
+      strokeWidth="0px"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       style={style}
       className={`icon ${className}`}
     >
       <path d="M502.237757 1024 644.426501 829.679301 502.237757 788.716444 
           502.237757 1024 502.237757 1024ZM0 566.713817 403.967637 689.088066 
           901.485385 266.66003 515.916344 721.68034 947.825442 855.099648 
-          1170.285714 0 0 566.713817 0 566.713817Z"/>
+          1170.285714 0 0 566.713817 0 566.713817Z"
+          strokeLinecap="round"
+          strokeLinejoin="round"/>
     </svg>
   )
 }
-
-
-/* 
-const FileIcon = (props) => {
-  const width = props.width ? props.width : 24
-  const style = props.style ? props.style : {}
-  const color = props.color ? props.color : '#000'
-
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      fill="none" 
-      stroke={color} 
-      strokeWidth="2px" 
-      strokeLinecap="round" 
-      strokeLinejoin="round"
-      style={style}
-      className={`icon icon-tabler icon-tabler-file ${props.className}`}
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-      <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 
-        5v11a2 2 0 0 1 -2 2z" />
-    </svg>
-  )
-}
-*/
 
 
 
 export { 
+  AppStoreIcon,
   FacebookIcon, 
   InstagramIcon, 
+  PlayStoreIcon,
   TwitterIcon, 
   
   AppsIcon,

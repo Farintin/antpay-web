@@ -12,7 +12,7 @@ const Root = styled(Box)(() => ({
   top: '48%',
   transform: 'translateY(-50%)',
   marginRight: '5.4%',
-  zIndex: 1,
+  zIndex: 2,
   '& > .wrapper': {
     filter: 'url(#navGoo)',
     position: 'relative',
@@ -42,12 +42,13 @@ const Button = styled(Link)(() => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    transition: '.1s linear',
+    transition: '.4s ease-in-out',
     '& .icon': {
       width: '50%',
       strokeWidth: 2,
       stroke: '#fff',
-      fill: '#fff'
+      fill: '#fff',
+      transition: '.4s ease-in-out'
     }
   },
   '& .node': {
@@ -80,9 +81,6 @@ const Button = styled(Link)(() => ({
     }
   },
   '&:hover': {
-    // margin: '19px 0',
-    // width: buttonWidth*1,
-    // height: buttonWidth*1,
     '& > .wrapper': {
       width: '60%',
       height: '60%',
@@ -94,7 +92,7 @@ const Button = styled(Link)(() => ({
     width: 57,
     height: 57,
     backgroundColor: '#fafafa',
-    // transition: '.4s ease-in-out',
+    transition: '.4s ease-in-out',
     '& > .wrapper': {
       width: '78%',
       height: '78%',

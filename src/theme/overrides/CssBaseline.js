@@ -17,11 +17,12 @@ export default function CssBaseline() {
         },
         body: {
           width: '100%',
-          height: '100%'
+          height: '100%',
         },
         '#root': {
           width: '100%',
-          height: '100%'
+          height: '100%',
+          overflowX: 'hidden'
         },
         input: {
           '&[type=number]': {
@@ -35,6 +36,9 @@ export default function CssBaseline() {
               WebkitAppearance: 'none'
             }
           }
+        },
+        '.MuiContainer-root': {
+          // backgroundColor: 'rgba(255,0,0,.3)'
         }
       }
     }

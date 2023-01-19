@@ -1,3 +1,43 @@
+/****************  Bungee ********************/
+@font-face {
+	font-family: "Bungee";
+    src: url(../fonts/Bungee-Regular.ttf);
+    font-weight: 400;
+}
+
+
+
+/****************  Ceviche_One ********************/
+@font-face {
+	font-family: "CevicheOne";
+    src: url(../fonts/Ceviche_One/CevicheOne-Regular.ttf);
+    font-weight: 400;
+}
+
+
+
+/****************  Grandstander ********************/
+@font-face {
+	font-family: "Grandstander";
+    src: url(../fonts/Grandstander/Grandstander-VariableFont_wght.ttf);
+}
+@font-face {
+	font-family: "Grandstander";
+    src: url(../fonts/Grandstander/Grandstander-Italic-VariableFont_wght.ttf);
+    font-style: italic;
+}
+
+
+
+/****************  Mrs_Sheppards ********************/
+@font-face {
+	font-family: "MrsSheppards";
+    src: url(../fonts/Mrs_Sheppards/MrsSheppards-Regular.ttf);
+    font-weight: 400;
+}
+
+
+
 /****************  Poppins ********************/
 @font-face {
 	font-family: "Poppins";
@@ -97,4 +137,13 @@
     src: url(../fonts/Poppins/Poppins-BlackItalic.ttf);
     font-weight: 900;
     font-style: italic;
+}
+
+
+
+/****************  RubikVinyl ********************/
+@font-face {
+	font-family: "RubikVinyl";
+    src: url(../fonts/RubikVinyl-Regular.ttf);
+    font-weight: 400;
 }
