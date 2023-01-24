@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box"
-import { styled } from "@mui/material/styles"
+import { alpha, styled } from "@mui/material/styles"
 import MuiButton from '../../components/MuiButton'
 
 
@@ -17,6 +17,7 @@ const Root = styled(Box)(() => ({
     display: 'flex',
     alignItems: 'center',
     padding: '24px 0px 48px',
+    backgroundColor: alpha('#000', .09),
     '& .content': {
       padding: 32,
       '& > *': {
@@ -24,7 +25,7 @@ const Root = styled(Box)(() => ({
         display: 'inline-block'
       },
       '& .text': {
-        color: '#fff',
+        color: alpha('#fff', .87),
         lineHeight: '75%'
       },
       '& .heading': {
@@ -35,9 +36,11 @@ const Root = styled(Box)(() => ({
       '& .article': {
         display: 'flex',
         alignItems: 'center',
+        flexWrap: 'wrap',
         '& .text': {
-          fontSize: 18,
-          fontWeight: 400
+          fontSize: 22.5,
+          fontWeight: 500,
+          padding: '6px 0px'
         },
         '& .dot': {
           width: 4,

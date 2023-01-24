@@ -209,7 +209,7 @@ export default function () {
                         <Typography 
                           className="text"
                         >
-                          nigerian office
+                          nigeria office
                         </Typography>
                       </Box>
                       <Box className="article">

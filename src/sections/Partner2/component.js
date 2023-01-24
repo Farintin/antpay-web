@@ -8,7 +8,12 @@ const Root = styled(Box)(() => ({
   backgroundColor: '#fff',
   position: 'relative',
   padding: '32px 0',
+  width: '100%',
+  zIndex: 1,
   '& .wrapper': {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center'
   },
   '& .curve': {
     position: 'absolute',
@@ -23,6 +28,16 @@ const Root = styled(Box)(() => ({
       top: '99%',
       background: 'radial-gradient(130% 195% at bottom, transparent 50%, #fff 50.4%)',
     }
+  },
+  '& .heading': {
+    position: 'absolute',
+    bottom: '120%',
+    left: '50%',
+    transform: 'translate(-50%)',
+    color: '#fff',
+    fontSize: 42,
+    fontWeight: 700,
+    width: 'max-content'
   }
 }))
 

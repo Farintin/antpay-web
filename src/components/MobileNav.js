@@ -157,9 +157,9 @@ export default function () {
     }
     function scroll() {
       if (button.current) {
-        console.log('scroll');
+        // console.log('scroll');
         const height = 100
-        console.log(rootDom.scrollY);
+        // console.log(rootDom.scrollY);
         if (rootDom.scrollY > height) {
           button.current.classList.add('fixed')
         } else {
@@ -196,11 +196,7 @@ export default function () {
     }
   }, [click, buttonClick, menuClick])
 
-
-
   // useEffect(() => {}, [visible])
-
-
 
   return (
     <Root>

@@ -67,7 +67,7 @@ const Features = styled(Grid)(({ theme }) => ({
     flexDirection: 'column',
     margin: '2.5%',
     position: 'relative',
-    height: 300,
+    height: 285,
     '& .card': {
       position: 'absolute',
       width: '100%',
@@ -76,16 +76,16 @@ const Features = styled(Grid)(({ theme }) => ({
       '&:hover': {
         scale: '115.5%',
         background: 'var(--color)',
-        padding: 8,
+        padding: 7.5,
         borderRadius: 21,
         transition: '.2s ease-out',
         '& .wrapper': {
           boxShadow: '0px 24px 24px -12px hsl(0deg 0% 0% / 0%)',
           border: '4px solid #fff',
           borderRadius: 15,
-          padding: 10,
+          padding: 6,
           paddingRight: 6,
-          paddingTop: 8,
+          paddingTop: 4,
           '& > .main': {
             background: '#0000',
             padding: 0,
@@ -179,7 +179,7 @@ const Features = styled(Grid)(({ theme }) => ({
             color: '#fff',
             '&.article': {
               transition: '.4s ease-out',
-              fontSize: 13,
+              fontSize: 11.7,
               fontWeight: 600,
               lineHeight: '150%',
               letterSpacing: 0,

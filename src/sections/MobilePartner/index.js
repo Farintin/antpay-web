@@ -16,7 +16,7 @@ export default function () {
         <Slide>
           <img
             className="image"
-            src="/image/logo/partners/visa-violet.png"
+            src="/image/logo/partners/visa.png"
             alt="visa"
             style={{
               width: 150
@@ -24,7 +24,7 @@ export default function () {
           />
           <img
             className="image"
-            src="/image/logo/partners/stripe-violet_w300.png"
+            src="/image/logo/partners/stripe_w200.png"
             alt="stripe"
             style={{
               width: 150
@@ -32,7 +32,7 @@ export default function () {
           />
           <img
             className="image"
-            src="/image/logo/partners/justblack-purple_w200.png"
+            src="/image/logo/partners/justblack2_200x200.png"
             alt="justblack."
             style={{
               width: 90

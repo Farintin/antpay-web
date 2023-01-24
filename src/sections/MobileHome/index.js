@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography"
 import { Root, Bg, Main } from "./component"
 import MuiButton from '../../components/MuiButton'
 import { AppStoreIcon, PlayStoreIcon } from "../../components/icon"
-import { LogoBrandVoilet } from "../../components/Logo"
+// import { LogoBrandVoilet } from "../../components/Logo"
 
 
 
@@ -15,8 +15,7 @@ export default function () {
       </Bg>
 
       <Main>
-        <LogoBrandVoilet href="" sx={{ m: '30px!important' }} />
-
+        {/* <LogoBrandVoilet href="" sx={{ m: '30px!important' }} /> */}
         <Box className="content">
 
           <Box className="text heading">

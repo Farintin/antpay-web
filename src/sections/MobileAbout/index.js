@@ -41,7 +41,7 @@ export default function () {
                     then emojis, and even GIFs. Now, stickers are dominating the 
                     world of digital communication. Stickers express emotions more, 
                     even without saying a word (text). We adopted this pattern of 
-                    communication and developed a new banking reality called 
+                    communication and developed a new payment reality called 
                     financial messaging, where users can chat, connect and transact 
                     with stickers. In this space, stickers will become the 
                     transcripts of transactions. In split seconds, P2P cross-border 

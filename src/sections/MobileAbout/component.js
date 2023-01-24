@@ -33,7 +33,7 @@ const Gradient = styled(Box)(() => ({
   height: '100%',
   position: 'absolute',
   zIndex: -1,
-  background: `linear-gradient(360deg, #22003D -24%, #ADFFE1 100%)`,
+  background: `linear-gradient(360deg, #22003D -45%, #ADFFE1 30%)`,
   opacity: 1
 }))
 

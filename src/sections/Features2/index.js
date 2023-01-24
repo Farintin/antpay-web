@@ -270,9 +270,9 @@ export default function () {
                     <Typography className="text main">palm payment</Typography>
                   </Box>
                   <Typography className="text article">
-                    Register your palm and connect it to your
-                    wallet to make a payment (POS) without using 
-                    your credit card. You only need your palm.
+                    Register your palm and link it to your
+                    wallet to make payment at point of sale without using 
+                    your credit card. This mode of payment requires only your palm.
                   </Typography>
 
                 </Box>

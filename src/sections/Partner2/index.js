@@ -2,6 +2,7 @@
 import { Box } from "@mui/material"
 import Container from "@mui/material/Container"
 import Grid from "@mui/material/Grid"
+import Typography from "@mui/material/Typography"
 import { Root, Partners } from "./component"
 
 
@@ -12,6 +13,7 @@ export default function () {
       <Box className="curve top" />
       <Box className="curve bottom" />
 
+      <Typography className="heading">Our Partners</Typography>
       <Container className="wrapper">
 
         <Partners container spacing={2}>
@@ -19,28 +21,28 @@ export default function () {
           <Grid item xs={4}>
             <img
               className="image"
-              src="/image/logo/partners/visa-violet.png"
+              src="/image/logo/partners/visa.png"
               alt="visa"
               style={{
-                width: '60%'
+                width: '58.5%'
               }}
             />
           </Grid>
           <Grid item xs={4}>
             <img
               className="image"
-              src="/image/logo/partners/stripe-violet_w300.png"
+              src="/image/logo/partners/stripe_w200.png"
               alt="stripe"
             />
           </Grid>
           <Grid item xs={4}>
             <img
               className="image"
-              src="/image/logo/partners/justblack-purple_w200.png"
+              src="/image/logo/partners/justblack2_200x200.png"
               alt="justblack."
               style={{
-                width: '30%',
-                marginRight: '30%'
+                width: '31.5%',
+                marginRight: '27%'
               }}
             />
           </Grid>

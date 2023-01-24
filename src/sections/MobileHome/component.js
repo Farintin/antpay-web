@@ -33,7 +33,7 @@ const Main = styled(Container)(({ theme }) => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between',
+  justifyContent: 'flex-end',
   alignItems: 'center',
   '& .content': {
     width: '100%',

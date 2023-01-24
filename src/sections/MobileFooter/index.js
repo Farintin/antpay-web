@@ -63,7 +63,7 @@ export default function () {
             </Box>
             <Box className="info">
               <Box className="heading">
-                <Typography className="text">nigerian office</Typography>
+                <Typography className="text">nigeria office</Typography>
               </Box>
               <Box className="article">
                 <Typography className="text address">
