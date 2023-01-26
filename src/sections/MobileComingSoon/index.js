@@ -14,7 +14,7 @@ export default function () {
         <Box className="content">
 
           <LogoAquaGradientBrandnameWhiteDotVioletLG
-            href=""
+            href="/"
             style={{
               width: 270
             }}

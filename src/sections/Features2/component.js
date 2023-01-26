@@ -350,6 +350,13 @@ const Features = styled(Grid)(({ theme }) => ({
               transform: 'skew(-3deg, -4.5deg)',
             }
           }
+        },
+        '&:hover': {
+          '& .wrapper': {
+            '& .main': {
+              border: '6px solid transparent'
+            }
+          }
         }
       }
     },
@@ -457,5 +464,7 @@ const Download = styled(Box)(() => ({
     letterSpacing: -6
   }
 }))
+
+
 
 export { Root, Features, Download, Button }
