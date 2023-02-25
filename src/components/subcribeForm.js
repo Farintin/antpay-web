@@ -61,7 +61,9 @@ export default function ({ style, ...others }) {
         onChange={(e) => {changeHandler(e)}}
         onBlur={blurHandler}
       />
-      <Button className="submit">
+      <Button 
+        className="submit"
+      >
         Subscribe
       </Button>
     </Root>
