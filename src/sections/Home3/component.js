@@ -43,7 +43,7 @@ const Main = styled(MuiContainer)(({ theme }) => ({
     '& .heading': {
       display: 'flex',
       alignItems: 'center',
-      '& > *:first-child': {
+      '& > *:first-of-type': {
         marginLeft: '0px!important'
       },
       '& > *:last-child': {

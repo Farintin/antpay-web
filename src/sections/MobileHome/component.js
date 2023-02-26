@@ -53,7 +53,7 @@ const Main = styled(Container)(({ theme }) => ({
     '& .heading': {
       display: 'flex',
       alignItems: 'center',
-      '& > *:first-child': {
+      '& > *:first-of-type': {
         marginLeft: '0px!important'
       },
       '& > *:last-child': {

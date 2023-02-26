@@ -360,7 +360,7 @@ const Features = styled(Grid)(({ theme }) => ({
         }
       }
     },
-    '&:nth-child(even)': {
+    '&:nth-of-type(even)': {
       '& .card': {
         top: '18%'
       }
