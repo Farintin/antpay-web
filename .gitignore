@@ -11,6 +11,10 @@
 # production
 /build
 build.zip
+.zip
+.7z
+#.eslintrc.json
+#.prettierrc
 
 # misc
 .DS_Store

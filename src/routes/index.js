@@ -1,28 +1,25 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
-// @layouts
-import Layout from '../layout'
-// import Version1 from '../Version1'
-// import Version2 from '../Version2'
-import Version3 from '../Version3'
-import ComingSoon from '../pages/ComingSoon'
+import WebsiteRoute from "../Apps/Website"
+import WebAppRoute from '../Apps/WebApp'
 
-// @Pages Auth
 
-// @Pages PUBLIC
 
-// ----------------------------------------------------------------------
+const routes = {
+  web: {
+    name: 'webApp',
+    comp: <WebAppRoute />
+  }
+}
+
 export default function () {
-  const location = useLocation()
+  let subdomain = window.location.host.split('.')[0]
+  let route = routes[subdomain]
+  
+  let render = <WebsiteRoute />
+  if (route) {
+    render = route.comp
+  }
 
   return (
-    <AnimatePresence>
-      <Routes location={location} key={location.pathname}>
-        <Route path="" element={<Layout title="" />}>
-          <Route path="/" element={<Version3 title="" />} />
-          <Route path="/download" element={<ComingSoon title="" />} />
-        </Route>
-      </Routes>
-    </AnimatePresence>
+    render
   )
 }

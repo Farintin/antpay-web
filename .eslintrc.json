@@ -61,6 +61,10 @@
         "func-names": 0,
         "react/no-unknown-property": 0,
         "react/self-closing-comp": 0,
-        "react/jsx-boolean-value": 0
+        "react/jsx-boolean-value": 0,
+        "eqeqeq": 0,
+        "no-lonely-if": 0,
+        "jsx-a11y/label-has-associated-control": 0,
+        "jsx-a11y/mouse-events-have-key-events": 0
     }
 }
