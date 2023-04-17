@@ -12,7 +12,7 @@ const Root = styled(Box)(() => ({
 
 const Button = styled(Link)(({ theme }) => ({
   position: 'absolute',
-  left: 24,
+  left: 16+9,
   top: 72,
   display: 'flex',
   flexDirection: 'column',
@@ -31,21 +31,25 @@ const Button = styled(Link)(({ theme }) => ({
     }
   },
   '&.fixed': {
-    '--w': '69px',
+    '--w': '66px',
     position: 'fixed',
     width: 'var(--w)',
     height: 'calc(var(--w) * .96)',
     left: 0,
     top: 0,
-    padding: '15px 0 0 15px',
-    borderRadius: '0 0px 50% 0px',
+    padding: '21px 0 0 19.5px',
+    borderRadius: '4.8px 22.5px 24px 22.5px',
     backgroundColor: theme.palette.primary.main,
+    margin: 4.5,
     alignItems: 'flex-start',
     '& .line': {
-      width: '60%',
+      width: 30,
       backgroundColor: '#fff',
       height: 4,
     }
+  },
+  [theme.breakpoints.up("sm")]: {
+    left: 24+9
   }
 }))
 

@@ -23,13 +23,11 @@ export default function () {
               chat <br/>connect <br/>pay
             </Typography>
           </Box>
-
           <Typography className="text article">
             Ant Pay is a social payment platform 
             where users seamlessly transact through 
             messaging by sending stickers to each other.
           </Typography>
-
           <MuiButton to="/download" sx={{ mt: '18px!important' }}>
             <Typography className="label">
               download
@@ -37,7 +35,7 @@ export default function () {
             <PlayStoreIcon style={{ marginRight: 0 }} />
             <AppStoreIcon style={{ marginTop: -4, marginLeft: 5.4 }} />
           </MuiButton>
-
+          
         </Box>
 
       </Main>
