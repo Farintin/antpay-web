@@ -10,7 +10,7 @@ import { LogoBrandVoilet } from "../../components/Logo"
 export default function () {
   return (
     <Root id="home-section" className="page-section">
-      <Bg src="/image/home-bg_1500x1000.jpg" />
+      <Bg src="/image/home-bg-bottom-fade.png" />
 
       <Main>
 
@@ -26,7 +26,7 @@ export default function () {
             <Typography className="text">pay</Typography>
           </Box>
 
-          <Typography className="text" sx={{ pr: '10%'}}>
+          <Typography className="text article" sx={{ pr: '10%'}}>
             Ant Pay is a social payment platform where users seamlessly 
             transact through messaging by sending stickers to each other.
           </Typography>

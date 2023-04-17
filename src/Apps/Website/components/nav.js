@@ -196,7 +196,7 @@ export default function () {
       
       </Box>
             
-      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{display: 'none'}}>
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{width: 0, height: 0}}>
         <defs>
           <filter id="navGoo">
             <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />

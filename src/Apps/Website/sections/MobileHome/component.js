@@ -22,10 +22,18 @@ const Bg = styled(Box)(() => ({
   '& .wrapper': {
     width: '100%',
     height: '100%',
-    backgroundImage: `url(/image/home-bg_1500x1000.jpg)`,
-    backgroundPosition: '100% -10%',
+    backgroundImage: `url(/image/home-bg_w3890.jpg)`,
+    backgroundPosition: '93% -6%',// '100% -10%',
     backgroundSize: 'auto 60%',
     backgroundRepeat: 'no-repeat',
+    maskImage: `linear-gradient(to bottom, rgba(0,0,0,1) 51%, rgba(0,0,0,0) 55.5%)`
+  },
+  '@media (min-width:480px)': {
+    '& .wrapper': {
+      backgroundPosition: '93% 0%',
+      backgroundSize: 'auto 73%',
+      maskImage: `linear-gradient(to bottom, rgba(0,0,0,1) 51%, rgba(0,0,0,0) 75%)`
+    }
   }
 }))
 
@@ -41,14 +49,17 @@ const Main = styled(Container)(({ theme }) => ({
     marginBottom: '5%',
     padding: '0 10px',
     '& > *': {
-      margin: '6px 0',
+      margin: '9px 0',
       display: 'inline-block'
     },
     '& .text': {
       color: theme.palette.primary.main,
       fontSize: 12,
       fontWeight: 600,
-      lineHeight: '135%'
+      lineHeight: '135%',
+      '&.article': {
+        paddingRight: '15%'
+      }
     },
     '& .heading': {
       display: 'flex',
@@ -63,8 +74,64 @@ const Main = styled(Container)(({ theme }) => ({
         textTransform: 'capitalize',
         fontSize: 31.5,
         fontWeight: 700,
-        lineHeight: '117%',
+        lineHeight: '120%',
         margin: '0 4px'
+      }
+    }
+  },
+
+  '@media (min-width: 300px)': {
+    '& .content': {
+      '& .text': {
+        '&.article': {
+          paddingRight: '21%'
+        }
+      }
+    }
+  },
+
+  '@media (min-width: 390px)': {
+    '& .content': {
+      '& > *': {
+        margin: '12px 0'
+      },
+      '& .text': {
+        '&.article': {
+          paddingRight: '24%'
+        }
+      },
+      '& .heading': {
+        '& .text': {
+          fontSize: 42
+        }
+      }
+    }
+  },
+
+  '@media (min-width: 480px)': {
+    '& .content': {
+      '& .text': {
+        '&.article': {
+          paddingRight: '54%'
+        }
+      }
+    }
+  },
+
+  '@media (min-width:600px)': {
+    '& .content': {
+      '& > *': {
+        margin: '18px 0'
+      },
+      '& .text': {
+        '&.article': {
+          fontSize: 18
+        }
+      },
+      '& .heading': {
+        '& .text': {
+          fontSize: 54
+        }
       }
     }
   }

@@ -18,13 +18,13 @@ export default function () {
         {/* <LogoBrandVoilet href="" sx={{ m: '30px!important' }} /> */}
         <Box className="content">
 
-          <Box className="text heading">
+          <Box className="heading">
             <Typography className="text">
               chat <br/>connect <br/>pay
             </Typography>
           </Box>
 
-          <Typography className="text" sx={{ pr: '5%'}}>
+          <Typography className="text article">
             Ant Pay is a social payment platform 
             where users seamlessly transact through 
             messaging by sending stickers to each other.

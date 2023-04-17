@@ -158,7 +158,7 @@ export default function ({ ...props }) {
       errorDom.current.classList.remove('hide')
     } else  {
       const formData = {email: value}
-      axios.post('https://www.antpay.cool/newsletter_subscribe/', formData)// 'http://www.antpay.local/newsletter_subscribe/' "http://localhost:5000/antpay/subscribe"
+      axios.post('https://www.antpay.cool/newsletter_subscribe/', formData) // 'http://www.antpay.local/newsletter_subscribe/' "http://localhost:5000/antpay/subscribe"
         .then(response => {
           console.log('res:', response)
           dom.current.classList.add('successful')
@@ -166,7 +166,7 @@ export default function ({ ...props }) {
         .catch(error => {
           console.error('error:', error)
         })
-      }
+    }
   }
 
   useEffect(() => {

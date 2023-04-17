@@ -307,7 +307,7 @@ export default function () {
 
 
         
-      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{ display: 'none' }}>
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{ width: 0, height: 0 }}>
           <defs>
               <filter id="trapeziumGoo">
               <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
@@ -316,7 +316,7 @@ export default function () {
               </filter>
           </defs>
       </svg>
-      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{ display: 'none' }}>
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{ width: 0, height: 0 }}>
           <defs>
               <filter id="jarGoo">
               <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
@@ -325,7 +325,7 @@ export default function () {
               </filter>
           </defs>
       </svg>
-      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{ display: 'none'}}>
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{ width: 0, height: 0}}>
           <defs>
               <filter id="featuresCardTitleGoo">
               <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />

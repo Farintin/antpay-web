@@ -26,7 +26,9 @@ export default function CssBaseline() {
         },
         html: {
           width: '100%',
-          // WebkitOverflowScrolling: 'touch'
+          // WebkitOverflowScrolling: 'touch',
+          scrollbarColor: '#8621d1 #84e3c5',// '#750dc3 #66ffc7',
+          scrollbarWidth: 'thin'
         },
         body: {
           width: '100%',
