@@ -35,7 +35,7 @@ export default function () {
             <PlayStoreIcon style={{ marginRight: 0 }} />
             <AppStoreIcon style={{ marginTop: -4, marginLeft: 5.4 }} />
           </MuiButton>
-          
+
         </Box>
 
       </Main>

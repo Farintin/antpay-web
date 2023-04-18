@@ -278,7 +278,7 @@ export default function () {
 
         </Features>
         
-        <Download sx={{ mt: 8, mb: 6 }}>
+        <Download sx={{ mt: 8, mb: 4 }}>
 
           {/* <img src="/image/right-arrow.png" alt="arrow-right" className="image arrow right" /> */}
           <Typography className="text">

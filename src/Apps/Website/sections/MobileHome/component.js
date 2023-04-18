@@ -46,15 +46,15 @@ const Main = styled(Container)(({ theme }) => ({
   '& .content': {
     width: '100%',
     marginTop: '0%',
-    marginBottom: '5%',
+    marginBottom: '0%',
     padding: '0 10px',
     '& > *': {
-      margin: '9px 0',
+      margin: '12px 0',
       display: 'inline-block'
     },
     '& .text': {
       color: theme.palette.primary.main,
-      fontSize: 12,
+      fontSize: 13.8,
       fontWeight: 600,
       lineHeight: '135%',
       '&.article': {

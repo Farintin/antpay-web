@@ -31,21 +31,25 @@ const Button = styled(Link)(({ theme }) => ({
     }
   },
   '&.fixed': {
-    '--w': '66px',
+    '--w': '69px',
     position: 'fixed',
     width: 'var(--w)',
-    height: 'calc(var(--w) * .96)',
+    height: 'var(--w)',
     left: 0,
     top: 0,
-    padding: '21px 0 0 19.5px',
-    borderRadius: '4.8px 22.5px 24px 22.5px',
+    padding: '22.5px 0 0 21px',
+    borderRadius: '0 0% 45% 0%',
+    // padding: '21px 0 0 20.4px',
+    // borderRadius: '8.7px 45% 45% 45%',
     backgroundColor: theme.palette.primary.main,
-    margin: 4.5,
+    // margin: '10.5px 12px',
     alignItems: 'flex-start',
+    boxShadow: `0px 8px 8px 0px ${alpha('#000', .15)}, 0px 12px 12px 0px ${alpha('#000', .12)}`,
+    // boxShadow: `0px 8px 8px -2px ${alpha('#000', .3)}, 0px 12px 12px -4px ${alpha('#000', .15)}`,
     '& .line': {
-      width: 30,
+      width: 26,
       backgroundColor: '#fff',
-      height: 4,
+      height: 4
     }
   },
   [theme.breakpoints.up("sm")]: {
@@ -60,22 +64,35 @@ const Menu = styled(Box)(({ theme }) => ({
   width: '78vw',
   // minWidth: 270,
   height: '100vh',
-  backgroundColor: alpha(theme.palette.primary.main, .87),
+  backgroundColor: alpha(theme.palette.primary.main, .93),
   borderRadius: '0 42px 42px 0',
   zIndex: 2,
+  transition: '.4s ease-out',
   '& > .wrapper': {
     width: '100%',
     height: '100%',
-    padding: '72px 42px 72px 36px',
+    padding: '72px 24px 72px 36px',
     '& .header': {
       display: 'flex',
       justifyContent: 'space-between',
-      alignItems: 'center'
+      alignItems: 'center',
+      '& > *': {
+        transition: '.1s ease-out .5s'
+      },
+      '& .logo': {
+        width: '75%',
+        marginLeft: -6,
+        display: 'flex',
+        transition: '.1s ease-out .5s, opacity .1s ease-out .54s'
+      }
     },
     '& .links': {
       display: 'flex',
       flexDirection: 'column',
       marginTop: 32,
+      position: 'relative',
+      transformOrigin: '0% 50%',
+      transition: '.1s ease-out .6s',
       '& .link': {
         marginTop: 32,
         '& .label': {
@@ -83,13 +100,26 @@ const Menu = styled(Box)(({ theme }) => ({
           fontSize: 19.5,
           textTransform: 'uppercase',
           fontWeight: 600,
-          letterSpacing: 1
+          letterSpacing: 1,
         }
       }
     }
   },
   '&.hide': {
-    display: 'none'
+    width: 0,
+    left: '-78vw',
+    '& .header': {
+      '& > *': {
+        scale: 0,
+        // opacity: 0
+      },
+      '& .logo': {
+        opacity: 0
+      }
+    },
+    '& .links': {
+      transform: 'scaleX(0%)'
+    }
   }
 }))
 
@@ -216,11 +246,7 @@ export default function () {
             <Box className='header'>
               <LogoAquaGradientBrandnameWhiteDotAqua 
                 href=""
-                style={{ 
-                  width: '75%',
-                  marginLeft: -6,
-                  display: 'flex'
-                }}
+                className="logo"
               />
 
               <CloseButton onClick={clickHandler}>

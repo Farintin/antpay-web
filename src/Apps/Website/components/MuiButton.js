@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom"
 // import Link from "@mui/material/Link"
-import styled from "@mui/material/styles/styled"
+import { alpha, styled } from '@mui/material/styles'
 
 
 
@@ -14,6 +14,7 @@ const StyledButton = styled(NavLink)(({ theme }) => ({
     flexDirection: 'row!important',
     alignItems: 'center!important',
     justifyContent: 'center!important',
+    boxShadow: `0px 5px 5px 0px ${alpha('#000', .33)}`,
     '& > *': {
         margin: '0 9px'
     },
@@ -39,16 +40,16 @@ const StyledButton = styled(NavLink)(({ theme }) => ({
         }
     },
     [theme.breakpoints.down("md")]: {
-        padding: '20px 12px',
+        padding: '24px 19.5px',
         borderRadius: 15,
         '& > *': {
             margin: '0 6px'
         },
         '& .label': {
-            fontSize: 12
+            fontSize: 16.5
         },
         '& svg.icon': {
-            width: 16
+            width: 21.3
         }
     }
 }))

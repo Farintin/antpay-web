@@ -45,7 +45,7 @@ const Features = styled(Grid)(() => ({
   '& .MuiGrid-item': {
     display: 'flex',
     flexDirection: 'column',
-    margin: '81px 0',
+    margin: '51px 0',
     height: 'auto',
     maxWidth: 540,
     '& .card': {
@@ -59,7 +59,7 @@ const Features = styled(Grid)(() => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        boxShadow: '0px 24px 24px -12px hsl(0deg 0% 0% / 30%)',
+        boxShadow: '0px 24px 24px -12px hsl(0deg 0% 0% / 24%)',
         borderRadius: 21,
         '& > .main': {
           width: '100%',
@@ -75,7 +75,7 @@ const Features = styled(Grid)(() => ({
           position: 'relative',
           transition: '.4s ease-out',
           '& .image': {
-            width: '60%',
+            width: '63%',
             marginTop: '6%',
             display: 'flex',
             justifyContent: 'center',
@@ -115,11 +115,12 @@ const Features = styled(Grid)(() => ({
             color: '#fff',
             '&.article': {
               transition: '.4s ease-out',
-              fontSize: 16,
+              fontSize: 13.5,
               fontWeight: 700,
               lineHeight: '150%',
               letterSpacing: 0,
-              padding: 24,
+              padding: 18,
+              paddingTop: 15,
               background: 'var(--color)',
               borderRadius: 21,
               textAlign: 'center'
@@ -316,7 +317,7 @@ const Download = styled(Box)(() => ({
     color: '#fff',
     letterSpacing: -6,
     transform: 'rotateZ(90deg)',
-    margin: 48
+    margin: 32
   }
 }))
 

@@ -75,7 +75,7 @@ const About = styled(Grid)(({ theme }) => ({
           marginTop: 16,
           paddingBottom: 0,
           '& .text': {
-            fontSize: 20,
+            fontSize: 16.5,
             fontWeight: 500,
             color: theme.palette.primary.main,
             lineHeight: '165%',
