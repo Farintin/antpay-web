@@ -66,6 +66,9 @@
         "no-lonely-if": 0,
         "jsx-a11y/label-has-associated-control": 0,
         "jsx-a11y/mouse-events-have-key-events": 0,
-        "no-useless-computed-key": 0
+        "no-useless-computed-key": 0,
+        "react/no-arrow-function-lifecycle": 0,
+        "react/no-unused-class-component-methods": 0,
+        "no-return-assign": 0
     }
 }

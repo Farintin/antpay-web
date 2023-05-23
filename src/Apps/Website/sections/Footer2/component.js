@@ -5,40 +5,61 @@ import { alpha, styled } from "@mui/material/styles"
 
 const Root = styled(Box)(() => ({
   background: `linear-gradient(to bottom, #57607b 30%, #413861 90%)`,
-  padding: '64px 0'
+  // padding: '64px 0',
+  '& > .wrapper': {
+    position: 'relative',
+    width: 'auto',
+    maxWidth: 'none',
+    padding: 0,
+    paddingTop: 240,
+    '& .globeContainer': {
+      position: 'absolute',
+      top: 0
+    }
+  }
 }))
 
 const Subscribe = styled(Box)(() => ({
-  width: 870,
-  height: 840,
-  margin: '64px auto',
-  border: '2px solid #fff',
-  borderRadius: '50%',
-  display: 'flex',
-  alignItems: 'center',
+  // width: 870,
+  // height: 870,
+  // margin: '64px auto',
+  // border: '3px solid #fff',
+  // borderRadius: '50%',
+  // display: 'flex',
+  // alignItems: 'center',,
+  position: 'relative',
+  width: 780,
+  margin: '0 auto',
   '& .wrapper': {
-    width: '93%',
+    width: '100%',
     margin: '0 auto',
-    border: '2px solid #fff',
-    borderRadius: '180px',
-    padding: 48,
+    border: '3px solid #fff',
+    borderRadius: '48px',
+    paddingBottom: 32,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    '& .knot': {
+      width: '30%',
+      height: 24,
+      backgroundColor: '#fff',
+      borderRadius: '0 0 32px 32px',
+      margin: '-1px 0 42px'
+    },
     '& > .item': {
-      margin: '16px 0'
+      margin: '12px 0'
     },
     '& .text': {
       lineHeight: '75%',
-      fontSize: 15,
+      fontSize: 14.7,
       fontWeight: 600,
       color: '#fff'
     },
     '& .heading': {
-      fontSize: 46,
+      fontSize: 42,
       fontWeight: 700,
-      marginTop: 'calc(-48px - 18px)',
-      backgroundColor: '#57607b',
+      // marginTop: 'calc(-48px - 18px)',
+      // backgroundColor: '#57607b',
       padding: '0 8px'
     }
   }
@@ -46,7 +67,7 @@ const Subscribe = styled(Box)(() => ({
 
 const Main = styled(Box)(() => ({
   margin: '0 auto',
-  width: '84%',
+  width: '66%',
   position: 'relative',
   '& .layer': {
     '&.one': {
@@ -212,4 +233,9 @@ const Row = styled(Box)(({ theme }) => ({
 
 
 
-export { Root, Subscribe, Main, Row }
+export { 
+  Root, 
+  Subscribe, 
+  Main, 
+  Row
+}

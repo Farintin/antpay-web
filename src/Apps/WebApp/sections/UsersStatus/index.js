@@ -11,21 +11,21 @@ export default function () {
     <Root>
       <Box className="wrapper">
 
-      <Box className="slider">
-        <Box className="wrapper">
+        <Box className="slider">
+          <Box className="wrapper">
 
-          <UserStatusAvatar image="/image/status/1-2.png" />
-          {
-            usersStatus.map((status,i) => (
-              <StatusAvatar 
-                key={i}
-                image={status.thumbnail}
-                userName={status.userName} />
-            ))
-          }
+            <UserStatusAvatar image="/image/status/1-2.png" />
+            {
+              usersStatus.map((status,i) => (
+                <StatusAvatar 
+                  key={i}
+                  image={status.thumbnail}
+                  userName={status.userName} />
+              ))
+            }
 
+          </Box>
         </Box>
-      </Box>
 
       </Box>
     </Root>

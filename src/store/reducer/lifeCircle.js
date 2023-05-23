@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+
 const initialState = {
   themeMode: localStorage.getItem('mode') || 'light',
   isReady: false
 }
+
 
 export const counterSlice = createSlice({
   name: 'lifeCircle',

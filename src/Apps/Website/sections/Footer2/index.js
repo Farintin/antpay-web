@@ -7,6 +7,7 @@ import SubscribeForm2 from "../../components/subcribeForm2"
 import { LogoAquaGradient } from "../../components/Logo"
 import { FacebookIcon, InstagramIcon, TwitterIcon } from "../../components/icon"
 import MuiContainer from "../../components/MuiContainer"
+// import Globe from '../../components/globe.component'
 
 
 const br = '30px'
@@ -17,8 +18,13 @@ export default function () {
     <Root id="contact-section" className="page-section">
       <MuiContainer className="wrapper">
 
+        {/* <Box className="globeContainer">
+          <Globe/>
+  </Box> */}
+
         <Subscribe>
           <Box className="wrapper">
+            <Box className="knot"/>
             <Typography className="item text heading">
               Be the first to know
             </Typography>
@@ -30,7 +36,7 @@ export default function () {
           </Box>
         </Subscribe>
 
-        <Main sx={{ mt: 15, mb: 0 }}>
+        <Main sx={{ mt: 30, pb: 3.5 }}>
           <Box className="layer one">
 
             <Row sx={{ height: logoCellH }}>

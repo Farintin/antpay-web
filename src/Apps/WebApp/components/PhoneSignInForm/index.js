@@ -1,17 +1,28 @@
 import { useEffect, useRef, useState } from "react"
+import { useNavigate } from "react-router"
+import { useSelector, useDispatch } from "react-redux"
+import axios from "axios"
+
 import { Box, Typography } from "@mui/material"
+
 import { Root, Input, CountryInput, CountryList, Flag, PhoneInput, Submit } from './component'
 import ChevronDownIcon from "../icons/ChevronDown.icon"
 import ChevronUpIcon from "../icons/ChevronUp.icon"
+
 import { countries } from '../../resource/country'
+
+import { setUserSignInState } from "../../../../store/reducer/userSignInState"
+
+
 
 
 
 const countryCodeList = countries.map((country) => country.code)
-export default function(props) {
+export default function() {
     const countryInputDom = useRef(null)
     const phoneInputDom = useRef(null)
     const submitBtnDom = useRef(null)
+
     const [countryList, setCountryList] = useState(countries)
     const [autocomplete, setAutocomplete] = useState(false)
     const defaultCountry = countries[0]
@@ -19,13 +30,17 @@ export default function(props) {
     const [countryName, setCountryName] = useState(country.name)
     const [countryCode, setCountryCode] = useState(country.code)
     const [countryInputFocus, setCountryInputFocus] = useState(false)
-    const phonePlaceholder = 'phone number'
-    const [phone, setPhone] = useState(phonePlaceholder)
+    const phoneNumberPlaceholder = 'phone number'
+    const [phoneNumber, setPhoneNumber] = useState(phoneNumberPlaceholder)
     const [click, setClick] = useState(false)
     const [dropdownClick, setDropdownClick] = useState(false)
     const [autoListClick, setAutoListClick] = useState(false)
     const [submitOk, setSubmitOk] = useState(false)
-    const [smsAuthSent, setSmsAuthSent] = useState(false)
+
+    const navigate = useNavigate()
+
+    const { userSignInState } = useSelector(state => state.userSignInAuth)
+    const dispatch = useDispatch()
 
 
 
@@ -52,18 +67,6 @@ export default function(props) {
     }
     const countryInputBlurHandler = () => {
         setCountryInputFocus(false)
-        /* let countryValue = {
-            name: countryName,
-            code: '+',
-            image: ''
-        }
-        for (let countryObj of countries) {
-            if (countryObj.name.toLowerCase() === countryName.toLowerCase()) {
-                countryValue = countryObj
-                break
-            }
-        }
-        setCountry(countryValue) */
     }
     const countryNameSearchHandler = () => {
         let avalCountries = []
@@ -107,13 +110,13 @@ export default function(props) {
     const countryClickHandler = (countryValue) => {
         setCountry(countryValue)
     }
-    const phoneFocusHandler = () => {
-        phone === phonePlaceholder ? setPhone('') : ''
+    const phoneNumberFocusHandler = () => {
+        phoneNumber === phoneNumberPlaceholder ? setPhoneNumber('') : ''
     }
-    const phoneBlurHandler = () => {
-        phone === '' ? setPhone(phonePlaceholder) : ''
+    const phoneNumberBlurHandler = () => {
+        phoneNumber === '' ? setPhoneNumber(phoneNumberPlaceholder) : ''
     }
-    const phoneChangeHandler = (e) => {
+    const phoneNumberChangeHandler = (e) => {
         const { value } = e.target
         let error = false
         for (let char of value.split('')) {
@@ -122,12 +125,12 @@ export default function(props) {
                 break
             }
         }
-        !error ? setPhone(value) : ''
+        !error ? setPhoneNumber(value) : ''
     }
     const submissionValidator = () => {
         if (!countryCodeList.includes(country.code)) {
             setSubmitOk(false)
-        } else if (phone === phonePlaceholder || phone === '') {
+        } else if (phoneNumber === phoneNumberPlaceholder || phoneNumber === '') {
             setSubmitOk(false)
         } else {
             setSubmitOk(true)
@@ -135,10 +138,29 @@ export default function(props) {
     }
     const submitHandler = () => {
         if (submitOk) {
-            const userPhone = country.code + phone
-            console.log('userPhone:', userPhone)
-
-            setSmsAuthSent(true)
+            console.log('submitOk')
+            const userPhone = {
+                phone: {
+                    countryName: country.name,
+                    countryCode: country.code === countryCode ? countryCode : '',
+                    number: `${countryCode}${phoneNumber}`
+                }
+            }
+            dispatch(setUserSignInState({ ...userSignInState, ...userPhone }))
+            axios.post('http://localhost:5000/v1/auth/user/phoneAuth', {
+                ...userPhone
+              })
+              .then(response => {
+                if (response.data.msg === 'success') {
+                    navigate('/otpSignIn')
+                } else {
+                    console.log('otp not sent')
+                    console.log('axiosResponse:', response)
+                }
+              })
+              .catch(error => {
+                console.log('axiosErrorResponse:', error)
+              })
         }
     }
     
@@ -151,12 +173,12 @@ export default function(props) {
 
         submissionValidator()
     })
-
+    
     useEffect(() => {
         autocomplete ? setAutocomplete(false) : ''
         setCountryName(country.name)
         setCountryCode(country.code)
-        setPhone(phonePlaceholder)
+        setPhoneNumber(phoneNumberPlaceholder)
     }, [country])
 
     useEffect(() => {
@@ -196,12 +218,12 @@ export default function(props) {
     }, [autocomplete, click, dropdownClick, autoListClick, countryInputFocus])
     
     useEffect(() => {
-        if (phone !== phonePlaceholder) {
+        if (phoneNumber !== phoneNumberPlaceholder) {
             phoneInputDom.current.classList.add('notPlaceholder')
         } else {
             phoneInputDom.current.classList.remove('notPlaceholder')
         }
-    }, [phone])
+    }, [phoneNumber])
     
     useEffect(() => {
         if (!submitOk) {
@@ -210,14 +232,10 @@ export default function(props) {
             submitBtnDom.current.classList.remove('disable')
         }
     }, [submitOk])
-    
+
     useEffect(() => {
-        if (smsAuthSent) {
-            console.log('navigate to sms verify code screen')
-            props.setSection('smsVerificationCode-section')
-            setSmsAuthSent(false)
-        }
-    }, [smsAuthSent])
+        // console.log('userSignInState:', userSignInState)
+    }, [userSignInState])
 
 
 
@@ -287,12 +305,12 @@ export default function(props) {
                     <Box className="box input">
                         <Input 
                             type="text" 
-                            id="phone"
-                            name="phone"
-                            value={phone}
-                            onFocus={phoneFocusHandler}
-                            onBlur={phoneBlurHandler}
-                            onChange={phoneChangeHandler}
+                            id="phoneNumber"
+                            name="phoneNumber"
+                            value={phoneNumber}
+                            onFocus={phoneNumberFocusHandler}
+                            onBlur={phoneNumberBlurHandler}
+                            onChange={phoneNumberChangeHandler}
                             />
                     </Box>
                 </Box>

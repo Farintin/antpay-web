@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
 import ThemeProvider from './theme'
@@ -14,16 +14,18 @@ import ComingSoon from './pages/ComingSoon'
 
 
 export default function () {
-  const location = useLocation()
   return (
     <ThemeProvider>
       <AnimatePresence>
-        <Routes location={location} key={location.pathname}>
+        
+        {/* <Routes location={location} key={location.pathname}> */}
+        <Routes>
           <Route path="" element={<WebsiteLayout title="" />}>
             <Route path="/" element={<Website title="" />} />
             <Route path="/download" element={<ComingSoon title="" />} />
           </Route>
         </Routes>
+        
       </AnimatePresence>
     </ThemeProvider>
   )

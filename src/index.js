@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async'
-import { BrowserRouter as Router } from 'react-router-dom'
+// import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import Routes from './routes'
 import { store } from './store'
@@ -15,9 +15,7 @@ root.render(
     <Provider store={store}>
       <ThemeProvider>
 
-        <Router>
-          <Routes/>
-        </Router>
+        <Routes/>
 
       </ThemeProvider>
     </Provider>
