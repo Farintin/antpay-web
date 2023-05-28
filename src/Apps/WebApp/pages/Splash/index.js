@@ -14,6 +14,8 @@ export default function () {
   const loadTimeout = 100
   const navigate = useNavigate()
 
+
+
   useLayoutEffect(() => {
     setLoadPercent(15)
   }, [])
@@ -23,26 +25,37 @@ export default function () {
   }, [])
   
   useEffect(() => {
+
     if (loadPercent === 100) {
+
       setTimeout(() => {
         // navigate('/qrSignIn')
         // navigate('/setProfile')
-        navigate('/phoneSignIn')
+        // navigate('/phoneSignIn')
+        navigate('/home')
       }, 100)
+
     } else if (loadPercent === 15 ) {
+
       rootDom.current.querySelector('.bar').classList.add('loading')
+
     } else if (loadPercent === 75 ) {
+
       rootDom.current.querySelector('.bar').classList.remove('loading')
+
     }
+
   }, [loadPercent])
 
   useEffect(() => {
+
     if (load) {
       setTimeout(() => {
         setLoadPercent(100)
       }, loadTimeout)
     }
     setLoadPercent(75)
+
   }, [load])
 
 

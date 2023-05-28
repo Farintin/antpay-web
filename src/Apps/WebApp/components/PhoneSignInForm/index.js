@@ -11,7 +11,7 @@ import ChevronUpIcon from "../icons/ChevronUp.icon"
 
 import { countries } from '../../resource/country'
 
-import { setUserSignInState } from "../../../../store/reducer/userSignInState"
+import { setUserSignInState } from "../../store/reducer/userSignInState"
 
 
 
@@ -233,11 +233,9 @@ export default function() {
         }
     }, [submitOk])
 
-    useEffect(() => {
+    /* useEffect(() => {
         // console.log('userSignInState:', userSignInState)
-    }, [userSignInState])
-
-
+    }, [userSignInState]) */
 
     return (
         <Root>

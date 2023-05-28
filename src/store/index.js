@@ -3,12 +3,14 @@ import { configureStore } from '@reduxjs/toolkit'
 // import { createBrowserHistory } from "history"
 import { 
   userSignInState as userSignInAuth, 
-  lifeCircle 
+  lifeCircle,
+  user
 } from './reducer'
 
 export const store = configureStore({
   reducer: {
     userSignInAuth,
-    lifeCircle
+    lifeCircle,
+    user
   }
 })

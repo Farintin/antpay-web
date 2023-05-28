@@ -9,3 +9,7 @@
     from, to { width: calc(270px * .11) }
     100% { width: calc(270px * .74) }
 }
+
+.ui-ignore {
+    opacity: .18;
+}

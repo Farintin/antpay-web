@@ -9,7 +9,7 @@ import { usersStatus } from '../../resource/userStatus'
 export default function () {
   return (
     <Root>
-      <Box className="wrapper">
+      <Box className="wrapper ui-ignore">
 
         <Box className="slider">
           <Box className="wrapper">

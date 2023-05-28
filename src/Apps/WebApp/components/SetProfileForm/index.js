@@ -14,7 +14,7 @@ import PencilIcon from "../icons/Pencil.icon"
 
 import { statusOptions } from '../../resource/userStatus'
 
-import { setUserSignInState } from "../../../../store/reducer/userSignInState"
+import { setUserSignInState } from "../../store/reducer/userSignInState"
 
 
 

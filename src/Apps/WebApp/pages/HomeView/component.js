@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles"
 const Root = styled(Box)(() => ({
   width: '100%',
   height: '100%',
+  backgroundColor: '#6E01CE',// theme.palette.primary.light,
   '& > .wrapper': {
     width: '100%',
     height: '100%',
@@ -15,7 +16,6 @@ const Root = styled(Box)(() => ({
         height: '100%',
         '&.col-1': {
           height: '100%',
-          backgroundColor: '#6E01CE',// theme.palette.primary.light,
           '& > .stack': {
             height: '100%',
             '& > .row-1': {

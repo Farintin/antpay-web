@@ -6,7 +6,7 @@ import { Root } from "./component"
 export default function () {
 
   return (
-    <Root>
+    <Root className="ui-ignore">
       <Box className="wrapper" sx={{ p: 2 }}>
 
         

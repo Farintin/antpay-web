@@ -1,6 +1,9 @@
-import userSignInState from './userSignInState'
 import lifeCircle from './lifeCircle'
+import { userSignInState, user } from '../../Apps/WebApp/store/reducer'
 
 
-
-export { userSignInState, lifeCircle }
+export {
+    lifeCircle,
+    userSignInState,
+    user
+}

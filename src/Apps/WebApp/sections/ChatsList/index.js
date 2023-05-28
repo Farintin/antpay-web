@@ -11,7 +11,7 @@ export default function () {
     <Root>
       <Box className="wrapper">
 
-        <Box className="row row-1">
+        <Box className="row row-1 ui-ignore">
           <Typography 
             className="text"
           >
