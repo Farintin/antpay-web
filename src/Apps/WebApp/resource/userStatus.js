@@ -1,7 +1,31 @@
 const statusOptions = JSON.parse(`[
     "busy",
-    "at work"
+    "at work",
+    "Mixed feelings",
+    "Sunny vibes",
+    "Smiling",
+    "Glowing",
+    "Thrilled",
+    "Ecstatic",
+    "Let’s Party",
+    "Overjoyed",
+    "Blissful",
+    "Feeling lucky",
+    "Carefree",
+    "Enigmatic",
+    "straightforward",
+    "Cutie",
+    "Enjoying-Loneliness",
+    "Happy Weekends",
+    "Monday-Morning",
+    "Simply- happy",
+    "Rich-bitch",
+    "OverThinker"
 ]`)
+
+
+
+
 
 const usersStatus = JSON.parse(`[
     {
