@@ -20,7 +20,15 @@ const statusOptions = JSON.parse(`[
     "Monday-Morning",
     "Simply- happy",
     "Rich-bitch",
-    "OverThinker"
+    "OverThinker",
+    "Enthusiastic",
+    "Refreshing Air",
+    "Inspired",
+    "Lonely",
+    "Open-minded",
+    "Hungry",
+    "single",
+    "Heartbroken"
 ]`)
 
 

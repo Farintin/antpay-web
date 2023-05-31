@@ -18,12 +18,12 @@ export default function () {
 
   useEffect(() => {
     // console.log('userData:', userData);
-    if (userData.avatar) {
+    if (userData && userData.avatar) {
       setAvatar(userData.avatar)
     }
   }, [userData])
   useEffect(() => {
-    console.log('avatar:', avatar);
+    // console.log('avatar:', avatar);
   }, [avatar])
 
   return (

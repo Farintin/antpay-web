@@ -1,5 +1,5 @@
-import { useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 import axios from "axios"
 
@@ -12,14 +12,17 @@ import { Root } from "./component"
 import { NavBar, UsersStatus, ChatsList, ChatDm } from "../../sections"
 
 import { setUserData } from '../../store/reducer/user'
+import { setContacts } from '../../store/reducer/contacts'
 
 
 
 
 
 export default function () {
+  const [phonebook, setPhonebook] = useState(null)
   const accessToken = localStorage.getItem('accessToken')
-  // console.log('accessToken:', accessToken)
+  const { userData } = useSelector(state => state.user)
+  // const { contacts } = useSelector(state => state.contacts)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -34,16 +37,72 @@ export default function () {
           const userData = data.data
           dispatch(setUserData(userData))
         } else {
-            console.log('axiosResponse:', response)
+            console.log('userResponse:', response)
         }
       })
       .catch(error => {
-        console.log('axiosErrorResponse:', error)
+        console.log('userErrorResponse:', error)
       })
   }, [])
-  /* useEffect(() => {
+
+  useEffect(() => {
     console.log('userData:', userData);
-  }, [userData]) */
+    axios.get('http://localhost:5000/v1/users/user/phonebook', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+    .then(response => {
+      const { data } = response
+      if (data.msg === 'ok') {
+        const phonebookData = data.data
+        setPhonebook(phonebookData)
+      } else {
+        console.log('phonebookResponse:', response)
+      }
+    })
+    .catch(error => {
+      console.log('phonebookErrorResponse:', error)
+    })
+  }, [userData])
+
+  useEffect(() => {
+    console.log('phonebook:', phonebook);
+    if (phonebook) {
+      let { contacts } = phonebook
+      const contactsWithExistingUser = contacts.filter(c => c.userAccExist)
+      const contactsWithExistingUserIds = contactsWithExistingUser.map(c => c.userId)
+
+      axios.get(`http://localhost:5000/v1/users/user/fetchUsers?ids=${contactsWithExistingUserIds.toString()}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+      .then(response => {
+        const { data } = response
+        if (data.msg === 'ok') {
+          const usersData = data.data
+          contacts = contacts.map(c => {
+            if (c.userAccExist) {
+              c.user = usersData.find(user => user._id === c.userId)
+            }
+            return c
+          })
+
+          dispatch(setContacts(contacts))
+        } else {
+          console.log('fetchUsersResponse:', response)
+        }
+      })
+      .catch(error => {
+        console.log('fetchUsersErrorResponse:', error)
+      })
+    }
+  }, [phonebook])
+
+  /* useEffect(() => {
+    console.log('contacts:', contacts);
+  }, [contacts]) */
 
   return (
     <Root>

@@ -29,8 +29,8 @@ export default function () {
       setTimeout(() => {
         // navigate('/qrSignIn')
         // navigate('/setProfile')
-        navigate('/phoneSignIn')
-        // navigate('/home')
+        // navigate('/phoneSignIn')
+        navigate('/home')
       }, 100)
     } else if (loadPercent === 15 ) {
       rootDom.current.querySelector('.bar').classList.add('loading')

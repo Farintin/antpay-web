@@ -4,13 +4,15 @@ import { configureStore } from '@reduxjs/toolkit'
 import { 
   userSignInState as userSignInAuth, 
   lifeCircle,
-  user
+  user,
+  contacts
 } from './reducer'
 
 export const store = configureStore({
   reducer: {
     userSignInAuth,
     lifeCircle,
-    user
+    user,
+    contacts
   }
 })
