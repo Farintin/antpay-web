@@ -1,4 +1,4 @@
-import ChatDm from './ChatDm'
+import ChatRoom from './ChatRoom'
 import NavBar from './NavBar'
 import UsersStatus from './UsersStatus'
 import ChatsList from './ChatsList'
@@ -6,7 +6,7 @@ import ChatsList from './ChatsList'
 
 
 export {
-    ChatDm,
+    ChatRoom,
     NavBar,
     UsersStatus,
     ChatsList

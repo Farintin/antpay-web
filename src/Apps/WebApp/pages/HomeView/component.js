@@ -16,6 +16,10 @@ const Root = styled(Box)(() => ({
         height: '100%',
         '&.col-1': {
           height: '100%',
+          borderWidth: 0,
+          borderRightWidth: 1,
+          borderColor: '#999',
+          borderStyle: 'solid',
           '& > .stack': {
             height: '100%',
             '& > .row-1': {

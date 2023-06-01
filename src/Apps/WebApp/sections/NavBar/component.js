@@ -5,6 +5,10 @@ import { styled } from "@mui/material/styles"
 
 const Root = styled(Box)(() => ({
   padding: 12,
+  // borderWidth: 0,
+  // borderRightWidth: 1,
+  // borderColor: '#aaa',
+  // borderStyle: 'solid',
   '& > .wrapper': {
     '& > .grid': {
       '& > .col': {

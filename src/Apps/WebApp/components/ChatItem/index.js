@@ -42,7 +42,7 @@ export default function ({ contact, style }) {
             <Typography className="text chat">
               {/* props.contact.lastChat.length > 30 ? `${props.contact.lastChat.slice(0,30)}...` : props.contact.lastChat */}
               {/* eslint-disable-next-line */}
-              {user ? (user?.desc.length > 30 ? `${user?.desc.slice(0,30)}...` : user?.desc) : ''}
+              {user ? (user.desc.length > 30 ? `${user.desc.slice(0,30)}...` : user.desc) : ''}
             </Typography>
           </Grid>
           <Grid item xs={2.4} className='col col-3'>

@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack'
 
 import { Root } from "./component"
 
-import { NavBar, UsersStatus, ChatsList, ChatDm } from "../../sections"
+import { NavBar, UsersStatus, ChatsList, ChatRoom } from "../../sections"
 
 import { setUserData } from '../../store/reducer/user'
 import { setContacts } from '../../store/reducer/contacts'
@@ -22,7 +22,6 @@ export default function () {
   const [phonebook, setPhonebook] = useState(null)
   const accessToken = localStorage.getItem('accessToken')
   const { userData } = useSelector(state => state.user)
-  // const { contacts } = useSelector(state => state.contacts)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -46,7 +45,7 @@ export default function () {
   }, [])
 
   useEffect(() => {
-    console.log('userData:', userData);
+    // console.log('userData:', userData);
     axios.get('http://localhost:5000/v1/users/user/phonebook', {
       headers: {
         Authorization: `Bearer ${accessToken}`
@@ -67,7 +66,7 @@ export default function () {
   }, [userData])
 
   useEffect(() => {
-    console.log('phonebook:', phonebook);
+    // console.log('phonebook:', phonebook);
     if (phonebook) {
       let { contacts } = phonebook
       const contactsWithExistingUser = contacts.filter(c => c.userAccExist)
@@ -100,10 +99,6 @@ export default function () {
     }
   }, [phonebook])
 
-  /* useEffect(() => {
-    console.log('contacts:', contacts);
-  }, [contacts]) */
-
   return (
     <Root>
       <Box className="wrapper">
@@ -130,7 +125,7 @@ export default function () {
 
           <Grid item xs={8.1} className='col col-2'>
 
-            <ChatDm/>
+            <ChatRoom/>
 
           </Grid>
 

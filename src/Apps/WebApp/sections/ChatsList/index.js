@@ -18,7 +18,7 @@ export default function () {
   const { contacts } = useSelector(state => state.contacts)
 
   useEffect(() => {
-    console.log('contacts:', contacts);
+    // console.log('contacts:', contacts);
   }, [contacts])
 
 

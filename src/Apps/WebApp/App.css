@@ -13,3 +13,6 @@
 .ui-ignore {
     opacity: .18;
 }
+.show-boundary {
+    border: 1px solid red;
+}
