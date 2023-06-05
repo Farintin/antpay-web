@@ -7,7 +7,6 @@ import Stack from '@mui/material/Stack'
 
 import { Root } from "./component"
 import Avatar from "../../components/Avatar"
-import Menulist from '../../components/icons/Menulist.icon'
 import Bell from '../../components/icons/Bell.icon'
 import Search from '../../components/icons/Search.icon'
 
@@ -35,9 +34,6 @@ export default function () {
 
             <Stack direction="row" spacing={0} className='stack ui-ignore'>
               <Box className="iconButton">
-                <Menulist/>
-              </Box>
-              <Box className="iconButton">
                 <Search/>
               </Box>
               <Box className="iconButton">
@@ -51,6 +47,8 @@ export default function () {
             <Avatar 
               image={avatar.thumb_url}
               style={{
+                width: 57,
+                height: 57,
                 marginLeft: 'auto'
               }} />
 

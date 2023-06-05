@@ -1,11 +1,20 @@
 import { useEffect, useState, useRef } from 'react'
+import { useSelector, useDispatch } from "react-redux"
+
+import randomstring from 'randomstring'
+
 import { Root, Input } from './component'
 
+import { setRecentRoomMessages } from '../../store/reducer/socketStates'
+
+import { socket } from '../../socket'
 
 
 
 
-export default function(props) {
+
+export default function({ style }) {
+    const { activeRoom } = useSelector(state => state.socketStates)
     const rootDom = useRef(null)
     const placeholder = 'Type a message...'
     const [message, setMessage] = useState(placeholder)
@@ -13,6 +22,7 @@ export default function(props) {
     const [focus, setFocus] = useState(false)
     const [className, setClassName] = useState('')
     const [minH, setMinH] = useState(0)
+    const dispatch = useDispatch()
 
     const focusHandler = (e) => {
         setFocus(true)
@@ -30,6 +40,7 @@ export default function(props) {
     }
     const keyDownHandler = (e) => {
         if (submitOk && e.keyCode === 13) {
+            e.preventDefault()
             submitHandler()
         }
     }
@@ -49,16 +60,44 @@ export default function(props) {
     }
     const multilineHandler = (h) => {
         if (minH > 0 && h > minH) {
-            console.log(minH, h, 'at change add multiline');
+            // console.log(minH, h, 'at change add multiline');
             setClassName('multiline')
         } else {
-            console.log(minH, h, 'at change remove multiline');
+            // console.log(minH, h, 'at change remove multiline');
             setClassName('')
         }
     }
     const submitHandler = () => {
         // Socket.io
-        console.log('submit');
+        if (activeRoom) {
+            console.log('sent message');
+            // console.log('room is:', activeRoom, '@"if');
+            const time = `${new Date(Date.now())}`
+            const id = randomstring.generate({
+                length: 8,
+                charset: 'alphanumeric'
+            })
+            const sid = `${time}--${id}`
+
+            const roomMsg = {
+                roomType: activeRoom.roomType,
+                usersPhoneNumber: [activeRoom.guest.phone.number, activeRoom.host.phone.number],
+                message: {
+                    sid,
+                    author: activeRoom.host.phone.number,
+                    reader: activeRoom.guest.phone.number,
+                    text: message,
+                    time: time,
+                    reciept: 0
+                }
+            }
+
+            dispatch(setRecentRoomMessages(roomMsg))
+            socket.emit('send-message', roomMsg)
+            setMessage('')
+        } else {
+            console.log('room is:', activeRoom, '@else');
+        }
     }
 
 
@@ -92,7 +131,7 @@ export default function(props) {
     return (
         <Root
             ref={rootDom}
-            style={props.style}
+            style={style}
             className={className}
         >
             <Input

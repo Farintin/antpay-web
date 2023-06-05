@@ -5,7 +5,8 @@ import {
   userSignInState as userSignInAuth, 
   lifeCircle,
   user,
-  contacts
+  contacts,
+  socketStates
 } from './reducer'
 
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
     userSignInAuth,
     lifeCircle,
     user,
-    contacts
+    contacts,
+    socketStates
   }
 })

@@ -5,13 +5,18 @@ import { styled, alpha } from "@mui/material/styles"
 
 const Root = styled(Box)(() => ({
   padding: '8px 0',
+  position: 'absolute',
+  bottom: 0,
+  width: '98%',
   '& > .wrapper': {
     '& > .stack': {
+      alignItems: 'flex-end',
       '& > *': {
         margin: '0 4px'
       },
       '& .iconButton': {
         '--icon-w': '15px',
+        marginBottom: 3,
         width: 32,
         height: 32,
         borderRadius: 32,

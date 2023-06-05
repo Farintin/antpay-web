@@ -69,6 +69,7 @@
         "no-useless-computed-key": 0,
         "react/no-arrow-function-lifecycle": 0,
         "react/no-unused-class-component-methods": 0,
-        "no-return-assign": 0
+        "no-return-assign": 0,
+        "object-shorthand": 0
     }
 }

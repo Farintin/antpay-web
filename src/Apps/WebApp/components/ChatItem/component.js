@@ -8,6 +8,7 @@ const Root = styled(Box)(({ theme }) => ({
   borderWidth: '0 0 1px 0',
   borderStyle: 'solid',
   borderColor: alpha('#000', .18), 
+  cursor: 'pointer',
   '& > .wrapper': {
     '& > .grid': {
       '& > .col': {

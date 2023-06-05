@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { useEffect, useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
 
 import Box from "@mui/material/Box"
 import Grid from "@mui/material/Grid"
@@ -9,19 +9,38 @@ import { Root } from "./component"
 
 import Avatar from "../Avatar"
 
+import { setActiveRoom } from "../../store/reducer/socketStates"
+
 
 
 
 
 export default function ({ contact, style }) {
+  const { userData } = useSelector(state => state.user)
   const defaultAvatar = '/image/avatar.svg'
+  const dispatch = useDispatch()
   let user
+
   if (contact && contact.userAccExist) {
     user = contact.user
   }
+  
+
+  const contactClickHandler = () => {
+    console.log('contact chat room clicked');
+    const room = {
+      roomType: 'pair',
+      guest: contact,
+      host: userData
+    }
+    dispatch(setActiveRoom(room))
+  }
 
   return (
-    <Root style={style}>
+    <Root 
+      style={style}
+      onClick={contactClickHandler}
+    >
       <Box className="wrapper">
 
         <Grid container spacing={0} className='grid'>

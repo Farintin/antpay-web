@@ -4,7 +4,7 @@ import { alpha, styled } from "@mui/material/styles"
 
 
 const Root = styled(Box)(({ theme }) => ({
-  padding: 12,
+  padding: 6,
   backgroundColor: theme.palette.primary.main,
   '& > .wrapper': {
     '& > .grid': {

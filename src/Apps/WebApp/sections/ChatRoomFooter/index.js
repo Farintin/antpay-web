@@ -12,9 +12,9 @@ import Camera from '../../components/icons/Camera.icon'
 
 
 
-export default function (props) {
+export default function ({ room }) {
   return (
-    <Root className={props.className}>
+    <Root>
       <Box className="wrapper">
 
         <Stack direction="row" spacing={0} className='stack'>
@@ -27,6 +27,7 @@ export default function (props) {
             style={{
               flexGrow: 1
             }}
+            room={room}
               />
 
           <Box className="iconButton">

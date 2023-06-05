@@ -26,8 +26,8 @@ const Input = styled(InputBase)(() => ({
   width: '100%',
   height: '100%',
   backgroundColor: '#fff',
-  borderRadius: 20,
-  padding: '4px 24px',
+  borderRadius: 24,
+  padding: '10px 24px',
   '& .MuiInputBase-input': {
     fontSize: 13.5,
     fontWeight: 600,

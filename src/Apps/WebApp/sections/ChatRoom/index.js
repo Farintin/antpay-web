@@ -7,19 +7,21 @@ import ChatRoomFooter from "../ChatRoomFooter"
 
 
 
+
+
 export default function () {
   return (
     <Root>
       <Box className="wrapper">
         
-        <ChatRoomHeader/>
+        <ChatRoomHeader />
         <ChatRoomBody
           // className="show-boundary"
           style={{
             flexGrow: 1
           }}
             />
-        <ChatRoomFooter className="" />
+        <ChatRoomFooter />
 
       </Box>
     </Root>

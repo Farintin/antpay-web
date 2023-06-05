@@ -11,10 +11,10 @@ const Root = styled(Box)(({ theme }) => ({
   backdropFilter: 'brightness(0%)',
   '& > .wrapper': {
     height: '100%',
-    overflow: 'overlay',
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: 'rgb(0 0 0 / 45%)',
+    position: 'relative',
     '& .text': {
       fontWeight: 400,
       fontSize: 13.5,

@@ -16,7 +16,17 @@ import VideoCam from '../../components/icons/VideoCam.icon'
 
 
 export default function () {
-  const { userData } = useSelector(state => state.user)
+  const { activeRoom } = useSelector(state => state.socketStates)
+  const defaultAvatar = '/image/avatar.svg'
+  let user
+  let contact
+  
+  if (activeRoom) {
+    contact = activeRoom.guest
+    if (contact && contact.userAccExist) {
+      user = contact.user
+    }
+  }
 
   return (
     <Root>
@@ -28,13 +38,13 @@ export default function () {
 
             <Avatar 
               style={{
-                width: 43.5,
-                height: 43.5
+                width: 48,
+                height: 48
               }}
-              image={userData?.avatar.thumb_url}
+              image={user ? user.avatar.thumb_url : defaultAvatar}
               />
             <Typography className="text username">
-              {userData?.name}
+              {user ? user.name : contact?.phone.number}
             </Typography>
 
           </Grid>

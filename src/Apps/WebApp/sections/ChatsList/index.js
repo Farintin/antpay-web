@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { useSelector } from "react-redux"
 
 import Box from "@mui/material/Box"
@@ -8,19 +7,12 @@ import { Root } from "./component"
 
 import ChatItem from "../../components/ChatItem"
 
-// import { chats } from "../../resource/contacts"
-
 
 
 
 
 export default function () {
   const { contacts } = useSelector(state => state.contacts)
-
-  useEffect(() => {
-    // console.log('contacts:', contacts);
-  }, [contacts])
-
 
   return (
     <Root>

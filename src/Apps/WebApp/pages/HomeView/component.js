@@ -18,7 +18,7 @@ const Root = styled(Box)(() => ({
           height: '100%',
           borderWidth: 0,
           borderRightWidth: 1,
-          borderColor: '#999',
+          borderColor: '#ccc',
           borderStyle: 'solid',
           '& > .stack': {
             height: '100%',
