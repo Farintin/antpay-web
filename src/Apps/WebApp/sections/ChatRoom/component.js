@@ -15,6 +15,7 @@ const Root = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
     backgroundColor: 'rgb(0 0 0 / 45%)',
     position: 'relative',
+    // justifyContent: 'space-between',
     '& .text': {
       fontWeight: 400,
       fontSize: 13.5,

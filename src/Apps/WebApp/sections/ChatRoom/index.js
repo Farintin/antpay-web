@@ -17,9 +17,6 @@ export default function () {
         <ChatRoomHeader />
         <ChatRoomBody
           // className="show-boundary"
-          style={{
-            flexGrow: 1
-          }}
             />
         <ChatRoomFooter />
 

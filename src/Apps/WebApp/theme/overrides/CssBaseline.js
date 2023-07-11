@@ -17,16 +17,9 @@ export default function CssBaseline() {
         '::-webkit-scrollbar-thumb:hover': {
           backgroundColor: '#d7a9ff'
         },
-        '*': {
-          margin: 0,
-          padding: 0,
-          boxSizing: 'border-box',
-          scrollBehavior: 'smooth',
-          fontFamily: 'Poppins'
-        },
         html: {
           width: '100%',
-          // WebkitOverflowScrolling: 'touch'
+          WebkitOverflowScrolling: 'touch'
         },
         body: {
           width: '100%',
@@ -36,19 +29,6 @@ export default function CssBaseline() {
           width: '100%',
           height: '100%',
           overflowX: 'hidden'
-        },
-        input: {
-          '&[type=number]': {
-            MozAppearance: 'textfield',
-            '&::-webkit-outer-spin-button': {
-              margin: 0,
-              WebkitAppearance: 'none'
-            },
-            '&::-webkit-inner-spin-button': {
-              margin: 0,
-              WebkitAppearance: 'none'
-            }
-          }
         }
       }
     }

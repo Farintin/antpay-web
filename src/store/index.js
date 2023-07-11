@@ -2,12 +2,16 @@ import { configureStore } from '@reduxjs/toolkit'
 // import { createReduxHistoryContext } from 'redux-first-history'
 // import { createBrowserHistory } from "history"
 import { 
-  userSignInState as userSignInAuth, 
   lifeCircle,
-  user,
-  contacts,
-  socketStates
 } from './reducer'
+import { 
+  userSignInState as userSignInAuth, 
+  user, 
+  contacts, 
+  socketStates, 
+  roomsStates } from '../Apps/WebApp/store/reducer'
+
+
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +19,7 @@ export const store = configureStore({
     lifeCircle,
     user,
     contacts,
-    socketStates
+    socketStates,
+    roomsStates
   }
 })

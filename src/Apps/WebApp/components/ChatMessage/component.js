@@ -5,6 +5,7 @@ import { styled } from "@mui/material/styles"
 
 const Root = styled(Box)(() => ({
   display: 'flex',
+  // display: 'none',
   '& .main': {
     maxWidth: '69%',
     '& .msgBox': {
@@ -18,27 +19,33 @@ const Root = styled(Box)(() => ({
       }
     },
     '& .info': {
-      padding: '4px 0',
+      padding: '6px 0',
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      lineHeight: '75%',
       '& .time': {
-        color: '#fff',
-        fontSize: 10.5,
-        fontWeight: 300,
-        letterSpacing: '1.5px'
+        display: 'flex',
+        '& .text': {
+          color: '#fff',
+          fontSize: 10.5,
+          fontWeight: 300,
+          lineHeight: '100%',
+          letterSpacing: '2px'
+        }
       },
       '& .reciept': {
-        color: '#0ff',
-        fontSize: 10.8,
-        fontWeight: 400,
-        paddingLeft: 2
+        display: 'flex',
+        // color: '#0ff',
+        // fontSize: 10.8,
+        // fontWeight: 400,
+        marginLeft: 2,
+        paddingBottom: 2
       }
     }
   },
   '&.host': {
     justifyContent: 'flex-end',
+    display: 'flex',
     '& .main': {
       display: 'flex',
       flexDirection: 'column',
@@ -50,12 +57,21 @@ const Root = styled(Box)(() => ({
     }
   },
   '&.guest': {
+    display: 'flex',
     '& .main': {
       '& .msgBox': {
         borderBottomLeftRadius: 0,
         backgroundColor: '#ADFFE1'
+      },
+      '& .info': {
+        '& .reciept': {
+          display: 'none'
+        }
       }
     }
+  },
+  '&:last-child': {
+    marginBottom: 0
   }
 }))
 

@@ -7,9 +7,7 @@ import WebsiteLayout from './layout'
 // @pages
 import Website from './pages/LandingPage'
 import ComingSoon from './pages/ComingSoon'
-// @Pages Auth
-// @Pages PUBLIC
-// ----------------------------------------------------------------------
+import './App.css'
 
 
 

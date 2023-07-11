@@ -12,18 +12,15 @@ import Search from '../../components/icons/Search.icon'
 
 
 export default function () {
+  const defaultAvatar = '/image/avatar.svg'
   const { userData } = useSelector(state => state.user)
-  const [avatar, setAvatar] = useState({})
+  const [avatar, setAvatar] = useState(null)
 
   useEffect(() => {
-    // console.log('userData:', userData);
     if (userData && userData.avatar) {
       setAvatar(userData.avatar)
     }
   }, [userData])
-  useEffect(() => {
-    // console.log('avatar:', avatar);
-  }, [avatar])
 
   return (
     <Root>
@@ -45,10 +42,10 @@ export default function () {
           <Grid item xs={6} className='col col-2'>
 
             <Avatar 
-              image={avatar.thumb_url}
+              image={avatar ? avatar.thumb_url : defaultAvatar}
               style={{
-                width: 57,
-                height: 57,
+                width: 60,
+                height: 60,
                 marginLeft: 'auto'
               }} />
 

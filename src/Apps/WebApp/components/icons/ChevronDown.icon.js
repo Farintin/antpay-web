@@ -10,14 +10,14 @@ export default (props) => {
       viewBox="0 0 20 8" 
       width={width}
       style={style}
+      stroke={color} 
       className={`icon chevronDown ${className}`}
+      strokeWidth="1.5" 
+      strokeLinecap="round"
       fill="none" 
     >
       <path 
         d="M1.46153 0.826088L9.83431 6.69565L19.0444 0.826088" 
-        stroke={color} 
-        strokeWidth="1.5" 
-        strokeLinecap="round"
       />
     </svg>
   )

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 
 import Box from "@mui/material/Box"
@@ -13,16 +14,25 @@ import ChatItem from "../../components/ChatItem"
 
 export default function () {
   const { contacts } = useSelector(state => state.contacts)
+  const { roomsUnreadMessagesCount } = useSelector(state => state.roomsStates)
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState(0)
+
+  useEffect(() => {
+    if (roomsUnreadMessagesCount !== null) {
+      const count = Object.values(roomsUnreadMessagesCount.rooms).reduce((t,n) => t+n)
+      setUnreadMessagesCount(count)
+    }
+  }, [roomsUnreadMessagesCount])
 
   return (
     <Root>
       <Box className="wrapper">
 
-        <Box className="row row-1 ui-ignore">
+        <Box className="row row-1">
           <Typography 
             className="text"
           >
-            7 unread
+            {`${unreadMessagesCount} unread`}
           </Typography>
         </Box>
         <Box className="row row-2">

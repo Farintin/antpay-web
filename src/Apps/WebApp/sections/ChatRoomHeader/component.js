@@ -4,7 +4,7 @@ import { alpha, styled } from "@mui/material/styles"
 
 
 const Root = styled(Box)(({ theme }) => ({
-  padding: 6,
+  padding: '11px 12px',
   backgroundColor: theme.palette.primary.main,
   '& > .wrapper': {
     '& > .grid': {
@@ -12,12 +12,14 @@ const Root = styled(Box)(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',
         '&.col-1': {
+          cursor: 'pointer',
           '& > *': {
-            margin: '0 5px'
+            margin: '0 6px'
           },
           '& .text': {
+            color: '#fff',
+            lineHeight: '1.41',
             '&.username': {
-              color: '#fff',
               fontSize: 18,
               fontWeight: 600
             }

@@ -5,55 +5,21 @@ export default function CssBaseline() {
     MuiCssBaseline: {
       styleOverrides: {
         '::-webkit-scrollbar': {
-          background: 'tramsparent',
-          width: '32px',
+          background: 'rgba(110, 1, 206, 0.93)',
+          width: '9px',
         },
         '::-webkit-scrollbar-thumb': {
-          backgroundColor: '#8621d1',
-          border: '13px solid rgba(255, 255, 255, 0)',
-          backgroundClip: 'padding-box',
-          borderRadius: '32px'
+          backgroundColor: 'rgb(172, 255, 229)',
+          border: 0,
+          borderRadius: 0
         },
         '::-webkit-scrollbar-thumb:hover': {
-          backgroundColor: '#d7a9ff'
-        },
-        '*': {
-          margin: 0,
-          padding: 0,
-          boxSizing: 'border-box',
-          scrollBehavior: 'smooth',
-          fontFamily: 'Poppins'
+          backgroundColor: 'rgb(55 255 192)'
         },
         html: {
-          width: '100%',
-          // WebkitOverflowScrolling: 'touch',
+          WebkitOverflowScrolling: 'touch',
           scrollbarColor: '#8621d1 #84e3c5',// '#750dc3 #66ffc7',
           scrollbarWidth: 'thin'
-        },
-        body: {
-          width: '100%',
-          height: '100%',
-        },
-        '#root': {
-          width: '100%',
-          height: '100%',
-          overflowX: 'hidden'
-        },
-        input: {
-          '&[type=number]': {
-            MozAppearance: 'textfield',
-            '&::-webkit-outer-spin-button': {
-              margin: 0,
-              WebkitAppearance: 'none'
-            },
-            '&::-webkit-inner-spin-button': {
-              margin: 0,
-              WebkitAppearance: 'none'
-            }
-          }
-        },
-        '.MuiContainer-root': {
-          // backgroundColor: 'rgba(255,0,0,.3)'
         }
       }
     }

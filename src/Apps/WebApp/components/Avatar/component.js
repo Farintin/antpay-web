@@ -4,12 +4,14 @@ import { styled } from "@mui/material/styles"
 
 
 const Root = styled(Box)(() => ({
+  '--borderColor': '#ADFFE1',
   width: 51,
   height: 51,
   borderRadius: '50%',
-  borderWidth: 2,
+  // boxShadow: `0px 0px 1px 3px var(--borderColor)`,
   borderStyle: 'solid',
-  borderColor: '#ADFFE1',
+  borderColor: 'var(--borderColor)',
+  borderWidth: 2,
   padding: 2,
   '& > .wrapper': {
     width: '100%',
@@ -20,7 +22,6 @@ const Root = styled(Box)(() => ({
       width: '100%',
       height: '100%',
       borderRadius: 'inherit',
-      scale: '101%',
       objectFit: 'cover',
       objectPosition: 'center'
     }

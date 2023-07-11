@@ -1,0 +1,30 @@
+/* .scrollbar-page {
+    overflow: hidden;
+    position: relative;
+}
+
+.scrollbar-page .scrollbar {
+    width: 17px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #eee;
+    box-sizing: border-box;
+    padding: 0px;
+}
+.scrollbar-page .scrollbar > .wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.scrollbar-page .scrollbar > .wrapper .thumb {
+    width: 100%;
+    height: 0;
+    position: absolute;
+    top: 0px;
+    background-color: #bbb;
+}
+.scrollbar-page .scrollbar > .wrapper .thumb:hover {
+    background-color: #999;
+} */

@@ -5,144 +5,152 @@ import randomstring from 'randomstring'
 
 import { Root, Input } from './component'
 
-import { setRecentRoomMessages } from '../../store/reducer/socketStates'
-
-import { socket } from '../../socket'
+import { setNewMessage } from '../../store/reducer/socketStates'
+import { setRoomTextInputValue, setTyping } from '../../store/reducer/roomsStates'
 
 
 
 
 
 export default function({ style }) {
-    const { activeRoom } = useSelector(state => state.socketStates)
+    const { userData } = useSelector(state => state.user)
+    const { activeRoom, roomsTextInputValue } = useSelector(state => state.roomsStates)
     const rootDom = useRef(null)
+    const [roomId, setRoomId] = useState(null)
     const placeholder = 'Type a message...'
-    const [message, setMessage] = useState(placeholder)
-    const [submitOk, setSubmitOk] = useState(false)
+    const [textValue, setTextValue] = useState('')
     const [focus, setFocus] = useState(false)
-    const [className, setClassName] = useState('')
-    const [minH, setMinH] = useState(0)
+    const [changeCount, setChangeCount] = useState(0)
     const dispatch = useDispatch()
 
-    const focusHandler = (e) => {
+
+    const focusHandler = () => {
         setFocus(true)
-        const value = e.target.value.trim()
-        if (value === placeholder) {
-            setMessage('')
+        if (roomId) {
+            if (textValue === placeholder) {
+                setTextValue('')
+            }
+            dispatch(setTyping(true))
         }
     }
-    const blurHandler = (e) => {
+    const blurHandler = () => {
         setFocus(false)
-        const value = e.target.value.trim()
-        if (value === '') {
-            setMessage(placeholder)
+        if (roomId) {
+            setChangeCount(0)
+            dispatch(setTyping(false))
         }
     }
     const keyDownHandler = (e) => {
-        if (submitOk && e.keyCode === 13) {
+        if (roomId && e.keyCode === 13) {
             e.preventDefault()
-            submitHandler()
+            if (textValue !== placeholder && textValue !== '') {
+                submitHandler(e)
+            }
         }
     }
-    const formatMessage = e => {
-        const value = e.target.value.length > 0 ? capitalize(e.target.value) : ''
+    const changeHandler = (e) => {
+        let { value } = e.target
+        setChangeCount(changeCount + 1)
+        setTextValue(formatTextValue(value))
+    }
+    const formatTextValue = value => {
+        if (value.length > 0) {
+            value = capitalize(value)
+        }
         return value
     }
     const capitalize = str => str[0].toUpperCase() + str.slice(1)
-    const submitValidation = () => {
-        if (message === placeholder || message === '') {
-            setSubmitOk(false)
-        } else {
-            if (!submitOk) {
-                setSubmitOk(true)
-            }
-        }
-    }
-    const multilineHandler = (h) => {
-        if (minH > 0 && h > minH) {
-            // console.log(minH, h, 'at change add multiline');
-            setClassName('multiline')
-        } else {
-            // console.log(minH, h, 'at change remove multiline');
-            setClassName('')
-        }
-    }
-    const submitHandler = () => {
-        // Socket.io
-        if (activeRoom) {
-            console.log('sent message');
-            // console.log('room is:', activeRoom, '@"if');
+    const submitHandler = (e) => {
+        if (roomId) {
             const time = `${new Date(Date.now())}`
-            const id = randomstring.generate({
+            const sid = randomstring.generate({
                 length: 8,
                 charset: 'alphanumeric'
             })
-            const sid = `${time}--${id}`
-
-            const roomMsg = {
-                roomType: activeRoom.roomType,
-                usersPhoneNumber: [activeRoom.guest.phone.number, activeRoom.host.phone.number],
-                message: {
-                    sid,
-                    author: activeRoom.host.phone.number,
-                    reader: activeRoom.guest.phone.number,
-                    text: message,
-                    time: time,
-                    reciept: 0
-                }
+            const message = {
+                sid,
+                roomId: roomId,
+                author: userData.phone.number,
+                reader: activeRoom.contact.phone.number,
+                text: textValue,
+                time: time,
+                reciept: 0
             }
-
-            dispatch(setRecentRoomMessages(roomMsg))
-            socket.emit('send-message', roomMsg)
-            setMessage('')
-        } else {
-            console.log('room is:', activeRoom, '@else');
+            // console.log({ message });
+            dispatch(setNewMessage(message))
+            // dispatch(setRoomTextInputValue({ roomId, value: '' }))
+            setTextValue('')
+            e.target.blur()
         }
     }
 
 
 
     useEffect(() => {
-        const h = rootDom.current.querySelector('.MuiInputBase-input').clientHeight
-        if (focus) {
-            if (message === placeholder || message === '') {
-                setMinH(h)
-            } else {
-                multilineHandler(h)
-            }
-        } else {
-            if (message === placeholder || message === '') {
-                setMinH(h)
-            } else {
-                multilineHandler(h)
-            }
+        if (activeRoom) {
+            const { roomId } = activeRoom.contact
+            setRoomId(roomId)
         }
-    })
+    }, [activeRoom])
 
     useEffect(() => {
-        if (message === placeholder) {
-            rootDom.current.classList.add('placeholder')
-        } else {
-            rootDom.current.classList.remove('placeholder')
+        if (roomId) {
+            if (roomsTextInputValue[roomId] === '') {
+                setTextValue(placeholder)
+            } else {
+                setTextValue(roomsTextInputValue[roomId])
+            }
         }
-        submitValidation()
-    }, [message])
+    }, [roomId])
+    
+    useEffect(() => {
+        if (roomId) {
+            if (!focus) {
+                if (textValue === '') {
+                    setTextValue(placeholder)
+                } else {
+                    dispatch(setRoomTextInputValue({ roomId, value: textValue }))
+                }
+            }
+        }
+    }, [focus])
+
+    useEffect(() => {
+        if (roomId) {
+            if (changeCount === 0) {
+                if (textValue === placeholder) {
+                    rootDom.current.classList.add('placeholder')
+                } else {
+                    rootDom.current.classList.remove('placeholder')
+                }
+            }
+        }
+    }, [textValue])
+
+    useEffect(() => {
+        if (roomId) {
+            if (roomsTextInputValue[roomId] === '') {
+                setTextValue(placeholder)
+            } else {
+                setTextValue(roomsTextInputValue[roomId])
+            }
+        }
+    }, [roomsTextInputValue])
 
     return (
         <Root
             ref={rootDom}
             style={style}
-            className={className}
         >
             <Input
                 type="text" 
                 multiline={true}
                 id="chatMessage"
                 name="chatMessage"
-                value={message}
+                value={textValue}
                 onFocus={focusHandler}
                 onBlur={blurHandler}
-                onChange={(e) => setMessage(formatMessage(e))}
+                onChange={changeHandler}
                 onKeyDown={keyDownHandler}
                     />
         </Root>
