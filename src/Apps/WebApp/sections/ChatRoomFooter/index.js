@@ -12,14 +12,14 @@ import Camera from '../../components/icons/Camera.icon'
 
 
 
-export default function ({ room }) {
+export default function () {
   return (
     <Root>
       <Box className="wrapper">
 
         <Stack direction="row" spacing={0} className='stack'>
 
-          <Box className="iconButton">
+          <Box className="iconButton ui-ignore">
             <Plus/>
           </Box>
 
@@ -27,10 +27,9 @@ export default function ({ room }) {
             style={{
               flexGrow: 1
             }}
-            room={room}
               />
 
-          <Box className="iconButton">
+          <Box className="iconButton ui-ignore">
             <Camera
               style={{
                 width: 'calc(var(--icon-w) * 1.55)'
@@ -38,7 +37,7 @@ export default function ({ room }) {
                 />
           </Box>
           
-          <Box className="iconButton">
+          <Box className="iconButton ui-ignore">
             <Mic
               style={{
                 width: 'calc(var(--icon-w) * 1.08)'

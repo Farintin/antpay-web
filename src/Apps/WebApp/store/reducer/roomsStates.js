@@ -5,17 +5,27 @@ import { createSlice } from '@reduxjs/toolkit'
 export const roomsStatesSlice = createSlice({
   name: 'roomsStates',
   initialState: {
+    rooms: null,
     activeRoom: null,
-    roomGuestOnline: null,
-    roomGuestTyping: null,
-    sendRoomOnlineHandshake: null,
-    roomsGuestIndication: null,
     roomsMessages: null,
     roomsTextInputValue: null,
     roomsUnreadMessagesCount: null,
-    typing: false
+    totUnreadMsgs: 0,
+    typing: false,
+    roomGuestOnline: null,
+    roomGuestTyping: null,
+    sendRoomOnlineHandshake: null,
+    roomsGuestIndication: null
   },
   reducers: {
+    setRooms: (state, action) => {
+      const roomsData = action.payload
+      state.rooms = roomsData.map(roomData => {
+        const { _id, usersPhoneNumber, roomType } = roomData
+        return { _id, usersPhoneNumber, roomType }
+      })
+    },
+
     setRoomsGuestIndication: (state, action) => {
       state.roomsGuestIndication = action.payload
     },
@@ -85,6 +95,10 @@ export const roomsStatesSlice = createSlice({
       const { rooms } = state.roomsUnreadMessagesCount
       rooms[roomId] <= 0 ? rooms[roomId] = 0 : rooms[roomId] -= count
       state.roomsUnreadMessagesCount.lastModifiedRoom = roomId
+    },
+    
+    setTotUnreadMsgs: (state, action) => {
+      state.totUnreadMsgs = action.payload
     },
     
     updateMessageReciept1: (state, action) => {
@@ -262,9 +276,8 @@ export const roomsStatesSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
-  setRoomsGuestIndication,
-  setRoomsMessages,
-  setRoomsTextInputValue,
+  setRooms,
+  setActiveRoom,
 
   setRoomMessages,
   setRoomTextInputValue,
@@ -273,18 +286,20 @@ export const {
   setUnreadMessagesCount,
   incrementRoomUnreadMessagesCount,
   decrementRoomUnreadMessagesCount,
-
-  setActiveRoom,
+  setTotUnreadMsgs,
 
   updateMessageReciept1,
   updateMessageReciept2,
   // updateMessageReciept3,
   updateMessagesReciept3,
 
+  setTyping,
+  setRoomsGuestIndication,
+  setRoomsMessages,
+  setRoomsTextInputValue,
   setRoomGuestOnline,
   setRoomGuestTyping,
 
-  setSendRoomGuestOnlineHandshake,
-  setTyping } = roomsStatesSlice.actions
+  setSendRoomGuestOnlineHandshake} = roomsStatesSlice.actions
 
 export default roomsStatesSlice.reducer

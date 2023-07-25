@@ -8,8 +8,8 @@ const Root = styled(Box)(() => ({
   width: 51,
   height: 51,
   borderRadius: '50%',
-  boxShadow: `0px 0px 1px 4px var(--borderColor)`,
-  // border: '3px solid var(--borderColor)',
+  // boxShadow: `0px 0px 1px 4px var(--borderColor)`,
+  border: '3px solid var(--borderColor)',
   '& > .wrapper': {
     width: '100%',
     height: '100%',

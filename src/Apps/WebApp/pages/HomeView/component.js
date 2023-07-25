@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box"
-import { styled } from "@mui/material/styles"
+import { styled, alpha } from "@mui/material/styles"
 
 
 
@@ -16,6 +16,7 @@ const Root = styled(Box)(() => ({
         height: '100%',
         '&.col-1': {
           height: '100%',
+          position: 'relative',
           '& > .wrapper': {
             width: '30vw',
             minWidth: 400,
@@ -25,13 +26,41 @@ const Root = styled(Box)(() => ({
             borderRightWidth: 1,
             borderColor: '#ccc',
             borderStyle: 'solid',
-            '& > .stack': {
-              '& > .row-1': {
-                height: 250,
-              },
-              '& > .row-2': {
-                height: 'calc(100vh - 250px)'
+            position: 'relative'
+          },
+          '& .bottomNotification': {
+            position: 'fixed',
+            bottom: '0%',
+            left: 0,
+            width: '30vw',
+            minWidth: 400,
+            maxWidth: 450,
+            height: 'fit-content',
+            opacity: 1,
+            transition: '* .4s ease-in-out, opacity .6s ease-in-out',
+            '& > .wrapper': {
+              width: '100%',
+              height: '100%',
+              padding: '22.5px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              '& .text': {
+                fontSize: 12.9,
+                fontWeight: 400,
+                textAlign: 'left',
+                color: '#fff',
+                lineHeight: 1
               }
+            },
+            '&.message': {
+              backgroundColor: alpha('#333', 1)
+            },
+            '&.error': {
+              backgroundColor: alpha('#700', 1)
+            },
+            '&.hide': {
+              top: '100%',
+              opacity: 1
             }
           }
         },

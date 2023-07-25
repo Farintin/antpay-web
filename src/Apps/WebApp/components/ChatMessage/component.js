@@ -5,17 +5,24 @@ import { styled } from "@mui/material/styles"
 
 const Root = styled(Box)(() => ({
   display: 'flex',
-  // display: 'none',
   '& .main': {
     maxWidth: '69%',
+    // width: 'fit-content',
     '& .msgBox': {
       borderRadius: 18,
       padding: '12px 21px',
+      // width: '100%',
       '& .text': {
         color: '#22003D',
         fontSize: 14.5,
         fontWeight: 600,
-        lineHeight: '19.5px'
+        lineHeight: '19.5px',
+        // whiteSpace: 'pre-line',
+        // wordWrap: 'break-word',
+        wordBreak: 'break-all',
+        // overflowWrap: 'break-word',
+        // display: 'inline-block',
+        // width: '100%'
       }
     },
     '& .info': {

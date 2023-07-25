@@ -1,6 +1,6 @@
 export default (props) => {
   const width = props.width ? props.width : 11
-  const color = props.color ? props.color : '#6affc8'// '#ADFFE1'
+  const color = props.color ? props.color : '#6df1c1'// '#6affc8'// '#ADFFE1'
   const style = {
     ...props.style
   }

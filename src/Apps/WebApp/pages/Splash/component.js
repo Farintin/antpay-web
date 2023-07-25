@@ -44,7 +44,7 @@ const Root = styled(Box)(({ theme }) => ({
 }))
 
 const Loader = styled(Box)(() => ({
-  width: 270,
+  width: 285,
   height: 6,
   backgroundColor: alpha('#000', .15),
   borderRadius: 8,

@@ -7,6 +7,7 @@ export default function(props) {
     return (
         <Root
             style={props.style}
+            onClick={props.onClick}
         >
             <Box 
                 className="wrapper"

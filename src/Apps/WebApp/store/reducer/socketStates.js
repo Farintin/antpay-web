@@ -8,6 +8,7 @@ export const socketStatesSlice = createSlice({
   name: 'socketStates',
   initialState: {
     // openedAppAt: `${new Date(Date.now())}`,
+    isOnline: navigator.onLine,
     isConnected: null,
     newMessage: null,
     recieptPing1: null,
@@ -15,6 +16,10 @@ export const socketStatesSlice = createSlice({
     recieptPing3: null
   },
   reducers: {
+    setIsOnline: (state, action) => {
+      state.isOnline = action.payload
+    },
+
     setIsConnected: (state, action) => {
       state.isConnected = action.payload
     },
@@ -44,6 +49,7 @@ export const socketStatesSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { 
+  setIsOnline,
   setIsConnected, 
   setOldMessages,
   setNewMessage,

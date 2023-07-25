@@ -7,6 +7,10 @@ import { Root, Main, List } from "./component"
 import { LogoBrandVoilet } from "../../components/Logo"
 import Button from "../../components/Button"
 
+
+
+
+
 export default function () {
   const qrCodeDom = useRef(null)
   const [qrCodeLoading, setQrCodeLoading] = useState(true)

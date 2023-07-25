@@ -71,13 +71,13 @@ export default function() {
                 phone: userSignInState.phone
               })
               .then(response => {
-                console.log('axiosResponse:', response)
+                // console.log('axiosResponse:', response)
                 const { data } = response
                 if (data.msg === 'success') {
                     if (data.validOtp) {
                         if (data.userExist) {
                             localStorage.setItem('accessToken', data.data.token.accessToken)
-                            navigate('/home')
+                            navigate('/')
                         } else {
                             navigate('/setProfile')
                         }

@@ -6,6 +6,7 @@ import randomstring from 'randomstring'
 import { Root, Input } from './component'
 
 import { setNewMessage } from '../../store/reducer/socketStates'
+import { setInAppOnlineError } from '../../store/reducer/contacts'
 import { setRoomTextInputValue, setTyping } from '../../store/reducer/roomsStates'
 
 
@@ -14,6 +15,7 @@ import { setRoomTextInputValue, setTyping } from '../../store/reducer/roomsState
 
 export default function({ style }) {
     const { userData } = useSelector(state => state.user)
+    const { isOnline } = useSelector(state => state.socketStates)
     const { activeRoom, roomsTextInputValue } = useSelector(state => state.roomsStates)
     const rootDom = useRef(null)
     const [roomId, setRoomId] = useState(null)
@@ -21,7 +23,9 @@ export default function({ style }) {
     const [textValue, setTextValue] = useState('')
     const [focus, setFocus] = useState(false)
     const [changeCount, setChangeCount] = useState(0)
+    const [guestPhoneNumber, setGuestPhoneNumber] = useState(null)
     const dispatch = useDispatch()
+    let pingTypingFalseTimeoutId = 0
 
 
     const focusHandler = () => {
@@ -30,22 +34,32 @@ export default function({ style }) {
             if (textValue === placeholder) {
                 setTextValue('')
             }
-            dispatch(setTyping(true))
         }
     }
     const blurHandler = () => {
         setFocus(false)
         if (roomId) {
             setChangeCount(0)
-            dispatch(setTyping(false))
         }
     }
     const keyDownHandler = (e) => {
-        if (roomId && e.keyCode === 13) {
-            e.preventDefault()
-            if (textValue !== placeholder && textValue !== '') {
-                submitHandler(e)
+        if (roomId) {
+            if (e.keyCode === 13) {
+                e.preventDefault()
+                if (textValue !== placeholder && textValue !== '') {
+                    isOnline ? submitHandler(e) : dispatch(setInAppOnlineError())
+                }
+            } else {
+                if (isOnline) dispatch(setTyping(true))
             }
+        }
+    }
+    const keyUpHandler = () => {
+        if (roomId) {
+            clearTimeout(pingTypingFalseTimeoutId)
+            pingTypingFalseTimeoutId = setTimeout(() => {
+                dispatch(setTyping(false))
+            }, 3000)
         }
     }
     const changeHandler = (e) => {
@@ -71,14 +85,12 @@ export default function({ style }) {
                 sid,
                 roomId: roomId,
                 author: userData.phone.number,
-                reader: activeRoom.contact.phone.number,
+                reader: guestPhoneNumber,
                 text: textValue,
                 time: time,
                 reciept: 0
             }
-            // console.log({ message });
             dispatch(setNewMessage(message))
-            // dispatch(setRoomTextInputValue({ roomId, value: '' }))
             setTextValue('')
             e.target.blur()
         }
@@ -88,8 +100,7 @@ export default function({ style }) {
 
     useEffect(() => {
         if (activeRoom) {
-            const { roomId } = activeRoom.contact
-            setRoomId(roomId)
+            setRoomId(activeRoom._id)
         }
     }, [activeRoom])
 
@@ -100,6 +111,9 @@ export default function({ style }) {
             } else {
                 setTextValue(roomsTextInputValue[roomId])
             }
+
+            const guestPhoneNumber = activeRoom.usersPhoneNumber.find(phoneNumber => userData.phone.number !== phoneNumber)
+            setGuestPhoneNumber(guestPhoneNumber)
         }
     }, [roomId])
     
@@ -152,6 +166,7 @@ export default function({ style }) {
                 onBlur={blurHandler}
                 onChange={changeHandler}
                 onKeyDown={keyDownHandler}
+                onKeyUp={keyUpHandler}
                     />
         </Root>
     )

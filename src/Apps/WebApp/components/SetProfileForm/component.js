@@ -1,4 +1,5 @@
-import { Box, InputBase } from "@mui/material"
+import Box from "@mui/material/Box"
+import InputBase from "@mui/material/InputBase"
 import { alpha, styled } from "@mui/material/styles"
 import Button from "../Button"
 

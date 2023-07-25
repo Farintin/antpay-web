@@ -19,7 +19,9 @@ export default function CssBaseline() {
         },
         html: {
           width: '100%',
-          WebkitOverflowScrolling: 'touch'
+          WebkitOverflowScrolling: 'touch',
+          scrollbarColor: '#8621d1 #0000',
+          scrollbarWidth: 'thin'
         },
         body: {
           width: '100%',

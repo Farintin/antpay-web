@@ -18,7 +18,8 @@ export default function(props) {
                         width: 78,
                         height: 78,
                         borderWidth: 3,
-                        padding: 3
+                        padding: 3,
+                        cursor: 'pointer'
                     }} 
                     image={props.image}
                     />

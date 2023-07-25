@@ -12,15 +12,15 @@ export default (props) => {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 8" 
       width={width}
-      style={style}
-      className={`icon chevronUp ${className}`}
+      stroke={color} 
+      strokeWidth="1.5" 
+      strokeLinecap="round"
       fill="none" 
+      className={`icon chevronUp ${className}`}
+      style={style}
     >
       <path 
-        d="M1.46153 0.826088L9.83431 6.69565L19.0444 0.826088" 
-        stroke={color} 
-        strokeWidth="1.5" 
-        strokeLinecap="round"
+        d="M1.46153 0.826088L9.83431 6.69565L19.0444 0.826088"
       />
     </svg>
   )

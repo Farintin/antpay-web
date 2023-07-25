@@ -32,6 +32,7 @@ export default function ({ style, className }) {
   let [unreadMessagesCount, setUnreadMessagesCount] = useState(0)
   let [showScrolldownButton, setShowScrolldownButton] = useState(false)
   const dispatch = useDispatch()
+  
 
   let guestChatMessageEls = []
   const observer = new IntersectionObserver(
@@ -105,7 +106,7 @@ export default function ({ style, className }) {
   
   useEffect(() => {
     if (roomEnter) {
-      const { roomId } = activeRoom.contact
+      const roomId = activeRoom._id
       setRoomId(roomId)
       dispatch(setShowRoomGuestContactProfile(false))
 
@@ -162,13 +163,20 @@ export default function ({ style, className }) {
       guestChatMessageEls = rootDom.current.querySelectorAll('.chatMessage.guest')
       if (guestChatMessageEls.length > 0) guestChatMessageEls.forEach(el => observer.observe(el))
 
+      let ch = rootDom.current.clientHeight
+      let sh = rootDom.current.scrollHeight
+      let top = rootDom.current.scrollTop
+      // console.log({ ch, sh });
+      if (sh > ch) {
+        rootDom.current.classList.add('scrollbarIsVisible')
+      } else {
+        rootDom.current.classList.remove('scrollbarIsVisible')
+      }
+
       if (newRoomMessage) {
         if (newRoomMessage.reciept === 0) {
           setScrollToBottom(true)
         } else {
-          let ch = rootDom.current.clientHeight
-          let sh = rootDom.current.scrollHeight
-          let top = rootDom.current.scrollTop
           if ((top+ch) >= (sh-(ch*.2))) {
             setScrollToBottom(true)
           }

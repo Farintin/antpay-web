@@ -136,7 +136,6 @@ export default function() {
                 const { data } = response
                 if (data.msg === 'success') {
                     // Nagivate to web app home view.
-                    // console.log('Nagivate to web app home view.')
                     localStorage.setItem('accessToken', data.data.token.accessToken)
                     navigate('/home')
                 } else {
@@ -156,7 +155,7 @@ export default function() {
         window.onclick = function () {
           setClick(true)
         }
-    })
+    }, [])
 
     useEffect(() => {
         // console.log('avatar:', avatar)

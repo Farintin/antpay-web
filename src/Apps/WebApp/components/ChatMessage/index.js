@@ -16,11 +16,9 @@ export default function({ message }) {
     time = new Date(time).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
     
     let className = 'chatMessage'
-    if (message.author === activeRoom.contact.phone.number) {
-        className = `${className} guest`
-    } else if (message.author === userData.phone.number) {
-        className = `${className} host`
-    }
+    const guestPhoneNumber = activeRoom.usersPhoneNumber.find(phoneNumber => userData.phone.number !== phoneNumber)
+    if (message.author === guestPhoneNumber) className = `${className} guest`
+    if (message.author === userData.phone.number) className = `${className} host`
 
     useEffect(() => {
         switch (reciept) {

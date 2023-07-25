@@ -99,6 +99,7 @@ export default function() {
             code: countryCode,
             image: ''
         }
+
         for (let countryObj of countries) {
             if (countryObj.code === countryCode) {
                 countryValue = countryObj
@@ -186,7 +187,7 @@ export default function() {
     }, [countryName])
 
     useEffect(() => {
-        countryCodeSearchHandler()
+        if (countryCode !== country.code) countryCodeSearchHandler()
     }, [countryCode])
 
     useEffect(() => {
@@ -233,9 +234,6 @@ export default function() {
         }
     }, [submitOk])
 
-    /* useEffect(() => {
-        // console.log('userSignInState:', userSignInState)
-    }, [userSignInState]) */
 
     return (
         <Root>

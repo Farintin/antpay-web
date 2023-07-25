@@ -12,9 +12,14 @@ const Root = styled(Box)(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',
         '&.col-1': {
-          cursor: 'pointer',
-          '& > *': {
-            margin: '0 6px'
+          '& .guestInfo': {
+            display: 'flex',
+            alignItems: 'center',
+            width: 'fit-content',
+            cursor: 'pointer',
+            '& > *': {
+              margin: '0 6px'
+            }
           },
           '& .text': {
             color: '#fff',

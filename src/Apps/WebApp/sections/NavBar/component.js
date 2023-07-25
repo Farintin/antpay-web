@@ -1,14 +1,10 @@
 import Box from "@mui/material/Box"
-import { styled } from "@mui/material/styles"
+import { styled, alpha } from "@mui/material/styles"
 
 
 
 const Root = styled(Box)(() => ({
   padding: 12,
-  // borderWidth: 0,
-  // borderRightWidth: 1,
-  // borderColor: '#aaa',
-  // borderStyle: 'solid',
   '& > .wrapper': {
     '& > .grid': {
       '& > .col': {
@@ -25,16 +21,21 @@ const Root = styled(Box)(() => ({
             '& .iconButton': {
               width: 32,
               height: 32,
-              // backgroundColor: theme.palette.primary.lighter,
-              borderRadius: 8,
+              borderRadius: 32,
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              cursor: 'pointer',
+              boxSizing: 'content-box',
+              padding: 4,
               '& .icon': {
                 width: 22,
-                '&.menulist': {
-                  width: 7.5
+                '&.search': {
+                  width: 20
                 }
+              },
+              '&:hover': {
+                backgroundColor: alpha('#000', .12)
               }
             }
           }

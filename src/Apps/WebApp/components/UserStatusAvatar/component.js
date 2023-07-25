@@ -4,10 +4,14 @@ import { styled } from "@mui/material/styles"
 
 
 const Root = styled(Box)(() => ({
+  height: '100%',
+  margin: '0 10.5px!important',
   '& > .wrapper': {
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'space-between',
     '& .avatar': {
       width: 81,
       height: 81,
@@ -15,9 +19,10 @@ const Root = styled(Box)(() => ({
       borderRadius: '50%',
       display: 'flex',
       justifyContent: 'center',
+      cursor: 'pointer',
       '& > img': {
-        width: '100%',
-        height: '100%',
+        width: 'inherit',
+        height: 'inherit',
         borderRadius: 'inherit',
         position: 'absolute',
         // bottom: '-3%',

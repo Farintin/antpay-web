@@ -10,6 +10,7 @@ const Root = styled(Box)(() => ({
   padding: '8px 32px 0px',
   position: 'relative',
   flexGrow: 1,
+  scrollBehavior: 'auto',
   '& > .wrapper': {
     flexGrow: 1,
     display: 'flex',
@@ -17,6 +18,9 @@ const Root = styled(Box)(() => ({
     justifyContent: 'flex-end',
     '& > .main': {
     }
+  },
+  '&.scrollbarIsVisible': {
+    paddingRight: 8
   }
 }))
 

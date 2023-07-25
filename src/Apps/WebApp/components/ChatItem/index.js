@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import Box from "@mui/material/Box"
@@ -19,28 +19,33 @@ import { setActiveRoom } from "../../store/reducer/roomsStates"
 
 
 
-export default function ({ contact, style }) {
+export default function ({ room, style }) {
   const defaultAvatar = '/image/avatar.svg'
   const defaultDesc = 'Contact not using Antpay'
+  const unreadMsgCountDom = useRef(null)
+  const { userData } = useSelector(state => state.user)
+  const { contacts } = useSelector(state => state.contacts)
+  const { activeRoom, roomsMessages, roomsUnreadMessagesCount } = useSelector(state => state.roomsStates)
+  const [contact, setContact] = useState(null)
   const [user, setUser] = useState(null)
-  const [name, setName] = useState(contact.phone.number)
-  const [desc, setDesc] = useState(defaultDesc)
+  const [name, setName] = useState('')
+  const [desc, setDesc] = useState('')
   const [lastMsgTime, setLastMsgTime] = useState('')
   const [handleLastMsg, setHandleLastMsg] = useState(false)
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0)
   const [tick, setTick] = useState('')
-  const { userData } = useSelector(state => state.user)
-  const { activeRoom, roomsMessages, roomsUnreadMessagesCount } = useSelector(state => state.roomsStates)
-  const { roomId } = contact
+  const roomId = room._id
   const nameSize = 15
-  const descSize = 15
+  const descSize = 20
   const dispatch = useDispatch()
 
   
 
   const contactClickHandler = () => {
-    const room = { roomType: 'pair', contact }
-    if (roomId !== activeRoom?.contact.roomId) dispatch(setActiveRoom(room))
+    if (roomId !== activeRoom?._id) {
+      const activeRoomObj = { ...room, contact: contact ? { ...contact, user } : null }
+      dispatch(setActiveRoom(activeRoomObj))
+    }
   }
   
   const setDescHandler = (value) => {
@@ -72,20 +77,42 @@ export default function ({ contact, style }) {
     
     setLastMsgTime(timeFormat)
   }
+  const unreadMsgsHandler = () => {
+    const count = roomsUnreadMessagesCount.rooms[roomId]
+    setUnreadMessagesCount(count)
+    if (typeof count === 'number' && count !== 0) {
+      unreadMsgCountDom.current.classList.remove('hide')
+    } else {
+      unreadMsgCountDom.current.classList.add('hide')
+    }
+  }
+
 
 
   useEffect(() => {
-    if (contact && contact.userAccExist) {
+    setHandleLastMsg(true)
+    unreadMsgsHandler()
+  }, [])
+
+  useEffect(() => {
+    const contact = contacts.find(contact => contact.roomId === roomId)
+    if (contact) setContact(contact)
+  }, [room])
+
+  useEffect(() => {
+    if (contact?.userAccExist) {
       setUser(contact.user)
     }
-  }, [])
+  }, [contact])
   
   useEffect(() => {
     if (user !== null) {
       user.name.length > nameSize ? setName(`${user.name.slice(0, nameSize)}...`) : setName(user.name)
-      if (desc === defaultDesc) {
-        setDescHandler(user.status)
-      }
+    } else if (contact !== null) {
+      setName(contact.phone.number)
+    } else {
+      setName(room.usersPhoneNumber.find(phoneNumber => phoneNumber !== userData.phone.number))
+      setDescHandler(defaultDesc)
     }
   }, [user])
   
@@ -94,89 +121,84 @@ export default function ({ contact, style }) {
       if (roomId && roomId === roomsMessages.lastModifiedRoom) {
         setHandleLastMsg(true)
       }
-      
-      if (roomsMessages.lastModifiedRoom === null) {
-        setHandleLastMsg(true)
-      }
     }
   }, [roomsMessages])
   
   useEffect(() => {
     if (handleLastMsg) {
       const room = roomsMessages.rooms[roomId]
-      
-      let messages = room.recentMessages.filter(comp => comp.component === 'chat-message')
-      let lastMsg
-      if (messages.length > 0) {
-        lastMsg = messages[messages.length - 1]
-        setDescHandler(lastMsg.text)
-        setLastMsgTimeHandler(lastMsg.time)
-      }
-      if (!lastMsg) {
-        messages = room.oldMessages.filter(comp => comp.component === 'chat-message')
+      if (room) {
+        let messages = room.recentMessages.filter(comp => comp.component === 'chat-message')
+        let lastMsg
         if (messages.length > 0) {
           lastMsg = messages[messages.length - 1]
           setDescHandler(lastMsg.text)
           setLastMsgTimeHandler(lastMsg.time)
         }
-      }
-
-      if (lastMsg) {
-        if (lastMsg.author === userData.phone.number) {
-          switch (lastMsg.reciept) {
-            case 1:
-                setTick(<TickIcon width={16.5} color="#aaa" style={{ strokeWidth: 1.2 }} />)
-                break;
-                
-            case 2:
-                setTick(<TickDoubleIcon width={19.5} color="#aaa" style={{ strokeWidth: 1.2 }} />)
-                break;
-                
-            case 3:
-                setTick(<TickDoubleIcon width={19.5} style={{ strokeWidth: 1.2 }} />)
-                break;
-        
-            default:
-                break;
+        if (!lastMsg) {
+          messages = room.oldMessages.filter(comp => comp.component === 'chat-message')
+          if (messages.length > 0) {
+            lastMsg = messages[messages.length - 1]
+            setDescHandler(lastMsg.text)
+            setLastMsgTimeHandler(lastMsg.time)
           }
-        } else {
-          setTick('')
         }
+  
+        if (lastMsg) {
+          if (lastMsg.author === userData.phone.number) {
+            switch (lastMsg.reciept) {
+              case 1:
+                  setTick(<TickIcon width={16.5} color="#888" style={{ strokeWidth: 1 }} />)
+                  break;
+                  
+              case 2:
+                  setTick(<TickDoubleIcon width={19.5} color="#888" style={{ strokeWidth: 1 }} />)
+                  break;
+                  
+              case 3:
+                  setTick(<TickDoubleIcon width={19.5} style={{ strokeWidth: 1 }} />)
+                  break;
+          
+              default:
+                  break;
+            }
+          } else {
+            setTick('')
+          }
+        }
+  
+        setHandleLastMsg(false)
       }
-
-      setHandleLastMsg(false)
     }
   }, [handleLastMsg])
   
   useEffect(() => {
-    if (roomsUnreadMessagesCount !== null && roomId) {
-      const count = roomsUnreadMessagesCount.rooms[roomId]
-      setUnreadMessagesCount(count)
-    }
+    unreadMsgsHandler()
   }, [roomsUnreadMessagesCount])
 
   return (
     <Root 
       style={style}
       onClick={contactClickHandler}
+      className="chatItem"
     >
       <Box className="wrapper">
 
         <Grid container spacing={0} className='grid'>
 
-          <Grid item xs={2.7} className='col col-1'>
+          <Grid item xs={2.5} className='col col-1'>
             <Avatar 
               style={{
                 '--borderColor': '#6E01CE',
-                width: 60,
-                height: 60,
-                borderWidth: 3
+                width: 51,
+                height: 51,
+                borderWidth: 2.4
               }}
               image={user ? user.avatar.thumb_url : defaultAvatar}
                 />
           </Grid>
 
-          <Grid item xs={9.3} className='col col-2'>
+          <Grid item xs={9.5} className='col col-2'>
 
             <Grid container spacing={0} className='grid'>
 
@@ -210,7 +232,8 @@ export default function ({ contact, style }) {
               <Grid item xs={3.3} className='col col-4'>
 
                 <Box 
-                  className={`n ${unreadMessagesCount === 0 ? 'hide' : ''}`}
+                  ref={unreadMsgCountDom}
+                  className={`n`}
                 >
                   <Typography className="text">
                     {unreadMessagesCount}

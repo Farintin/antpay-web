@@ -4,12 +4,13 @@ import { alpha, styled } from "@mui/material/styles"
 
 
 const Root = styled(Box)(({ theme }) => ({
-  padding: '15px 0',
-  borderWidth: '0 0 1px 0',
-  borderStyle: 'solid',
-  borderColor: alpha('#000', .18), 
+  padding: '15px 8px 0',
   cursor: 'pointer',
   '& > .wrapper': {
+    borderWidth: '0 0 1px 0',
+    borderStyle: 'solid',
+    borderColor: alpha('#000', .12), 
+    paddingBottom: 15,
     '& > .grid': {
       '& > .col': {
         '&.col-1': {
@@ -21,9 +22,9 @@ const Root = styled(Box)(({ theme }) => ({
             '& .col': {
               display: 'flex',
               alignItems: 'center',
-              padding: '3px 0',
+              padding: '5px 0 3px',
               '& .text': {
-                fontSize: 12.6,
+                fontSize: 12,
                 fontWeight: 500,
                 color: '#000',
                 lineHeight: '100%',
@@ -37,6 +38,7 @@ const Root = styled(Box)(({ theme }) => ({
                 '&.time': {
                   fontWeight: 700,
                   textTransform: 'uppercase',
+                  lineHeight: '75%',
                   '&.fs-lg': {
                     fontSize: 14.4
                   },
@@ -71,6 +73,7 @@ const Root = styled(Box)(({ theme }) => ({
                 justifyContent: 'flex-end'
               },
               '&.col-3': {
+                alignItems: 'flex-start',
                 '& .tick': {
                   marginRight: 3,
                   display: 'flex',
@@ -104,6 +107,9 @@ const Root = styled(Box)(({ theme }) => ({
         }
       }
     }
+  },
+  '&:hover': {
+    backgroundColor: alpha('#000', .042)
   }
 }))
 

@@ -20,25 +20,24 @@ import { setShowRoomGuestContactProfile } from '../../store/reducer/contacts'
 
 export default function () {
   const defaultAvatar = '/image/avatar.svg'
+  const { userData } = useSelector(state => state.user)
   const { activeRoom, roomsGuestIndication } = useSelector(state => state.roomsStates)
-  const [contactAccExist, setContactAccExist] = useState(false)
-  const [guest, setGuest] = useState(null)
   const [indicator, setIndicator] = useState('')
   const [roomId, setRoomId] = useState(null)
   const [name, setName] = useState('')
+  const [avatar, setAvatar] = useState(defaultAvatar)
   const nameSize = 10
   const dispatch = useDispatch()
+
 
   const showContactProfileHandler = () => {
     dispatch(setShowRoomGuestContactProfile(true))
   }
-  
+
   const indicatorHandler = () => {
     if (roomId && roomsGuestIndication) {
-      // if (roomsGuestIndication.lastModifiedRoom === roomId) {
       const room = roomsGuestIndication.rooms[roomId]
       let { guestOnline, guestTyping } = room
-      // console.log({ guestOnline, guestTyping })
       
       let indicator
       if (guestOnline) {
@@ -51,41 +50,37 @@ export default function () {
         indicator = ''
       }
       setIndicator(indicator)
-      // }
     }
   }
+
 
   useEffect(() => {
     if (activeRoom) {
       const { contact } = activeRoom
-      const { roomId } = contact
+      setRoomId(activeRoom._id)
+      
       if (contact && contact.userAccExist) {
-        setContactAccExist(true)
-        setGuest(contact.user)
-      } else {
-        setContactAccExist(false)
-        setGuest(contact)
+        contact.user.name.length > nameSize ? setName(`${contact.user.name.slice(0, nameSize)}...`) : setName(contact.user.name)
+        setAvatar(contact.user.avatar.thumb_url)
       }
-      setRoomId(roomId)
+      if (contact && !contact.userAccExist) {
+        setName(contact.phone.number)
+        setAvatar(defaultAvatar)
+      }
+      if (!contact) {
+        const guestPhoneNumber = activeRoom.usersPhoneNumber.find(phoneNumber => userData.phone.number !== phoneNumber)
+        setName(guestPhoneNumber)
+        setAvatar(defaultAvatar)
+      }
     }
   }, [activeRoom])
   
   useEffect(() => {
-    indicatorHandler(roomId)
+    indicatorHandler()
   }, [roomId])
   
   useEffect(() => {
-    if (guest) {
-      if (contactAccExist) {
-        guest.name.length > nameSize ? setName(`${guest.name.slice(0, nameSize)}...`) : setName(guest.name)
-      } else {
-        setName(guest.phone.number)
-      }
-    }
-  }, [guest])
-
-  useEffect(() => {
-    indicatorHandler(roomId)
+    indicatorHandler()
   }, [roomsGuestIndication])
 
   return (
@@ -99,23 +94,27 @@ export default function () {
             xs={6} 
             className='col col-1' 
             sx={{ pl: 0 }}
-            onClick={showContactProfileHandler}
           >
 
-            <Avatar 
-              style={{
-                width: 51,
-                height: 51
-              }}
-              image={contactAccExist? guest.avatar.thumb_url : defaultAvatar}
-              />
-            <Box>
-              <Typography className="text username">
-                {name}
-              </Typography>
-              <Typography className="text indicator">
-                {indicator}
-              </Typography>
+            <Box 
+              className="guestInfo"
+              onClick={showContactProfileHandler}
+            >
+              <Avatar 
+                style={{
+                  width: 48,
+                  height: 48
+                }}
+                image={avatar}
+                />
+              <Box>
+                <Typography className="text username">
+                  {name}
+                </Typography>
+                <Typography className="text indicator">
+                  {indicator}
+                </Typography>
+              </Box>
             </Box>
 
           </Grid>

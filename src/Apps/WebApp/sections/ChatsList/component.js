@@ -8,15 +8,13 @@ const Root = styled(Box)(({ theme }) => ({
   height: '100%',
   borderRadius: '42px 42px 0 0',
   '& > .wrapper': {
-    height: '100%',
-    padding: 24,
-    paddingTop: 42,
-    paddingRight: 32,
+    height: 'calc(100% - 8px)',
+    padding: '42px 28px 0px',
+    display: 'grid',
+    gridTemplateRows: 'min-content auto',
     '& > .row': {
       '&.row-1': {
-        height: 32,
-        paddingLeft: 16,
-        paddingRight: 24,
+        padding: '0 16px',
         '& .text': {
           textTransform: 'capitalize',
           color: theme.palette.primary.light
@@ -24,9 +22,8 @@ const Root = styled(Box)(({ theme }) => ({
       },
       '&.row-2': {
         marginTop: 24,
-        paddingLeft: 16,
-        paddingRight: 16,
-        height: 'calc(100% - 32px)',
+        paddingLeft: 8,
+        paddingRight: 4,
         overflow: 'overlay',
         '::-webkit-scrollbar': {
           width: '8px'
@@ -37,6 +34,13 @@ const Root = styled(Box)(({ theme }) => ({
         },
         '::-webkit-scrollbar-thumb:hover': {
           backgroundColor: '#d7a9ff'
+        },
+        '& .chatItem': {
+          '&:last-of-type': {
+            '& > .wrapper': {
+              borderWidth: 0
+            }
+          }
         }
       }
     }

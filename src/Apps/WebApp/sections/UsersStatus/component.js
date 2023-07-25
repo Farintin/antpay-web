@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles"
 const Root = styled(Box)(({ theme }) => ({
   padding: 12,
   '& > .wrapper': {
-    padding: '8px 12px',
+    padding: '0px 12px',
     paddingRight: 0,
     '& .slider': {
       display: 'flex',
