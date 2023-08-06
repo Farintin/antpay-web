@@ -1,33 +1,34 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+
 import axios from "axios"
 
 import { Box, Typography } from "@mui/material"
 
 import { Root, OTPInput, Submit } from './component'
+import Loader from "../Loader"
 
 
 
 
 
-export default function() {
+export default function({ devOtp }) {
     const displayDom = useRef(null)
     const inputValueDom = useRef(null)
     const submitBtnDom = useRef(null)
-
+    const { userSignInState } = useSelector(state => state.userSignInAuth)
+    const { server } = useSelector(state => state.socketStates)
     const validOtpLength = 4
     let displayValue = []
     for (let i=0; i<validOtpLength; i++) {displayValue.push('')}
-
     const defaultOTP = ''
     const [otp, setOtp] = useState(defaultOTP)
     const [boxFocus, setBoxFocus] = useState(false)
     const [submitOk, setSubmitOk] = useState(false)
-
+    const [submitCount, setSubmitCount] = useState(0)
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    
-    const { userSignInState } = useSelector(state => state.userSignInAuth)
     
 
 
@@ -66,30 +67,45 @@ export default function() {
     }
     const submitHandler = () => {
         if (submitOk) {
-            axios.post('http://localhost:5000/v1/auth/user/verifyOtp', {
+            console.log({ submitCount });
+            setLoading(true)
+
+            axios.post(`${server}/auth/user/verifyOtp`, {
                 passcode: otp,
                 phone: userSignInState.phone
               })
               .then(response => {
-                // console.log('axiosResponse:', response)
+                setSubmitCount(submitCount + 1)
                 const { data } = response
                 if (data.msg === 'success') {
                     if (data.validOtp) {
                         if (data.userExist) {
                             localStorage.setItem('accessToken', data.data.token.accessToken)
-                            navigate('/')
+                            setTimeout(() => navigate('/loader'), 1000)
                         } else {
-                            navigate('/setProfile')
+                            setTimeout(() => navigate('/setProfile'), 1000)
                         }
                     } else {
+                        setLoading(false)
                         console.log('wrong otp')
+                        setOtp('')
+                        if (submitCount < 3) {
+                            alert(`Invalid OTP`)
+                            alert(`correct OTP: ${devOtp}`)
+                        } else {
+                            alert(`Reached maximum submit.`)
+                        }
                     }
                 } else {
+                    setLoading(false)
                     console.log('unsuccessful:', data)
+                    alert('server error.')
                 }
               })
               .catch(error => {
-                console.log('axiosErrorResponse:', error)
+                    setLoading(false)
+                    console.log('axiosErrorResponse:', error)
+                    alert('Network error')
               })
         }
     }
@@ -120,13 +136,19 @@ export default function() {
         }
     }, [boxFocus])
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (!submitOk) {
             submitBtnDom.current.classList.add('disable')
         } else {
             submitBtnDom.current.classList.remove('disable')
         }
     }, [submitOk])
+    
+    useEffect(() => {
+        if (submitCount > 3) {
+            navigate('/phoneSignIn')
+        }
+    }, [submitCount])
     
 
     return (
@@ -182,6 +204,11 @@ export default function() {
                 <Typography className="label">Continue</Typography>
             </Submit>
 
+            {loading ? <Loader 
+                style={{
+                    position: 'fixed'
+                }}
+                    /> : ''}
         </Root>
     )
 }

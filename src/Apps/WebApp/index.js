@@ -12,6 +12,8 @@ import PhoneSignIn from './pages/PhoneSignIn'
 import OtpSignIn from './pages/OtpSignIn'
 import SetProfile from './pages/SetProfile'
 import HomeView from './pages/HomeView'
+import LogOut from './pages/LogOut'
+import NoInternet from './pages/NoInternet'
 import './App.css'
 // -----------------------------------------------------
 import { 
@@ -20,9 +22,11 @@ import {
   setNewMessage,
   setRecieptPing1,
   setRecieptPing2,
-  setRecieptPing3 } from './store/reducer/socketStates'
+  setRecieptPing3,
+  setNewConversation } from './store/reducer/socketStates'
 import { setInAppMessage, setInAppError } from './store/reducer/contacts'
 import {
+  setRooms,
   setRoomMessages,
   setActiveRoom,
 
@@ -33,11 +37,12 @@ import {
   updateMessageReciept2,
   updateMessagesReciept3,
 
+  setTyping,
   setRoomGuestOnline,
   setSendRoomGuestOnlineHandshake,
   setRoomGuestTyping } from './store/reducer/roomsStates'
 // -----------------------------------------------------
-import { socket } from './socket'
+import { socket } from './socket'  
 
 import sentMsgSfx from '../../sounds/among_us_chat.mp3'
 import incomingMsgSfx from '../../sounds/facebook_chat_sound.mp3'
@@ -46,9 +51,19 @@ import incomingMsgSfx from '../../sounds/facebook_chat_sound.mp3'
 
 
 
+
+
+
 export default function () {
-  const { userData } = useSelector(state => state.user)
-  const { isConnected, isOnline, newMessage, recieptPing1, recieptPing2, recieptPing3 } = useSelector(state => state.socketStates)
+  const { userData, logOut } = useSelector(state => state.user)
+  const {
+    isConnected, 
+    isOnline, 
+    newMessage, 
+    recieptPing1, 
+    recieptPing2, 
+    recieptPing3,
+    newConversation } = useSelector(state => state.socketStates)
   const { contacts, inAppMessage, inAppError } = useSelector(state => state.contacts)
   const {
     activeRoom,
@@ -60,10 +75,11 @@ export default function () {
     typing } = useSelector(state => state.roomsStates)
   const [ trackRoomsMessages, setTrackRoomsMessages ] = useState(false)
   const [ trackRoomMessages, setTrackRoomMessages ] = useState(false)
-  const sentMsgAudio = new Audio(sentMsgSfx);
-  const incomingMsgAudio = new Audio(incomingMsgSfx);
+  const sentMsgAudio = new Audio(sentMsgSfx)
+  const incomingMsgAudio = new Audio(incomingMsgSfx)
   const dispatch = useDispatch()
     
+
 
   const onlineHandler = () => {
     dispatch(setIsOnline(true))
@@ -71,6 +87,7 @@ export default function () {
   const offlineHandler = () => {
     dispatch(setIsOnline(false))
   }
+
 
 
   useEffect(() => {
@@ -106,6 +123,9 @@ export default function () {
     const onRoomGuestOnlineHandshake = (data) => {
       dispatch(setRoomGuestOnline(data))
     }
+    const onNewConversation = (data) => {
+      dispatch(setNewConversation(data))
+    }
 
     socket.on('connect', onConnect)
     socket.on('disconnect', onDisconnect)
@@ -116,6 +136,7 @@ export default function () {
     socket.on('room-guest-online', onRoomGuestOnline)
     socket.on('room-guest-typing', onRoomGuestTyping)
     socket.on('room-guest-online-handshake', onRoomGuestOnlineHandshake)
+    socket.on('newConversation', onNewConversation)
     return () => {
       window.removeEventListener("online", onlineHandler);
       window.removeEventListener("offline", offlineHandler);
@@ -129,22 +150,26 @@ export default function () {
       socket.off('room-guest-online', onRoomGuestOnline)
       socket.off('room-guest-typing', onRoomGuestTyping)
       socket.off('room-guest-online-handshake', onRoomGuestOnlineHandshake)
-    };
-  }, []);
+      socket.off('newConversation', onNewConversation)
+    }
+  }, [])
 
   useEffect(() => {
-    console.log({ isOnline });
+    isOnline && isConnected === false ? socket.connect() : socket.disconnect()
   }, [isOnline])
 
   useEffect(() => {
-    if (isConnected === false) {
+    // console.log({ isConnected, logOut, isOnline });
+    if (isConnected === false && !logOut && isOnline) {
       socket.connect()
     }
     
     if (isConnected === true) {
-      const roomIds = Object.keys(roomsMessages.rooms)
-      socket.emit('join-rooms', roomIds)
-      setTrackRoomsMessages(true)
+      if (roomsMessages) {
+        const roomIds = Object.keys(roomsMessages.rooms)
+        socket.emit('join-rooms', roomIds)
+        setTrackRoomsMessages(true)
+      }
     }
   }, [isConnected])
 
@@ -209,9 +234,11 @@ export default function () {
     if (trackRoomsMessages) {
       const { rooms } = roomsMessages
       const roomIds = Object.keys(rooms)
+
       roomIds.forEach(roomId => {
         const room = rooms[roomId]
         const messages = [...room.oldMessages, ...room.recentMessages]
+
         messages.forEach(message => {
     
           if (userData.phone.number === message.reader) {
@@ -225,6 +252,7 @@ export default function () {
           }
 
         })
+
       })
 
       setTrackRoomsMessages(false)
@@ -281,9 +309,11 @@ export default function () {
   }, [sendRoomGuestOnlineHandshake])
   
   useEffect(() => {
-    if (activeRoom) {
+    if (typing) {
       const roomId = activeRoom._id
       socket.emit('room-user-typing', { roomId, typing })
+      
+      dispatch(setTyping(false))
     }
   }, [typing])
   
@@ -305,10 +335,26 @@ export default function () {
   
   useEffect(() => {
     if (roomsUnreadMessagesCount !== null) {
-      const count = Object.values(roomsUnreadMessagesCount.rooms).reduce((t,n) => t+n)
-      dispatch(setTotUnreadMsgs(count))
+      const counts = Object.values(roomsUnreadMessagesCount.rooms)
+      if (counts.length > 0) {
+        const count = counts.reduce((t,n) => t+n)
+        dispatch(setTotUnreadMsgs(count))
+      }
     }
   }, [roomsUnreadMessagesCount])
+  
+  useEffect(() => {
+    if (newConversation) {
+      const { room } = newConversation
+      const roomsCopy = structuredClone(rooms)
+      const roomCopy = structuredClone(room)
+      roomCopy.newRoom = true
+      dispatch(setRooms([...roomsCopy, roomCopy]))
+      incomingMsgAudio.play()
+
+      dispatch(setNewConversation(null))
+    }
+  }, [newConversation])
 
 
   return (
@@ -321,12 +367,15 @@ export default function () {
         
         <Routes>
           <Route path="" element={<Layout title="" />}>
-            <Route path="/" element={<Splash title="" />} />
+            <Route path="/" element={<PhoneSignIn title="" />} />
             <Route path="/qrSignIn" element={<QrSignIn title="" />} />
             <Route path="/phoneSignIn" element={<PhoneSignIn title="" />} />
+            <Route path="/loader" element={<Splash title="" />} />
             <Route path="/otpSignIn" element={<OtpSignIn title="" />} />
             <Route path="/setProfile" element={<SetProfile title="" />} />
             <Route path="/home" element={<HomeView title="" />} />
+            <Route path="/logOut" element={<LogOut title="" />} />
+            <Route path="/noInternet" element={<NoInternet title="" />} />
           </Route>
         </Routes>
 

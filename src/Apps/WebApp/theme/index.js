@@ -17,10 +17,11 @@ import shadows, { customShadows } from './shadows'
 
 
 
+
+
 export default function ThemeProvider({ children }) {
   const { themeMode } = useSelector((state) => state.lifeCircle)
 
-  // const shadowColor = themeMode === 'dark' ? '#000' : '#335'
   const shadowColor = themeMode === 'dark' ? '#335' : '#000'
 
   const themeOptions = useMemo(

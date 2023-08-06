@@ -3,9 +3,11 @@ import { Root } from "./component"
 
 
 
-export default function ({ children }) {
+export default function ({ children, className }) {
   return (
-    <Root>
+    <Root
+      className={className}
+    >
       <Box className="wrapper">
         {children}
       </Box>

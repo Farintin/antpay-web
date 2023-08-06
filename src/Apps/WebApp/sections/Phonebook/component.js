@@ -20,7 +20,7 @@ const Root = styled(Box)(() => ({
     width: '100%',
     height: '100%',
     gridTemplateColumns: '100%',
-    gridTemplateRows: 'minmax(min-content, max-content) auto minmax(0, auto)',
+    gridTemplateRows: 'min-content min-content minmax(0, auto)',
     '& > .row': {
       '&.row-1': {
         padding: '18px 36px 24px 30px',

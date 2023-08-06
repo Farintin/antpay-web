@@ -9,8 +9,9 @@ import axios from "axios"
 
 import { Root, Loader } from "./component"
 import { LogoAquaGradientBrandnameWhiteDotAqua } from "../../components/Logo"
+import E2ePadlockIcon from '../../components/icons/E2ePadlock.icon'
 
-import { setUserData } from '../../store/reducer/user'
+import { setUserData, setLogOut } from '../../store/reducer/user'
 import { setContacts } from '../../store/reducer/contacts'
 import {
   setRooms,
@@ -22,6 +23,9 @@ import {
 import { setIsConnected } from '../../store/reducer/socketStates'
 
 import { socket } from '../../socket'
+
+
+
 
 
 
@@ -55,6 +59,23 @@ const formatMessages = (messages) => {
   return messagesCopy
 }
 
+const defaultInfo = <Box className='wrapper'>
+                      <E2ePadlockIcon style={{ marginRight: 8 }} />
+                      <Typography 
+                        className="text"
+                      >
+                        End-to-end encrypted
+                      </Typography>
+                    </Box>
+const loadingChatsInfo = <Box className='wrapper'>
+                            <Typography 
+                              className="text"
+                              sx={{ pt: 1 }}
+                            >
+                              Loading your chats...
+                            </Typography>
+                          </Box>
+
 
 
 export default function () {
@@ -63,39 +84,41 @@ export default function () {
   const maxMinPercent = 10
   const rootDom = useRef(null)
   const { userData } = useSelector(state => state.user)
-  const { contacts } = useSelector(state => state.contacts)
   const { roomsMessages } = useSelector(state => state.roomsStates)
-  const { isConnected } = useSelector(state => state.socketStates)
-  const [ roomsData, setRoomsData] = useState(null)
+  const { isOnline, isConnected, server } = useSelector(state => state.socketStates)
+  const [roomsData, setRoomsData] = useState(null)
   const [totLoadFrs, setTotLoadFrs] = useState(0)
   const [loaded, setLoaded] = useState(false)
   const [minPercent, setMinPercent] = useState(initMaxPercent)
   const [funcIndex, setFuncIndex] = useState(null)
   const [loadPercent, setLoadPercent] = useState(0)
   const [currentLoadFr, setCurrentLoadFr] = useState(0)
+  const [info, setInfo] = useState(defaultInfo)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
 
+
   const authNavigate = () => {
+    console.log('authNavigate');
+    localStorage.removeItem('accessToken')
     navigate('/phoneSignIn')
   }
   const reloadHandler = () => {
+    console.log('reloadHandler');
     setTimeout(() => window.location.reload(false), 1000)
   }
   const randInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
   const loadedHandler = () => {
-    console.log('loaded');
-    // navigate('/setProfile')
-    // navigate('/phoneSignIn')
+    // console.log('loaded')
     navigate('/home')
   }
 
 
+
   const refreshToken = () => {
-    // console.log('accessToken:', accessToken);
     if (accessToken) {
-      axios.get('http://localhost:5000/v1/auth/user/refreshToken', {
+      axios.get(`${server}/auth/user/refreshToken`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }
@@ -106,7 +129,7 @@ export default function () {
           const { newToken } = data.data
           localStorage.setItem('accessToken', newToken)
 
-          console.log('ran refreshToken');
+          // console.log('ran refreshToken');
           setFuncIndex(funcIndex + 1)
         } else {
           reloadHandler()
@@ -122,8 +145,8 @@ export default function () {
       authNavigate()
     }
   }
-  const func1 = () => {
-    axios.get('http://localhost:5000/v1/users/user', {
+  const fetchAndSetUser = () => {
+    axios.get(`${server}/users/user`, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
@@ -132,10 +155,11 @@ export default function () {
       const { data } = response
       if (data.msg === 'ok') {
         const userData = data.data
+        // console.log({ userData });
         dispatch(setUserData(userData))
 
         setFuncIndex(funcIndex + 1)
-        console.log('ran func1');
+        // console.log('ran fetchAndSetUser');
       } else {
         reloadHandler()
         console.log('userResponse:', response)
@@ -146,23 +170,28 @@ export default function () {
       console.log('userErrorResponse:', error)
     })
   }
-  const func2 = () => {
-    axios.get('http://localhost:5000/v1/users/user/phonebook', {
+  const fetchAndSetPhonebbook = () => {
+    // console.log('run fetchAndSetPhonebbook');
+    axios.get(`${server}/users/user/phonebook`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }
       })
       .then(response => {
+        // console.log('phonebookResponse:', response)
         const { data } = response
         if (data.msg === 'ok') {
           const phonebook = data.data
           dispatch(setContacts(phonebook.contacts))
 
-          setFuncIndex(funcIndex + 1)
-          console.log('ran func2');
+          // console.log('ran fetchAndSetPhonebbook');
+          setInfo(loadingChatsInfo)
+          setTimeout(() => {
+            setFuncIndex(funcIndex + 1)
+          }, 1000)
         } else {
           reloadHandler()
-          console.log('phonebookResponse:', response)
+          // console.log('phonebookResponse:', response)
         }
       })
       .catch(error => {
@@ -170,88 +199,52 @@ export default function () {
         console.log('phonebookErrorResponse:', error)
       })
   }
-  const func3 = () => {
-    const contactsWithNoRoomId = contacts.filter(c => (!c.roomId))
-    if (contactsWithNoRoomId.length > 0) {
-      axios.post('http://localhost:5000/v1/users/user/rooms/assignContactsToRooms', {
-          contacts: contactsWithNoRoomId
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
-        .then(response => {
-          const { data } = response
-          if (data.msg === 'success') {
-            let i
-            const contactsCopy = structuredClone(contacts)
-            data.data.forEach(c => {
-              i = contactsCopy.findIndex(contact => (c.phone.number === contact.phone.number))
-              if (i !== -1) {
-                contactsCopy[i].roomId = c.roomId
-              }
-            })
-            dispatch(setContacts(contactsCopy))
+  const fetchAndSetRooms = () => {
+    axios.get(`${server}/rooms/user`, { 
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+      .then(response => {
+        const { data } = response
+        if (data.msg === 'success') {
+          const { rooms } = data.data
+          setRoomsData(rooms)
 
-            console.log('ran func3.0');
-            setTimeout(() => {
-              func3()
-            }, 1000)
-          } else {
-            reloadHandler()
-            console.log('assignContactToRoomsResponse:', response)
-          }
-        })
-        .catch(error => {
-          authNavigate()
-          console.log('assignContactToRoomsErrorResponse:', error)
-        })
-    } else {
-      axios.get('http://localhost:5000/v1/rooms/user', { 
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
-        .then(response => {
-          const { data } = response
-          if (data.msg === 'success') {
-            const { rooms } = data.data
-            setRoomsData(rooms)
-
-            setFuncIndex(funcIndex + 1)
-            console.log('ran func3.1');
-          } else {
-            reloadHandler()
-            console.log('roomsResponse:', response)
-          }
-        })
-        .catch(error => {
-          authNavigate()
-          console.log('roomsErrorResponse:', error)
-        })
-    }
+          setFuncIndex(funcIndex + 1)
+          // onsole.log('ran fetchAndSetRooms');
+        } else {
+          reloadHandler()
+          console.log('roomsResponse:', response)
+        }
+      })
+      .catch(error => {
+        authNavigate()
+        console.log('roomsErrorResponse:', error)
+      })
   }
-  const func4 = () => {
+  const initRoomsStates = () => {
     const roomsGuestIndication = { lastModifiedRoom: null, rooms: {} }
     const roomsMessages = { lastModifiedRoom: null, rooms: {} }
     const roomsTextInputValue = {}
 
     roomsData.forEach(roomData => {
-      const { messages, roomType } = roomData
+      const { messages, roomType, _id } = roomData
       
-      roomsGuestIndication.rooms[roomData._id] = {
+      roomsGuestIndication.rooms[_id] = {
         roomType,
         guestOnline: false,
-        guestTyping: false
+        guestTyping: 0
       }
+
       const oldMessages = formatMessages(messages)
-      roomsMessages.rooms[roomData._id] = {
+      roomsMessages.rooms[_id] = {
         roomType,
         oldMessages,
         recentMessages: []
       }
-      roomsTextInputValue[roomData._id] = ''
+      
+      roomsTextInputValue[_id] = ''
     })
 
     dispatch(setRoomsGuestIndication(roomsGuestIndication))
@@ -260,9 +253,9 @@ export default function () {
     dispatch(setRooms(roomsData))
 
     setFuncIndex(funcIndex + 1)
-    console.log('ran func4');
+    // console.log('ran initRoomsStates');
   }
-  const func5 = () => {
+  const initRoomsMessagesCounts = () => {
     const roomsUnreadMessagesCount = {
       lastModifiedRoom: null,
       rooms: {}
@@ -286,20 +279,22 @@ export default function () {
     })
     dispatch(setRoomsUnreadMessagesCount(roomsUnreadMessagesCount))
 
-    console.log('ran func5');
+    // console.log('ran initRoomsMessagesCounts');
     setFuncIndex(funcIndex + 1)
   }
-  const func6 = () => {
+  const connectSocket = () => {
+    const { _id, phone } = userData
+    socket.auth = { user: { _id, phone } } 
     socket.connect()
   }
-  const func7 = () => {
+  const joinSocketRooms = () => {
     const roomIds = Object.keys(roomsMessages.rooms)
     socket.emit('join-rooms', roomIds)
     
-    console.log('ran func7');
+    // console.log('ran joinSocketRooms');
     setFuncIndex(funcIndex + 1)
   }
-  const func8 = () => {
+  const initialTrackRoomsMessages = () => {
     const { rooms } = roomsMessages
     const roomIds = Object.keys(rooms)
     roomIds.forEach(roomId => {
@@ -320,24 +315,29 @@ export default function () {
       })
     })
     
-    console.log('ran func8');
-    setFuncIndex(funcIndex + 1)
+    // console.log('ran initialTrackRoomsMessages');
+    setInfo(defaultInfo)
+    setTimeout(() => {
+      setFuncIndex(funcIndex + 1)
+    }, 1000)
   }
   const funcs = [
     { loadFr: 2, func: refreshToken },
-    { loadFr: 3, func: func1 },
-    { loadFr: 3, func: func2 },
-    { loadFr: 7, func: func3 },
-    { loadFr: 1, func: func4 },
-    { loadFr: 1, func: func5 },
-    { loadFr: 5, func: func6 },
-    { loadFr: 2, func: func7 },
-    { loadFr: 2, func: func8 }
+    { loadFr: 3, func: fetchAndSetUser },
+    { loadFr: 3, func: fetchAndSetPhonebbook },
+    { loadFr: 7, func: fetchAndSetRooms },
+    { loadFr: 1, func: initRoomsStates },
+    { loadFr: 1, func: initRoomsMessagesCounts },
+    { loadFr: 5, func: connectSocket },
+    { loadFr: 2, func: joinSocketRooms },
+    { loadFr: 2, func: initialTrackRoomsMessages }
   ]
 
 
 
   useEffect(() => {
+    if (accessToken) dispatch(setLogOut(false))
+
     let totLoadFrsIncrement = totLoadFrs
     funcs.forEach(funcObj => totLoadFrsIncrement += funcObj.loadFr)
     setTotLoadFrs(totLoadFrsIncrement)
@@ -374,30 +374,24 @@ export default function () {
 
   useEffect(() => {
     if (funcIndex !== null) {
-      let percent
-      const funcObj = funcs[funcIndex]
-      if (funcObj) {
-        const { loadFr, func } = funcObj
-        const currentLoadFrIncrement = currentLoadFr + loadFr
-        percent = ((currentLoadFrIncrement/totLoadFrs) * (100-minPercent)) + minPercent
-        setCurrentLoadFr(currentLoadFrIncrement)
-
-        setLoadPercent(Math.round(percent))
-        setTimeout(() => func(), 10)
-      }
-  
       if (funcIndex >= funcs.length) {
         setLoadPercent(100)
         setTimeout(() => {
           setLoaded(true)
-        }, 1000)
+        }, 200)
+      } else {
+        const funcObj = funcs[funcIndex]
+        const { loadFr, func } = funcObj
+        const currentLoadFrIncrement = currentLoadFr + loadFr
+        let percent = ((currentLoadFrIncrement/totLoadFrs) * (100-minPercent)) + minPercent
+        setCurrentLoadFr(currentLoadFrIncrement)
+        setLoadPercent(Math.round(percent))
+        // console.log({ funcIndex });
+
+        setTimeout(() => func(), 10)
       }
     }
   }, [funcIndex])
-
-  useEffect(() => {
-    // console.log({ loadPercent });
-  }, [loadPercent])
 
   useEffect(() => {
     if (loaded) {
@@ -407,51 +401,45 @@ export default function () {
 
   useEffect(() => {
     if (isConnected) {
-      console.log('ran func6 socket connected');
+      // onsole.log('ran connectSocket');
       setFuncIndex(funcIndex + 1)
     }
   }, [isConnected])
+  
+  useEffect(() => {
+    if (!isOnline) {
+      navigate('/noInternet')
+    }
+  }, [isOnline])
 
 
   return (
     <Root ref={rootDom}>
+      <Box className='wrapper'>
 
-      <LogoAquaGradientBrandnameWhiteDotAqua 
-        className="logo" />
+        <Box className='content'>
+          
+          <LogoAquaGradientBrandnameWhiteDotAqua 
+            className="logo" />
 
-      <Loader sx={{ m: 2.4 }}>
-        <Box className="bar" sx={{ width: `${loadPercent}%` }} />
-      </Loader>
+          <Loader sx={{ m: 2.4 }}>
+            <Box className="bar" sx={{ width: `${loadPercent}%` }} />
+          </Loader>
 
-      <Box className="e2e" sx={{ m: 1.5 }}>
-        <svg 
-          id="Layer_2" 
-          xmlns="http://www.w3.org/2000/svg" 
-          viewBox="0 0 341.1 403.93"
-          className='padlock'
-        >
-          <g id="Layer_1-2">
-            <g>
-              <path d="M157.89,0c8.03,0,16.05,0,24.08,0,.37,.35,.7,.95,
-              1.11,1.01,51.4,8.02,85.4,37.4,102.6,85.79,4.43,12.48,5.19,
-              26.5,6.14,39.91,1,14.19,.23,28.51,.23,
-              43.23h49.05v233.69H198.28v-45.78h80.9v-45.9h-43.05v-49.34h43.03v-44.75h-80.85v-48.19h41.95c0-16.46,
-              .4-32.46-.11-48.44-.56-17.71-6.18-33.87-18.6-46.83-19.66-20.52-43.58-27.54-71.01-19.61-26.99,
-              7.8-43.58,25.74-46.57,53.99-1.94,18.36-1.6,36.96-2.25,
-              55.46-.05,1.44,.21,2.88,.36,
-              4.75h45.08v49.34H61.99v44.75h45.03v49.14H61.81v44.55h86.51v47.17H0V167.26H48.06c1.03-20.04,
-              1.37-39.64,3.17-59.11C55.89,57.51,94.14,14.54,143.79,3.26,148.49,2.19,153.19,1.09,157.89,0Z"/>
-              <path d="M196.64,312.94h-47.69v-48.86h47.69v48.86Z"/>
-            </g>
-          </g>
-        </svg>
-        <Typography 
-          className="text"
-        >
-          End-to-end encrypted
-        </Typography>
+          <Box 
+            className="info" 
+            sx={{ 
+              m: 1.5,
+              position: 'absolute',
+              top: '100%'
+            }}
+          >
+            {info}
+          </Box>
+
+        </Box>
+
       </Box>
-
     </Root>
   )
 }

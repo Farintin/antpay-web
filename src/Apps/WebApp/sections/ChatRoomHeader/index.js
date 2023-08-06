@@ -13,6 +13,7 @@ import Phone from '../../components/icons/Phone.icon'
 import VideoCam from '../../components/icons/VideoCam.icon'
 
 import { setShowRoomGuestContactProfile } from '../../store/reducer/contacts'
+import { setRoomGuestTyping  } from '../../store/reducer/roomsStates'
 
 
 
@@ -26,6 +27,7 @@ export default function () {
   const [roomId, setRoomId] = useState(null)
   const [name, setName] = useState('')
   const [avatar, setAvatar] = useState(defaultAvatar)
+  const [guestIndicatorTypingTimeoutId, setGuestIndicatorTypingTimeoutId] = useState(0)
   const nameSize = 10
   const dispatch = useDispatch()
 
@@ -33,22 +35,28 @@ export default function () {
   const showContactProfileHandler = () => {
     dispatch(setShowRoomGuestContactProfile(true))
   }
-
+  const guestTypingTimeoutHandler = () => {
+    clearTimeout(guestIndicatorTypingTimeoutId)
+    const timeoutId = setTimeout(() => {
+      dispatch(setRoomGuestTyping({ roomId, typing: false }))
+    }, 3000)
+    setGuestIndicatorTypingTimeoutId(timeoutId)
+  }
   const indicatorHandler = () => {
     if (roomId && roomsGuestIndication) {
       const room = roomsGuestIndication.rooms[roomId]
       let { guestOnline, guestTyping } = room
       
-      let indicator
+      let indicator = ''
       if (guestOnline) {
         if (guestTyping) {
           indicator = 'typing...'
+          guestTypingTimeoutHandler()
         } else {
           indicator = 'online'
         }
-      } else {
-        indicator = ''
       }
+
       setIndicator(indicator)
     }
   }
@@ -76,12 +84,13 @@ export default function () {
   }, [activeRoom])
   
   useEffect(() => {
-    indicatorHandler()
+    if (roomId) dispatch(setRoomGuestTyping({ roomId, typing: false }))
   }, [roomId])
   
   useEffect(() => {
     indicatorHandler()
   }, [roomsGuestIndication])
+
 
   return (
     <Root>
@@ -122,6 +131,7 @@ export default function () {
           <Grid item xs={6} className='col col-2'>
 
             <Stack direction="row" spacing={0} className='stack ui-ignore'>
+
               <Box className="iconButton">
                 <Phone
                   style={{
@@ -129,9 +139,11 @@ export default function () {
                   }}
                     />
               </Box>
+              
               <Box className="iconButton">
                 <VideoCam/>
               </Box>
+              
               <Box className="iconButton">
                 <Menulist
                   style={{
@@ -139,6 +151,7 @@ export default function () {
                   }}
                     />
               </Box>
+
             </Stack>
 
           </Grid>

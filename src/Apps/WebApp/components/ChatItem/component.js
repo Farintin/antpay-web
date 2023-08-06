@@ -109,7 +109,7 @@ const Root = styled(Box)(({ theme }) => ({
     }
   },
   '&:hover': {
-    backgroundColor: alpha('#000', .042)
+    backgroundColor: alpha('#000', .036)
   }
 }))
 

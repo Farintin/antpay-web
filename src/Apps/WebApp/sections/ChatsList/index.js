@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
 
 import Box from "@mui/material/Box"
@@ -7,21 +7,25 @@ import { Typography } from "@mui/material"
 import { Root } from "./component"
 import ChatItem from "../../components/ChatItem"
 
-import { setTotUnreadMsgs } from '../../store/reducer/roomsStates'
+import { setRoomsMessages } from '../../store/reducer/roomsStates'
 
 
 
 
 
 export default function () {
-  const { rooms, roomsMessages, roomsUnreadMessagesCount, totUnreadMsgs } = useSelector(state => state.roomsStates)
-  // const [unreadMessagesCount, setUnreadMessagesCount] = useState(0)
-  const [recentRooms, setRecentRooms] = useState([])
+  const roomsDom = useRef(null)
+  const { rooms, roomsMessages, totUnreadMsgs } = useSelector(state => state.roomsStates)
+  const [roomsRender, setRoomsRender] = useState([])
+  const [roomsOrder, setRoomsOrder] = useState(null)
   const dispatch = useDispatch()
 
 
-  const recentRoomsHandler = () => {
+
+  const recentRooms = ({ rooms }) => {
     const roomsMessagesCopy = structuredClone(roomsMessages)
+    const roomsCopy = structuredClone(rooms)
+
     for (let roomId in roomsMessagesCopy.rooms) {
       if (roomId) {
         const room = roomsMessagesCopy.rooms[roomId]
@@ -30,12 +34,13 @@ export default function () {
       }
     }
     
-    let roomsWithChatMessages = rooms.filter(room => {
+    let roomsWithChatMessages = roomsCopy.filter(room => {
       const roomMessages = roomsMessagesCopy.rooms[room._id]
-      const totMsgs = roomMessages.oldMessages.length + roomMessages.recentMessages.length
+      const totMsgs = roomMessages?.oldMessages.length + roomMessages?.recentMessages.length
       return totMsgs > 0
     })
     
+    // sort rooms by lastest chat in descending order 
     roomsWithChatMessages.sort((a,b) => {
       const aRoomMsgs = roomsMessagesCopy.rooms[a._id]
       const bRoomMsgs = roomsMessagesCopy.rooms[b._id]
@@ -43,32 +48,83 @@ export default function () {
       const bMsgs = [...bRoomMsgs.oldMessages, ...bRoomMsgs.recentMessages]
       const aTime = aMsgs[aMsgs.length - 1].time
       const bTime = bMsgs[bMsgs.length - 1].time
-      // console.log({ aTime, bTime })
       return new Date(bTime) - new Date(aTime)
     })
-    // console.log({ roomsWithChatMessages });
-    setRecentRooms(roomsWithChatMessages)
+
+    return roomsWithChatMessages
+  }
+  const assignIndexToRooms = (rooms) => {
+    const roomsCopy = structuredClone(rooms)
+    roomsCopy.forEach((room, i) => {
+      room.index = `${i} - ${crypto.randomUUID()}`
+    })
+
+    return roomsCopy
+  }
+
+  const recentRoomsHandler = () => {
+    let roomsWithNewIndex = assignIndexToRooms(rooms)
+    const roomsRender = recentRooms({ rooms: roomsWithNewIndex })
+
+    setRoomsRender(roomsRender)
+  }
+  const roomsOrderHandler = () => {
+    let rooms = recentRooms({ rooms: roomsRender })
+    const roomsIndexes = rooms.map(r => r.index)
+    setRoomsOrder(roomsIndexes)
+  }
+  const roomsOrderDomHandler = () => {
+    if (roomsOrder?.length > 0) {
+      roomsOrder.forEach(i => {
+        const chatItemEls = roomsDom.current.querySelectorAll(`.chatItem`)
+        let chatItemEl
+        chatItemEls.forEach(el => {
+          if (el.dataset.index === i) chatItemEl = el
+        })
+        if (chatItemEl) {
+          roomsDom.current.removeChild(chatItemEl)
+          roomsDom.current.appendChild(chatItemEl)
+        }
+      })
+    }
   }
 
 
+
   useEffect(() => {
-    if (rooms && roomsMessages) {
-      recentRoomsHandler()
-    }
+    recentRoomsHandler()
+    // console.log('recentRoomsHandler @[]');
   }, [])
 
   useEffect(() => {
-    if (rooms && roomsMessages) {
-      recentRoomsHandler()
+    roomsOrderHandler()
+    // console.log('roomsOrderHandler @[roomsMessages]');
+    if (roomsMessages) {
+      const roomsMessagesCopy = structuredClone(roomsMessages)
+      const { rooms, lastModifiedRoom } = roomsMessagesCopy
+      if (lastModifiedRoom) {
+        const room = rooms[lastModifiedRoom]
+        if (room.newRoom) {
+          recentRoomsHandler()
+          // console.log('recentRoomsHandler @[roomsMessages]');
+          room.newRoom = false
+          dispatch(setRoomsMessages(roomsMessagesCopy))
+        }
+      }
     }
   }, [roomsMessages])
 
   useEffect(() => {
-    if (roomsUnreadMessagesCount !== null) {
-      const count = Object.values(roomsUnreadMessagesCount.rooms).reduce((t,n) => t+n)
-      dispatch(setTotUnreadMsgs(count))
+    if (roomsRender.length > 1) {
+      roomsOrderHandler()
+      // console.log('roomsOrderHandler @[roomsMessages]');
     }
-  }, [roomsUnreadMessagesCount])
+  }, [roomsRender])
+
+  useEffect(() => {
+    if (roomsOrder?.length > 1) roomsOrderDomHandler()
+  }, [roomsOrder])
+
 
   return (
     <Root>
@@ -81,13 +137,17 @@ export default function () {
             {`${totUnreadMsgs} unread`}
           </Typography>
         </Box>
-        <Box className="row row-2">
+        <Box 
+          ref={roomsDom}
+          className="row row-2"
+        >
           {
-            recentRooms.map((room, i) => (
+            roomsRender.map(room => (
               <ChatItem 
-                key={i}
+                key={room.index}
+                data-index={room.index}
                 room={room}
-                />
+                  />
             ))
           }
         </Box>

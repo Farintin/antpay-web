@@ -17,10 +17,20 @@ const Root = styled(Box)(() => ({
     flexDirection: 'column',
     justifyContent: 'flex-end',
     '& > .main': {
+      position: 'relative',
+      '& .bound': {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: 2,
+        display: 'none'
+      }
     }
   },
   '&.scrollbarIsVisible': {
-    paddingRight: 8
+    overflow: 'auto',
+    paddingRight: 14
   }
 }))
 

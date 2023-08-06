@@ -35,7 +35,7 @@ export default function (props) {
   const descInputDom = useRef(null)
   const statusInputDom = useRef(null)
   const { userData } = useSelector(state => state.user)
-  const { isOnline } = useSelector(state => state.socketStates)
+  const { isOnline, server } = useSelector(state => state.socketStates)
   const defaultAvatar = '/image/avatar.svg'
   const [avatar, setAvatar] = useState(defaultAvatar)
   const namePlaceholder = 'Enter name'
@@ -115,7 +115,7 @@ export default function (props) {
     if (isOnline) {
       if (Object.keys(updateData).length > 0) {
         setLoading(true)
-        axios.put('http://localhost:5000/v1/users/user/update', {
+        axios.put(`${server}/users/user/update`, {
             data: updateData
           },
           {

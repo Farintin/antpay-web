@@ -4,11 +4,7 @@
     50% { background-color: #000; }
 }
 
-/* loading */
-@keyframes loading {
-    from, to { width: calc(270px * .11) }
-    100% { width: calc(270px * .74) }
-}
+
 
 .ui-ignore {
     opacity: .3;

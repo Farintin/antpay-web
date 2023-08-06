@@ -15,6 +15,9 @@ const Root = styled(Box)(() => ({
     height: '100%',
     background: `linear-gradient(360deg, ${alpha('#2CA580', .978)} -28.83%, ${alpha('#ADFFE1', .978)} 103.44%)`,
     overflow: 'overlay'
+  },
+  '&.hide': {
+    display: 'none'
   }
 }))
 

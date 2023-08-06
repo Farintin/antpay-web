@@ -4,18 +4,25 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 
+const initialState = {
+  // openedAppAt: `${new Date(Date.now())}`,
+  server: 'http://localhost:5000/v1',
+  // server: 'http://ec2-15-237-107-34.eu-west-3.compute.amazonaws.com:5000/v1',
+  isOnline: navigator.onLine,
+  isConnected: null,
+  newMessage: null,
+  recieptPing1: null,
+  recieptPing2: null,
+  recieptPing3: null,
+  newConversation: false
+}
+
 export const socketStatesSlice = createSlice({
   name: 'socketStates',
-  initialState: {
-    // openedAppAt: `${new Date(Date.now())}`,
-    isOnline: navigator.onLine,
-    isConnected: null,
-    newMessage: null,
-    recieptPing1: null,
-    recieptPing2: null,
-    recieptPing3: null
-  },
+  initialState,
   reducers: {
+    resetSocketStates: () => initialState,
+
     setIsOnline: (state, action) => {
       state.isOnline = action.payload
     },
@@ -42,6 +49,10 @@ export const socketStatesSlice = createSlice({
 
     setRecieptPing3: (state, action) => {
       state.recieptPing3 = action.payload
+    },
+
+    setNewConversation: (state, action) => {
+      state.newConversation = action.payload
     }
   }
 })
@@ -49,12 +60,14 @@ export const socketStatesSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { 
+  resetSocketStates,
   setIsOnline,
   setIsConnected, 
   setOldMessages,
   setNewMessage,
   setRecieptPing1,
   setRecieptPing2,
-  setRecieptPing3 } = socketStatesSlice.actions
+  setRecieptPing3,
+  setNewConversation } = socketStatesSlice.actions
 
 export default socketStatesSlice.reducer

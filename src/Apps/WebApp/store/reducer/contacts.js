@@ -2,18 +2,24 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 
+
+
+const initialState = {
+  contacts: null,
+  showRoomGuestContactProfile: false,
+  openUserProfile: false,
+  openEditUserProfile: false,
+  openPhonebook: false,
+  inAppMessage: null,
+  inAppError: null
+}
+
 export const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: {
-    contacts: null,
-    showRoomGuestContactProfile: false,
-    openUserProfile: false,
-    openEditUserProfile: false,
-    openPhonebook: false,
-    inAppMessage: null,
-    inAppError: null
-  },
+  initialState,
   reducers: {
+    resetContactStates: () => initialState,
+
     setContacts: (state, action) => {
       state.contacts = action.payload
     },
@@ -51,11 +57,15 @@ export const contactsSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { 
+  resetContactStates,
+  
   setContacts, 
+
   setShowRoomGuestContactProfile, 
   setOpenUserProfile, 
   setOpenEditUserProfile, 
   setOpenPhonebook,
+
   setInAppMessage,
   setInAppError,
   setInAppOnlineError } = contactsSlice.actions

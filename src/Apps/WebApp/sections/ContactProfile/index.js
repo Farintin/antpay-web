@@ -38,7 +38,7 @@ export default function () {
   const defaultAvatar = '/image/avatar.svg'
   const addContactModalDom = useRef(null)
   const { userData } = useSelector(state => state.user)
-  const { isOnline } = useSelector(state => state.socketStates)
+  const { isOnline, server } = useSelector(state => state.socketStates)
   const { contacts } = useSelector(state => state.contacts)
   const { activeRoom } = useSelector(state => state.roomsStates)
   const [roomId, setRoomId] = useState(null)
@@ -67,7 +67,7 @@ export default function () {
     return { countryCode, countryName }
   }
   const fetchPhonebook = () => {
-    axios.get('http://localhost:5000/v1/users/user/phonebook', {
+    axios.get(`${server}/users/user/phonebook`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }
@@ -147,7 +147,7 @@ export default function () {
         setLoading(false)
         dispatch(setInAppError('Contact already exist in your contacts.'))
       } else {
-        axios.put('http://localhost:5000/v1/users/user/addContacts', [
+        axios.put(`${server}/users/user/addContacts`, [
             phone
           ],
           {
@@ -197,7 +197,7 @@ export default function () {
   }, [activeRoom])
   
   useEffect(() => {
-    if (openAddContactModal && click && !openContactModalBtnClick && !addContactModalClick) {// } && !dropdownClick && !autoListClick) {
+    if (openAddContactModal && click && !openContactModalBtnClick && !addContactModalClick) {
       setOpenAddContactModal(false)
     }
     
@@ -244,13 +244,12 @@ export default function () {
                 onClick={openAddContactModalBtnClickHandler}
               >
                 +add
-              </Typography> : ''}
-            {!showAddContactBtn ? 
+              </Typography> :
               <Typography 
                 className="textButton ui-ignore"
               >
                 edit
-              </Typography> : ''}
+            </Typography>}
             
           </Stack>
 

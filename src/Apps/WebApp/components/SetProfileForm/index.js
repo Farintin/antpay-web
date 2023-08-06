@@ -8,13 +8,19 @@ import axios from "axios"
 import { Box, Typography } from "@mui/material"
 
 import { Root, Input, ImageInput, TextInput, StatusInput, StatusList, Submit } from './component'
+
 import ChevronDownIcon from "../icons/ChevronDown.icon"
 import ChevronUpIcon from "../icons/ChevronUp.icon"
 import PencilIcon from "../icons/Pencil.icon"
 
+import Loader from "../Loader"
+
 import { statusOptions } from '../../resource/userStatus'
 
 import { setUserSignInState } from "../../store/reducer/userSignInState"
+
+
+
 
 
 
@@ -26,7 +32,8 @@ export default function() {
     const descInputDom = useRef(null)
     const statusInputDom = useRef(null)
     const submitBtnDom = useRef(null)
-
+    const { userSignInState } = useSelector(state => state.userSignInAuth)
+    const { server } = useSelector(state => state.socketStates)
     const [avatar, setAvatar] = useState(null)
     const defaultAvatar = '/image/avatar.svg'
     const [previewAvatar, setPreviewAvatar] = useState(defaultAvatar)
@@ -43,11 +50,10 @@ export default function() {
     const [statusAutocompleteClick, setStatusAutocompleteClick] = useState(false)
     const [statusClick, setStatusClick] = useState(false)
     const [submitOk, setSubmitOk] = useState(false)
-    // eslint-disable-next-line
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-
-    const { userSignInState } = useSelector(state => state.userSignInAuth)
     const dispatch = useDispatch()
+
 
 
     const nameFocusHandler = (e) => {
@@ -75,7 +81,6 @@ export default function() {
         }
     }
     const statusToggler = () => {
-        setStatusAutocomplete(!statusAutocomplete)
         setStatusTogglerClick(true)
     }
     const statusFocusHandler = (e) => {
@@ -131,31 +136,38 @@ export default function() {
     }
     const submitHandler = () => {
         if (submitOk) {
-            axios.post('http://localhost:5000/v1/auth/user/signup', userSignInState)
+            setLoading(true)
+
+            const payload = structuredClone(userSignInState)
+            axios.post(`${server}/auth/user/signup`, payload)
               .then(response => {
                 const { data } = response
                 if (data.msg === 'success') {
                     // Nagivate to web app home view.
                     localStorage.setItem('accessToken', data.data.token.accessToken)
-                    navigate('/home')
+                    setTimeout(() => navigate('/loader'), 1000)
                 } else {
+                    setLoading(false)
                     console.log('axiosResponse:', response)
+                    alert('server error.')
                 }
               })
               .catch(error => {
+                setLoading(false)
                 console.log('axiosErrorResponse:', error)
+                alert('Network error')
               })
         }
     }
     const firstLetterUppercased = str => str[0].toUpperCase() + str.slice(1)
-    // const setSubmitOkHandler = () => submitOk ? setSubmitOk(true) : ''
+
 
     
     useEffect(() => {
         window.onclick = function () {
           setClick(true)
         }
-    }, [])
+    })
 
     useEffect(() => {
         // console.log('avatar:', avatar)
@@ -202,24 +214,26 @@ export default function() {
     }, [statusAutocomplete])
 
     useEffect(() => {
-        if (statusAutocomplete && click && !statusTogglerClick && !statusAutocompleteClick) {
+        if (click && !statusAutocompleteClick && !statusTogglerClick) {
             setStatusAutocomplete(false)
         }
 
-        if (statusClick) {
-            setStatusAutocomplete(false)
-            setStatusClick(false)
+        if (statusTogglerClick) {
+            setStatusAutocomplete(!statusAutocomplete)
+            setStatusTogglerClick(false)
         }
 
         if (click) {
             setClick(false)
         }
-        if (statusTogglerClick) {
-            setStatusTogglerClick(false)
-        }
         if (statusAutocompleteClick) {
             setStatusAutocompleteClick(false)
         }
+        if (statusClick) {
+            setStatusAutocomplete(false)
+            setStatusClick(false)
+        }
+
     }, [click, statusTogglerClick, statusAutocompleteClick, statusClick])
     
     useEffect(() => {
@@ -242,6 +256,7 @@ export default function() {
         // console.log('userSignInState:', userSignInState)
     }, [userSignInState])
 
+    
     return (
         <Root>
             <ImageInput
@@ -355,6 +370,12 @@ export default function() {
                 <Typography className="label">Finish</Typography>
             </Submit>
 
+            {loading ? <Loader 
+                style={{
+                    position: 'fixed',
+                    margin: 0
+                }}
+                    /> : ''}
         </Root>
     )
 }

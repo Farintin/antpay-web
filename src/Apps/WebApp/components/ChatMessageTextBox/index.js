@@ -13,143 +13,99 @@ import { setRoomTextInputValue, setTyping } from '../../store/reducer/roomsState
 
 
 
+
+
+
 export default function({ style }) {
     const { userData } = useSelector(state => state.user)
     const { isOnline } = useSelector(state => state.socketStates)
     const { activeRoom, roomsTextInputValue } = useSelector(state => state.roomsStates)
     const rootDom = useRef(null)
-    const [roomId, setRoomId] = useState(null)
+    const [roomId, setRoomId] = useState(activeRoom?._id)
     const placeholder = 'Type a message...'
     const [textValue, setTextValue] = useState('')
-    const [focus, setFocus] = useState(false)
-    const [changeCount, setChangeCount] = useState(0)
     const [guestPhoneNumber, setGuestPhoneNumber] = useState(null)
     const dispatch = useDispatch()
-    let pingTypingFalseTimeoutId = 0
+
+
+
 
 
     const focusHandler = () => {
-        setFocus(true)
-        if (roomId) {
-            if (textValue === placeholder) {
-                setTextValue('')
-            }
+        if (textValue === placeholder) {
+            setTextValue('')
+        } else {
+            setTextValue(roomsTextInputValue[roomId])
         }
+        rootDom.current.classList.remove('placeholder')
     }
     const blurHandler = () => {
-        setFocus(false)
-        if (roomId) {
-            setChangeCount(0)
+        dispatch(setRoomTextInputValue({ roomId, value: textValue }))
+        if (textValue === '') {
+            setTextValue(placeholder)
+            rootDom.current.classList.add('placeholder')
         }
     }
     const keyDownHandler = (e) => {
-        if (roomId) {
-            if (e.keyCode === 13) {
-                e.preventDefault()
-                if (textValue !== placeholder && textValue !== '') {
-                    isOnline ? submitHandler(e) : dispatch(setInAppOnlineError())
-                }
-            } else {
-                if (isOnline) dispatch(setTyping(true))
+        if (e.keyCode === 13) {
+            e.preventDefault()
+            if (textValue !== '') {
+                isOnline ? submitHandler(e) : dispatch(setInAppOnlineError())
             }
+        } else {
+            if (isOnline) dispatch(setTyping(true))
         }
-    }
-    const keyUpHandler = () => {
-        if (roomId) {
-            clearTimeout(pingTypingFalseTimeoutId)
-            pingTypingFalseTimeoutId = setTimeout(() => {
-                dispatch(setTyping(false))
-            }, 3000)
-        }
-    }
-    const changeHandler = (e) => {
-        let { value } = e.target
-        setChangeCount(changeCount + 1)
-        setTextValue(formatTextValue(value))
     }
     const formatTextValue = value => {
-        if (value.length > 0) {
-            value = capitalize(value)
+        if (value.length === 1) {
+            value = value.toUpperCase()
         }
         return value
     }
-    const capitalize = str => str[0].toUpperCase() + str.slice(1)
-    const submitHandler = (e) => {
-        if (roomId) {
-            const time = `${new Date(Date.now())}`
-            const sid = randomstring.generate({
-                length: 8,
-                charset: 'alphanumeric'
-            })
-            const message = {
-                sid,
-                roomId: roomId,
-                author: userData.phone.number,
-                reader: guestPhoneNumber,
-                text: textValue,
-                time: time,
-                reciept: 0
-            }
-            dispatch(setNewMessage(message))
-            setTextValue('')
-            e.target.blur()
+    const changeHandler = (e) => {
+        let { value } = e.target
+        setTextValue(formatTextValue(value))
+    }
+    // const capitalize = str => str[0].toUpperCase() + str.slice(1)
+    const submitHandler = () => {
+        const time = `${new Date(Date.now())}`
+        const sid = randomstring.generate({
+            length: 8,
+            charset: 'alphanumeric'
+        })
+        const message = {
+            sid,
+            roomId: roomId,
+            author: userData.phone.number,
+            reader: guestPhoneNumber,
+            text: textValue,
+            time: time,
+            reciept: 0
         }
+        dispatch(setNewMessage(message))
+        setTextValue('')
     }
 
 
 
     useEffect(() => {
         if (activeRoom) {
-            setRoomId(activeRoom._id)
-        }
-    }, [activeRoom])
-
-    useEffect(() => {
-        if (roomId) {
+            const roomId = activeRoom._id
             if (roomsTextInputValue[roomId] === '') {
                 setTextValue(placeholder)
+                rootDom.current.classList.add('placeholder')
             } else {
                 setTextValue(roomsTextInputValue[roomId])
+                rootDom.current.classList.remove('placeholder')
             }
-
+            
             const guestPhoneNumber = activeRoom.usersPhoneNumber.find(phoneNumber => userData.phone.number !== phoneNumber)
             setGuestPhoneNumber(guestPhoneNumber)
+            
+            setRoomId(roomId)
         }
-    }, [roomId])
+    }, [activeRoom])
     
-    useEffect(() => {
-        if (roomId) {
-            if (!focus) {
-                if (textValue === '') {
-                    setTextValue(placeholder)
-                } else {
-                    dispatch(setRoomTextInputValue({ roomId, value: textValue }))
-                }
-            }
-        }
-    }, [focus])
-
-    useEffect(() => {
-        if (roomId) {
-            if (changeCount === 0) {
-                if (textValue === placeholder) {
-                    rootDom.current.classList.add('placeholder')
-                } else {
-                    rootDom.current.classList.remove('placeholder')
-                }
-            }
-        }
-    }, [textValue])
-
-    useEffect(() => {
-        if (roomId) {
-            if (roomsTextInputValue[roomId] === '') {
-                setTextValue(placeholder)
-            } else {
-                setTextValue(roomsTextInputValue[roomId])
-            }
-        }
-    }, [roomsTextInputValue])
 
     return (
         <Root
@@ -166,7 +122,6 @@ export default function({ style }) {
                 onBlur={blurHandler}
                 onChange={changeHandler}
                 onKeyDown={keyDownHandler}
-                onKeyUp={keyUpHandler}
                     />
         </Root>
     )

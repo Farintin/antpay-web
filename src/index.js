@@ -5,7 +5,6 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'
 import Routes from './routes'
 import { store } from './store'
-import ThemeProvider from './theme'
 import reportWebVitals from './reportWebVitals'
 
 
@@ -13,11 +12,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <HelmetProvider>
     <Provider store={store}>
-      <ThemeProvider>
+      
+      <Routes/>
 
-        <Routes/>
-
-      </ThemeProvider>
     </Provider>
   </HelmetProvider>
 )

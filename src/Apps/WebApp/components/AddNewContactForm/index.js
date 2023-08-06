@@ -17,6 +17,9 @@ import { setInAppMessage, setInAppError, setInAppOnlineError, setContacts } from
 
 
 
+
+
+
 const countryCodeList = countries.map((country) => country.code)
 export default function(props) {
     const accessToken = localStorage.getItem('accessToken')
@@ -24,7 +27,7 @@ export default function(props) {
     const phoneInputDom = useRef(null)
     const countryListTogglerDom = useRef(null)
     const submitBtnDom = useRef(null)
-    const { isOnline } = useSelector(state => state.socketStates)
+    const { isOnline, server } = useSelector(state => state.socketStates)
     const { contacts } = useSelector(state => state.contacts)
     const [countryList, setCountryList] = useState(countries)
     const [autocomplete, setAutocomplete] = useState(false)
@@ -43,7 +46,7 @@ export default function(props) {
 
 
     const fetchPhonebook = () => {
-        axios.get('http://localhost:5000/v1/users/user/phonebook', {
+        axios.get(`${server}/users/user/phonebook`, {
             headers: {
               Authorization: `Bearer ${accessToken}`
             }
@@ -61,8 +64,6 @@ export default function(props) {
             console.log('phonebookErrorResponse:', error)
           })
     }
-
-
 
     const toggleDropdownHandler = () => {
         setAutocomplete(!autocomplete)
@@ -126,6 +127,7 @@ export default function(props) {
         if (isOnline) {
             if (submitOk) {
                 setLoading(true)
+
                 const phone = {
                     phone: {
                         countryName: country.name,
@@ -138,7 +140,7 @@ export default function(props) {
                     setLoading(false)
                     dispatch(setInAppError('Contact already exist in your contacts.'))
                 } else {
-                    axios.put('http://localhost:5000/v1/users/user/addContacts', [
+                    axios.put(`${server}/users/user/addContacts`, [
                         phone
                       ],
                       {
@@ -186,7 +188,7 @@ export default function(props) {
     }, [country])
 
     useEffect(() => {
-        countryCodeSearchHandler()
+        if (countryCode !== country.code) countryCodeSearchHandler()
     }, [countryCode])
 
     useEffect(() => {
@@ -236,6 +238,7 @@ export default function(props) {
         <Root>
 
             <Box className='wrapper'>
+
                 <PhoneInput 
                     ref={phoneInputDom}
                     className="phoneInput"
@@ -309,10 +312,10 @@ export default function(props) {
                                 </Box>
                             )
                         ) : <Box 
-                            className={`item`} 
-                        >
-                            <Typography className="text">not found</Typography>
-                        </Box>
+                                className={`item`} 
+                            >
+                                <Typography className="text">not found</Typography>
+                            </Box>
                     }
                 </CountryList>
 
@@ -322,6 +325,7 @@ export default function(props) {
                 >
                     <Typography className="label">Submit</Typography>
                 </Submit>
+
             </Box>
 
             {loading ? 

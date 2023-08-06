@@ -50,7 +50,7 @@ const CountryList = styled(Box)(({ theme }) => ({
   padding: '6px 12px',
   paddingRight: 4,
   backgroundColor: theme.palette.primary.light,
-  overflow: 'overlay',
+  overflow: 'auto',
   maxHeight: 300,
   margin: '16px 0',
   '::-webkit-scrollbar': {

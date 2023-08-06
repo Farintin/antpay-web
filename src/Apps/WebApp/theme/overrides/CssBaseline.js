@@ -25,7 +25,8 @@ export default function CssBaseline() {
         },
         body: {
           width: '100%',
-          height: '100%'
+          height: '100%',
+          // backgroundColor: '#6E01CE'
         },
         '#root': {
           width: '100%',

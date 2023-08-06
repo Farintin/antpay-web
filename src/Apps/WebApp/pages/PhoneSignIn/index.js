@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { Box, Typography } from "@mui/material"
 import SignInLayout from "../../layout/SignInLayout"
@@ -9,10 +10,22 @@ import Button from "../../components/Button"
 
 
 export default function () {
+  const accessToken = localStorage.getItem('accessToken')
   const navigate = useNavigate()
 
+
+
+  useEffect(() => {
+    console.log({ accessToken }, '@ PhoneSignIn page.');
+    if (accessToken) {
+      navigate('/loader')
+    }
+  }, [])
+
   return (
-    <SignInLayout>
+    <SignInLayout 
+      className={`${accessToken ? 'hide' : ''}`}
+    >
       <Root>
         <Box className="wrapper" sx={{ pt: 8 }}>
 

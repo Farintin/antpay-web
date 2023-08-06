@@ -8,6 +8,7 @@ import { Box, Typography } from "@mui/material"
 import { Root, Input, CountryInput, CountryList, Flag, PhoneInput, Submit } from './component'
 import ChevronDownIcon from "../icons/ChevronDown.icon"
 import ChevronUpIcon from "../icons/ChevronUp.icon"
+import Loader from "../Loader"
 
 import { countries } from '../../resource/country'
 
@@ -22,7 +23,8 @@ export default function() {
     const countryInputDom = useRef(null)
     const phoneInputDom = useRef(null)
     const submitBtnDom = useRef(null)
-
+    const { userSignInState } = useSelector(state => state.userSignInAuth)
+    const { server } = useSelector(state => state.socketStates)
     const [countryList, setCountryList] = useState(countries)
     const [autocomplete, setAutocomplete] = useState(false)
     const defaultCountry = countries[0]
@@ -36,10 +38,8 @@ export default function() {
     const [dropdownClick, setDropdownClick] = useState(false)
     const [autoListClick, setAutoListClick] = useState(false)
     const [submitOk, setSubmitOk] = useState(false)
-
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-
-    const { userSignInState } = useSelector(state => state.userSignInAuth)
     const dispatch = useDispatch()
 
 
@@ -148,19 +148,25 @@ export default function() {
                 }
             }
             dispatch(setUserSignInState({ ...userSignInState, ...userPhone }))
-            axios.post('http://localhost:5000/v1/auth/user/phoneAuth', {
+
+            setLoading(true)
+            axios.post(`${server}/auth/user/phoneAuth`, {
                 ...userPhone
               })
               .then(response => {
                 if (response.data.msg === 'success') {
-                    navigate('/otpSignIn')
+                    setTimeout(() => navigate('/otpSignIn'), 1000)
                 } else {
+                    setLoading(false)
                     console.log('otp not sent')
                     console.log('axiosResponse:', response)
+                    alert('server error.')
                 }
               })
               .catch(error => {
+                setLoading(false)
                 console.log('axiosErrorResponse:', error)
+                alert('Network error')
               })
         }
     }
@@ -319,6 +325,11 @@ export default function() {
                 <Typography className="label">Sign In</Typography>
             </Submit>
 
+            {loading ? <Loader 
+                style={{
+                    position: 'fixed'
+                }}
+                    /> : ''}
         </Root>
     )
 }

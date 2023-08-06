@@ -2,28 +2,32 @@ import { createSlice } from '@reduxjs/toolkit'
 
 
 
+
+const initialState = {
+  rooms: null,
+  
+  activeRoom: null,
+
+  roomsMessages: null,
+  roomsTextInputValue: null,
+  roomsUnreadMessagesCount: null,
+  totUnreadMsgs: 0,
+
+  typing: false,
+  roomGuestOnline: null,
+  roomGuestTyping: null,
+  sendRoomOnlineHandshake: null,
+  roomsGuestIndication: null
+}
+
 export const roomsStatesSlice = createSlice({
   name: 'roomsStates',
-  initialState: {
-    rooms: null,
-    activeRoom: null,
-    roomsMessages: null,
-    roomsTextInputValue: null,
-    roomsUnreadMessagesCount: null,
-    totUnreadMsgs: 0,
-    typing: false,
-    roomGuestOnline: null,
-    roomGuestTyping: null,
-    sendRoomOnlineHandshake: null,
-    roomsGuestIndication: null
-  },
+  initialState,
   reducers: {
+    resetRoomsStates: () => initialState,
+
     setRooms: (state, action) => {
-      const roomsData = action.payload
-      state.rooms = roomsData.map(roomData => {
-        const { _id, usersPhoneNumber, roomType } = roomData
-        return { _id, usersPhoneNumber, roomType }
-      })
+      state.rooms = action.payload
     },
 
     setRoomsGuestIndication: (state, action) => {
@@ -44,7 +48,8 @@ export const roomsStatesSlice = createSlice({
       
       if (recentMessages.length > 0) {
         recentMessages.reverse()
-        const i = recentMessages.findIndex(msg => (msg.component === 'chat-message' && new Date(msg.time).getTime() <= new Date(messageCopy.time).getTime()))
+        const i = recentMessages
+                    .findIndex(msg => (msg.component === 'chat-message' && new Date(msg.time).getTime() <= new Date(messageCopy.time).getTime()))
         if (i !== -1) {
           if (new Date(recentMessages[i].time).getDate() !== new Date(messageCopy.time).getDate()) {
             recentMessages.splice(i, 0, { component: 'checkpoint-terminal', time: recentMessages[i].time })
@@ -66,6 +71,7 @@ export const roomsStatesSlice = createSlice({
       } else {
         recentMessages.push({ component: 'checkpoint', time: messageCopy.time })
         recentMessages.push(messageCopy)
+        state.roomsMessages.rooms[roomId].newRoom = true
       }
 
       state.roomsMessages.lastModifiedRoom = roomId
@@ -195,6 +201,7 @@ export const roomsStatesSlice = createSlice({
 
           op = true
         }
+        
         return op
       })
 
@@ -258,7 +265,14 @@ export const roomsStatesSlice = createSlice({
     setRoomGuestTyping: (state, action) => {
       const { roomId, typing } = action.payload
       const room = state.roomsGuestIndication.rooms[roomId]
-      room.guestTyping = typing
+      let { guestTyping } = room
+
+      if (typing) { 
+        guestTyping ? guestTyping *= -1 : guestTyping = 1
+      } else { 
+        guestTyping = 0
+      }
+      room.guestTyping = guestTyping
 
       state.roomsGuestIndication.lastModifiedRoom = roomId
     },
@@ -276,6 +290,8 @@ export const roomsStatesSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+  resetRoomsStates,
+
   setRooms,
   setActiveRoom,
 

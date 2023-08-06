@@ -16,7 +16,7 @@ import { setActiveRoom } from "../../store/reducer/roomsStates"
 
 
 
-export default function ({ contact, style }) {
+export default function ({ contact, style, ...others }) {
   const defaultAvatar = '/image/avatar.svg'
   const defaultDesc = 'Contact not using Antpay'
   const [room, setRoom] = useState(null)
@@ -24,7 +24,7 @@ export default function ({ contact, style }) {
   const [name, setName] = useState(contact.phone.number)
   const [desc, setDesc] = useState(defaultDesc)
   const { rooms, activeRoom } = useSelector(state => state.roomsStates)
-  const { roomId } = contact
+  const [roomId] = useState(contact.roomId)
   const nameSize = 15
   const descSize = 25
   const dispatch = useDispatch()
@@ -32,20 +32,36 @@ export default function ({ contact, style }) {
   
 
   const contactClickHandler = () => {
+    // console.log({ activeRoom })
     if (roomId !== activeRoom?._id) {
       const activeRoomObj = { ...room, contact: contact ? { ...contact, user } : null }
-      console.log({ activeRoomObj });
+      // console.log({ activeRoomObj })
       dispatch(setActiveRoom(activeRoomObj))
+    } else {
+      console.log('room already active')
     }
   }
-  
-  const setDescHandler = (value) => {
+
+  const descHandler = (value) => {
     if (value.length > descSize) {
       setDesc(`${value.slice(0, descSize)}...`)
     } else {
       setDesc(value)
     }
   }
+
+  const roomHandler = () => {
+    if (rooms) {
+      const room = rooms.find(room => room._id === roomId)
+      if (room) setRoom(room)
+    }
+  }
+
+
+  
+  useEffect(() => {
+    roomHandler()
+  }, [])
 
   useEffect(() => {
     if (contact?.userAccExist) setUser(contact.user)
@@ -54,22 +70,20 @@ export default function ({ contact, style }) {
   useEffect(() => {
     if (user !== null) {
       user.name.length > nameSize ? setName(`${user.name.slice(0, nameSize)}...`) : setName(user.name)
-      if (desc === defaultDesc) {
-        setDescHandler(user.status)
-      }
+      if (desc === defaultDesc) descHandler(user.status)
     }
   }, [user])
   
   useEffect(() => {
-    if (rooms) {
-      const room = rooms.find(room => room._id === roomId)
-      if (room) setRoom(room)
-    }
+    roomHandler()
   }, [rooms])
+
+
   
   return (
     <Root 
       style={style}
+      {...others}
       onClick={contactClickHandler}
       className="contactItem"
     >

@@ -14,14 +14,14 @@ import ContactItem from "../../components/ContactItem"
 export default function () {
   const { userData } = useSelector(state => state.user)
   const { contacts } = useSelector(state => state.contacts)
-  const [contactsWithNoName, setContactsWithNoName] = useState(null)
-  const [contactsAlphaSeperation, setCcontactsAlphaSeperation] = useState(null)
+  const [contactList, setContactList] = useState([])
 
 
   const renderContactsHandler = () => {
-    const ontactsMinusUserContactItem = contacts.filter(c => c.phone.number !== userData.phone.number)
+    const contactsCopy = structuredClone(contacts)
+    const contactsMinusUserContactItem = contactsCopy.filter(c => c.phone.number !== userData.phone.number)
     const contactsWithNoName = []
-    const contactsWithName = ontactsMinusUserContactItem.filter((contact) => {
+    const contactsWithName = contactsMinusUserContactItem.filter((contact) => {
       let op = false
       if (contact.userAccExist) {
         op = true
@@ -32,21 +32,14 @@ export default function () {
       return op
     })
 
+    // Arrange contacts alpha list
     contactsWithName.sort((a, b) => {
-      if (a.user.name < b.user.name) {
+      const aName = a.user.name.toLowerCase()
+      const bName = b.user.name.toLowerCase()
+      if (aName < bName) {
         return -1
       }
-      if (a.user.name > b.user.name) {
-        return 1
-      }
-      return 0
-    })
-
-    contactsWithNoName.sort((a, b) => {
-      if (a.phone.number < b.phone.number) {
-        return -1
-      }
-      if (a.phone.number > b.phone.number) {
+      if (aName > bName) {
         return 1
       }
       return 0
@@ -57,17 +50,37 @@ export default function () {
       contactsWithName.forEach((contact, i) => {
         if (i === 0) contactsAlphaSeperation.push({ component: 'alphaSeperation', letter: contact.user.name[0] })
         contactsAlphaSeperation.push(contact)
-        if (i !== contactsWithName.length - 1) {
-          if (contact.user.name[0] !== contactsWithName[i+1]) {
+        if (i < contactsWithName.length - 1) {
+          if (contact.user.name[0] !== contactsWithName[i+1].user.name[0]) {
             contactsAlphaSeperation.push({ component: 'alphaSeperation', letter: contactsWithName[i+1].user.name[0] })
           }
         }
       })
     }
+    // Arrange non-alpha contacts list
+    contactsWithNoName.sort((a, b) => {
+      if (a.phone.number < b.phone.number) {
+        return -1
+      }
+      if (a.phone.number > b.phone.number) {
+        return 1
+      }
+      return 0
+    })
+    if (contactsWithNoName.length > 0) {
+      contactsWithNoName.unshift({ component: 'alphaSeperation', letter: '#' })
+    }
 
-    setCcontactsAlphaSeperation(contactsAlphaSeperation)
-    setContactsWithNoName(contactsWithNoName)
+    const contactList = [ ...contactsAlphaSeperation, ...contactsWithNoName ]
+    
+    // Assign key index to all components
+    contactList.forEach((comp, i) => {
+      comp.index = `${i} - ${crypto.randomUUID()}`
+    })
+
+    setContactList(contactList)
   }
+
 
 
   useEffect(() => {
@@ -78,40 +91,27 @@ export default function () {
     if (contacts) renderContactsHandler()
   }, [contacts])
 
+
   return (
     <Root>
 
-      {contactsAlphaSeperation?.map((comp, i) => {
+      {contactList.map(comp => {
         let render
         if (comp.component === 'alphaSeperation') {
           render = <Typography
-                      key={i}
+                      key={comp.index}
                       className="alphaSeperation"
                     >
                       {comp.letter}
                     </Typography>
         } else {
           render = <ContactItem 
-                      key={i}
+                      key={comp.index}
                       contact={comp}
                         /> 
         }
         return render
       })}
-
-      {contactsWithNoName?.length > 0 ? 
-        <Typography
-          className="alphaSeperation"
-        >
-          #
-        </Typography> : ''}
-      
-      {contactsWithNoName?.map((contact, i) => (
-        <ContactItem 
-          key={i}
-          contact={contact}
-          />
-      ))}
 
     </Root>
   )

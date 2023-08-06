@@ -3,43 +3,42 @@ import { styled, alpha } from "@mui/material/styles"
 
 
 
+
+
 const Root = styled(Box)(({ theme }) => ({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  zIndex: 9999,
   width: '100vw',
   height: '100vh',
   backgroundColor: theme.palette.primary.main,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  '& .logo': {
-      width: 234
-  },
-  '& .text': {
-    fontSize: 14.4,
-    fontWeight: 300,
-    color: alpha('#fff', .99)
-  },
-  '& .e2e': {
+  '& > .wrapper': {
+    width: '100%',
+    height: '100%',
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    '& svg': {
-      fill: '#fff',
-      '&.padlock': {
-        width: 16,
-        marginRight: 8
+    alignItems: 'center',
+    justifyContent: 'center',
+    '& > .content': {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative',
+      marginBottom: 64,
+      '& .logo': {
+        width: 234
+      },
+      '& .text': {
+        fontSize: 14.4,
+        fontWeight: 400,
+        color: alpha('#fff', .99),
+        lineHeight: '78%'
+      },
+      '& .info': {
+        '& > .wrapper': {
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'flex-end'
+        }
       }
-    },
-    '& .text': {
-      lineHeight: '78%'
     }
-  },
-  '&.hide': {
-      display: 'none'
   }
 }))
 
@@ -49,14 +48,15 @@ const Loader = styled(Box)(() => ({
   backgroundColor: alpha('#000', .15),
   borderRadius: 8,
   '& .bar': {
-      height: '100%',
-      backgroundColor: '#fff',
-      borderRadius: 'inherit',
-      '&.loading': {
-        animation: 'loading 2s linear',
-      }
+    height: '100%',
+    backgroundColor: '#fff',
+    borderRadius: 'inherit',
+    '&.loading': {
+      animation: 'loading 2s linear',
+    }
   }
 }))
+
 
 
 export { Root, Loader }
