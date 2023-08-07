@@ -234,7 +234,6 @@ export default function ({ room, style, ...others }) {
               </Grid>
 
               <Grid item xs={3.3} className='col col-4'>
-
                 {
                   unreadMessagesCount > 0 ? 
                     <Box
@@ -252,7 +251,6 @@ export default function ({ room, style, ...others }) {
                       </Typography>
                     </Box>
                 }
-
               </Grid>
 
             </Grid>

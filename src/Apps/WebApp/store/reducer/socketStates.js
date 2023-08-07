@@ -6,8 +6,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   // openedAppAt: `${new Date(Date.now())}`,
-  server: 'http://localhost:5000/v1',
-  // server: 'http://ec2-15-237-107-34.eu-west-3.compute.amazonaws.com:5000/v1',
+  // server: 'http://localhost:5000/v1',
+  server: 'http://ec2-15-237-107-34.eu-west-3.compute.amazonaws.com:5000/v1',
   isOnline: navigator.onLine,
   isConnected: null,
   newMessage: null,

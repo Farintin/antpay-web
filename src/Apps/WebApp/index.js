@@ -180,10 +180,7 @@ export default function () {
       dispatch(setRoomMessages(message))
 
       if (userData.phone.number === message.author) {
-        if (message.reciept === 0) {
-          socket.emit('send-message', message)
-          sentMsgAudio.play()
-        }
+        sentMsgAudio.play()
       }
 
       if (userData.phone.number === message.reader) {
@@ -196,6 +193,11 @@ export default function () {
         incomingMsgAudio.play()
         socket.emit('to-server-reciept-ping2', pingData)
       }
+      
+      if (userData.phone.number === message.author) {
+        socket.emit('send-message', message)
+      }
+
       
       dispatch(setNewMessage(null))
     }
@@ -241,6 +243,12 @@ export default function () {
 
         messages.forEach(message => {
     
+          if (userData.phone.number === message.author) {
+            if (message.reciept === 0) {
+              socket.emit('send-message', message)
+            }
+          }
+
           if (userData.phone.number === message.reader) {
             if (message.reciept === 1) {
               const data = {
@@ -351,6 +359,11 @@ export default function () {
       roomCopy.newRoom = true
       dispatch(setRooms([...roomsCopy, roomCopy]))
       incomingMsgAudio.play()
+
+      const { messages } = room
+      const { _id, roomId } = messages[messages.length - 1]
+      const pingData = { roomId, _id }
+      socket.emit('to-server-reciept-ping2', pingData)
 
       dispatch(setNewConversation(null))
     }

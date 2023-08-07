@@ -262,15 +262,15 @@ const StatusList = styled(Box)(({ theme }) => ({
   '& > .wrapper': {
     width: '100%',
     maxHeight: 240,
-    padding: '0 6px 0 12px',
-    overflow: 'overlay',
+    padding: '0 1px 0 12px',
+    overflow: 'auto',
     '::-webkit-scrollbar': {
       background: 'transparent',
-      width: '12px',
+      width: '13px',
     },
     '::-webkit-scrollbar-thumb': {
       backgroundColor: theme.palette.primary.lighter,
-      border: '3px solid rgba(255, 255, 255, 0)',
+      border: '4px solid rgba(255, 255, 255, 0)',
       backgroundClip: 'padding-box',
       borderRadius: '32px'
     },

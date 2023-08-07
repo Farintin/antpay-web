@@ -100,9 +100,12 @@ export default function () {
 
 
   const authNavigate = () => {
+    setLoadPercent(100)
     console.log('authNavigate');
     localStorage.removeItem('accessToken')
-    navigate('/phoneSignIn')
+    setTimeout(() => {
+      navigate('/phoneSignIn')
+    }, 200)
   }
   const reloadHandler = () => {
     console.log('reloadHandler');
@@ -110,7 +113,7 @@ export default function () {
   }
   const randInteger = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
   const loadedHandler = () => {
-    // console.log('loaded')
+    console.log('loaded')
     navigate('/home')
   }
 

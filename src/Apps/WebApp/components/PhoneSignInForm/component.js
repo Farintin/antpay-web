@@ -93,7 +93,7 @@ const CountryList = styled(Box)(({ theme }) => ({
   width: '100%',
   borderRadius: 9.6,
   padding: '6px 12px',
-  paddingRight: 4,
+  // paddingRight: 6,
   backgroundColor: theme.palette.primary.light,
   overflow: 'overlay',
   maxHeight: 400,
