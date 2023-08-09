@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles"
 const Root = styled(Box)(({ theme }) => ({
   padding: '0px 8px 0 0',
   height: '100%',
-  overflow: 'overlay',
+  overflow: 'auto',
   '::-webkit-scrollbar': {
     width: '8px'
   },

@@ -24,7 +24,7 @@ const Root = styled(Box)(({ theme }) => ({
         marginTop: 24,
         paddingLeft: 8,
         paddingRight: 4,
-        overflow: 'overlay',
+        overflow: 'auto',
         '::-webkit-scrollbar': {
           width: '8px'
         },
